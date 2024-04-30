@@ -1,0 +1,44 @@
+import express, { Request, Response } from "express";
+import http from "http";
+import cors from "cors";
+
+import compareRoute from "./routes/v1/compare.routes";
+import liveRates from "./routes/v1/liveCurrencies.routes";
+// Create an Express application
+const app = express();
+const PORT = 9000;
+const SERVER_URL = "0.0.0.0";
+
+const server = http.createServer(app);
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.set('trust proxy', true)
+app.use(express.json());
+app.use("/api/v1", compareRoute);
+app.use("/api/v1", liveRates)
+
+function generateAsciiArt(text: string) {
+  const length = text.length;
+  const line = Array(length + 8)
+    .fill("-")
+    .join("");
+  const emptyLine = "|" + " ".repeat(length + 6) + "|";
+
+  return `
+   ${line}
+  |  ${text}  |
+  |  😊 Development Server started successfully.  |
+  |  🎧 Listening on port ${PORT}...  |
+   ${line}
+  `;
+}
+// Start the server
+server.listen(PORT, () => {
+  const serverMessage = generateAsciiArt(
+    `Crygoca Development Server is running on ${SERVER_URL}:${PORT}`.toUpperCase()
+  );
+  console.log(serverMessage);
+});
