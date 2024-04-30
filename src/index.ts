@@ -6,7 +6,7 @@ import compareRoute from "./routes/v1/compare.routes";
 import liveRates from "./routes/v1/liveCurrencies.routes";
 // Create an Express application
 const app = express();
-const PORT = 9000;
+const PORT = 8000;
 const SERVER_URL = "0.0.0.0";
 
 const server = http.createServer(app);
