@@ -17,6 +17,9 @@ app.use(
 );
 app.set('trust proxy', true)
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.send('Crygoca Backend says hello!');
+});
 app.use("/api/v1", compareRoute);
 app.use("/api/v1", liveRates)
 
