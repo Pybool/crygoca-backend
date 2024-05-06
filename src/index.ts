@@ -7,7 +7,7 @@ import liveRates from "./routes/v1/liveCurrencies.routes";
 import authRouter from "./routes/v1/authentication.route";
 import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "./services/v1/comparison.service";
-// import logger from './logger';
+import "./services/v1/task.service";
 dotenvConfig();
 // Create an Express application
 const app = express();

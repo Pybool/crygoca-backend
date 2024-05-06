@@ -1,4 +1,5 @@
 const axios = require("axios");
+import { getCountryNameByCode } from "../../helpers/countries";
 // https://api.transferwise.com/v3/comparisons/?sendAmount=1000&sourceCurrency=CAD&targetCurrency=USD
 import "./liveCurrencies.service";
 import geoip from "geoip-lite"; // Import geoip-lite library
@@ -15,9 +16,10 @@ interface Provider {
 
 export async function getUserCountry(req: any): Promise<any> {
   try {
-    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress; // Get user IP address from request object (replace with your approach)
-    const geoData = geoip.lookup(req.ip);
-
+    let geoData = geoip.lookup(req.ip) as any;
+    const countryCode = geoData.country;
+    geoData.country = getCountryNameByCode(countryCode);
+    geoData.countryCode = countryCode;
     if (geoData) {
       return {
         geoData,

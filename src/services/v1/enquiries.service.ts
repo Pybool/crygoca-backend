@@ -60,8 +60,6 @@ export const enquiriesService = async (req: Xrequest) => {
 
 const thankUsermail = (email:string, name:string) => {
   return new Promise(async(resolve: any, reject: any) => {
-    
-
     const responseTemplate = await ejs.renderFile(
       "views/pages/emailtemplates/bookingResponse.ejs",
       {
@@ -72,18 +70,19 @@ const thankUsermail = (email:string, name:string) => {
     );
 
     const mailOptions = {
-      from: `info@micollifilms.com`,
+      from: `info@crygoca.com`,
       to: email,
-      subject: "Your Micolli Booking",
-      text: `We received your booking!`,
+      subject: "Your Crygoca enquiries",
+      text: `We received your enquiry!`,
       html: juice(responseTemplate),
     };
+
     sendMail(mailOptions)
       .then((response: any) => {
-        console.log("Email sent successfully:", response);
+        resolve(console.log("Email sent successfully:", response))
       })
       .catch((error: any) => {
-        console.error("Failed to send email:", error);
+        reject(console.error("Failed to send email:", error))
       });
   });
 };

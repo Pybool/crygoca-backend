@@ -3,11 +3,10 @@ import { JSDOM } from "jsdom";
 import { Cache } from "../../middlewares/cache";
 const memCache = new Cache();
 
-export const fetchRates = async (url: string) => {
+export const fetchRates = async (url: string, isTask=false) => {
   return new Promise((resolve: any, reject: any) => {
-    console.log("Cache ", memCache.get("live-currencies"));
 
-    if (memCache.get("live-currencies")) {
+    if (memCache.get("live-currencies") && !isTask) {
       resolve(memCache.get("live-currencies"));
     } else {
       axios
@@ -53,7 +52,7 @@ export const fetchRates = async (url: string) => {
             data: results,
           };
 
-          memCache.set("live-currencies", _response, 6000);
+          memCache.set("live-currencies", _response, 120);
           resolve(_response);
         })
         .catch((error) => {
@@ -66,3 +65,4 @@ export const fetchRates = async (url: string) => {
     }
   });
 };
+
