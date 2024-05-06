@@ -1,9 +1,7 @@
 const axios = require("axios");
 // https://api.transferwise.com/v3/comparisons/?sendAmount=1000&sourceCurrency=CAD&targetCurrency=USD
 import "./liveCurrencies.service";
-import geoip from 'geoip-lite'; // Import geoip-lite library
-
-
+import geoip from "geoip-lite"; // Import geoip-lite library
 
 interface Quote {
   rate: number;
@@ -15,21 +13,24 @@ interface Provider {
   quotes: Quote[];
 }
 
-export async function getUserCountry(req: any): Promise<string | null> {
+export async function getUserCountry(req: any): Promise<any> {
   try {
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress; // Get user IP address from request object (replace with your approach)
-    console.log("IP ", req.connection.remoteAddress, req.ip, req.socket.remoteAddress)
-    const geoData = geoip.lookup('10.240.0.10');
+    const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress; // Get user IP address from request object (replace with your approach)
+    const geoData = geoip.lookup(req.ip);
 
     if (geoData) {
-      const countryCode = geoData.country;
-      console.log(`User's country code: ${countryCode}`);
-      return countryCode;
+      return {
+        geoData,
+        connectionRemoteAddress: req.connection.remoteAddress,
+        reqIp: req.ip,
+        socketRemoteAddress: req.socket.remoteAddress,
+        forwardedIp: req.headers["x-forwarded-for"]
+      };
     }
 
     return null;
   } catch (error) {
-    console.error('Error fetching geolocation data:', error);
+    console.error("Error fetching geolocation data:", error);
     return null; // Return null in case of errors
   }
 }

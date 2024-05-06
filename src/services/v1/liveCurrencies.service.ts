@@ -1,6 +1,6 @@
 import axios from "axios";
 import { JSDOM } from "jsdom";
-import { Cache } from "../../middleware/cache";
+import { Cache } from "../../middlewares/cache";
 const memCache = new Cache();
 
 export const fetchRates = async (url: string) => {
@@ -22,6 +22,7 @@ export const fetchRates = async (url: string) => {
             price: number;
             change: string;
             percentChange: string;
+            symbol: string;
           }[] = [];
 
           pairRows.forEach((pairRow: any) => {
@@ -40,7 +41,10 @@ export const fetchRates = async (url: string) => {
                 "",
               percentChange:
                 pairRow.querySelector('td[aria-label="% Change"]')
-                  ?.textContent || ""
+                  ?.textContent || "",
+              symbol:
+                  pairRow.querySelector('td[aria-label="Symbol"]').querySelector('a')
+                    ?.textContent || ""
             };
             results.push(rate);
           });
@@ -49,7 +53,7 @@ export const fetchRates = async (url: string) => {
             data: results,
           };
 
-          memCache.set("live-currencies", _response, 600);
+          memCache.set("live-currencies", _response, 6000);
           resolve(_response);
         })
         .catch((error) => {
