@@ -11,7 +11,7 @@ import "./services/v1/task.service";
 dotenvConfig();
 // Create an Express application
 const app = express();
-const PORT = 8500;
+const PORT = 8000;
 const SERVER_URL = "0.0.0.0";
 
 const server = http.createServer(app);

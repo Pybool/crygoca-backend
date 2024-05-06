@@ -1,5 +1,6 @@
 const axios = require("axios");
 import { getCountryNameByCode } from "../../helpers/countries";
+import { getCountryCurrencyByCountryCode } from "../../helpers/currenciesCountryCodes";
 // https://api.transferwise.com/v3/comparisons/?sendAmount=1000&sourceCurrency=CAD&targetCurrency=USD
 import "./liveCurrencies.service";
 import geoip from "geoip-lite"; // Import geoip-lite library
@@ -19,6 +20,7 @@ export async function getUserCountry(req: any): Promise<any> {
     let geoData = geoip.lookup(req.ip) as any;
     const countryCode = geoData.country;
     geoData.country = getCountryNameByCode(countryCode);
+    geoData.currency = getCountryCurrencyByCountryCode(countryCode);
     geoData.countryCode = countryCode;
     if (geoData) {
       return {
@@ -69,7 +71,6 @@ export async function compareExchangeProviders(
     }
     return { status: true, filter, data: responseData };
   } catch (error: any) {
-    console.error("Error:", error.message);
     return { status: false, error: error.message };
   }
 }
@@ -93,3 +94,5 @@ function calculateAverageQuotes(providers: Provider[]): any {
   // You can return averageRate or averageReceivedAmount, depending on your requirement
   return { averageRate, averageReceivedAmount };
 }
+
+
