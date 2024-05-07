@@ -61,7 +61,7 @@ export const enquiriesService = async (req: Xrequest, res: any) => {
 const thankUsermail = (email: string, name: string) => {
   return new Promise(async (resolve: any, reject: any) => {
     const responseTemplate = await ejs.renderFile(
-      "src/templates/enquiriesResponseTemplate.ejs",
+      "dist/templates/enquiriesResponseTemplate.ejs",
       {
         email,
         name,
