@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "start": "node dist/index.js",
-    "build": "tsc"
+    "prebuild": "tsc -p .",
+    "build": "copyfiles -u 1 ./src/templates/* dist/"
   },
   "keywords": [],
   "author": "",
