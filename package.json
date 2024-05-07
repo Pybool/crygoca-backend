@@ -53,6 +53,7 @@
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.15",
     "@types/redis": "^4.0.11",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.3.0",
     "fs": "^0.0.1-security",
