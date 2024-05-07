@@ -5,12 +5,11 @@ const EnquiriesSchema = new Schema({
   email: {
     type: String,
     required: true,
-    lowercase: true,
-    unique: true,
+    lowercase: true
   },
   name: {
     type: String,
-    required: false,
+    required: false, 
     default:''
   },
   phone: {

@@ -8,10 +8,11 @@ import authRouter from "./routes/v1/authentication.route";
 import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "./services/v1/comparison.service";
 import "./services/v1/task.service";
+import { enquiriesService } from "./services/v1/enquiries.service";
 dotenvConfig();
 // Create an Express application
 const app = express();
-const PORT = 8000;
+const PORT = 8500;
 const SERVER_URL = "0.0.0.0";
 
 const server = http.createServer(app);
@@ -33,6 +34,8 @@ app.get("/ip", async (req, res) => {
     data: result,
   });
 });
+
+app.post("/api/v1/contact", enquiriesService)
 
 app.use("/api/v1", compareRoute);
 app.use("/api/v1", liveRates);

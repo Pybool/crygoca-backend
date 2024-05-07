@@ -12,7 +12,6 @@ interface Xrequest extends Request {
 export const compareController: Icompare = {
   compareExchangeProviders: async (req: Xrequest, res: Response) => {
     try {
-      console.log(req.body);
       const compare = req.query.compare! as string;
       const { from, to, currencyFrom, currencyTo, amount } = req.body!;
       const result = await compareExchangeProviders(
