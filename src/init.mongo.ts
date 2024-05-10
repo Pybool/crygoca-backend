@@ -4,8 +4,8 @@ import { config as dotenvConfig } from 'dotenv';
 dotenvConfig()
 // const uri = `mongodb+srv://ekoemmanueljavl:${process.env.MONGODB_PASSWORD}@cluster0.n8o8vva.mongodb.net/?retryWrites=true&w=majority`;
 
-const mongouri:any = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'
-console.log(process.env.DB_NAME)
+const mongouri:any = `mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One` || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'
+console.log(process.env.DB_NAME, mongouri)
 mongoose 
   .connect(mongouri, {
     dbName: 'CRYGOCA',

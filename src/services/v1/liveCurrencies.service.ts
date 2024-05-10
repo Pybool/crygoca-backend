@@ -1,21 +1,18 @@
-import axios from "axios";
-import { JSDOM } from "jsdom";
+const cheerio = require("cheerio");
+const rp = require("request-promise");
 import { Cache } from "../../middlewares/cache";
 const memCache = new Cache();
 
-export const fetchRates = async (url: string, isTask=false) => {
+export const fetchRates = async (url: string, isTask = false) => {
   return new Promise((resolve: any, reject: any) => {
-
-    if (memCache.get("live-currencies") && !isTask) {
-      resolve(memCache.get("live-currencies"));
-    } else {
-      axios
-        .get(url)
-        .then((response) => {
-          const dom = new JSDOM(response.data);
-          const pairRows = dom.window.document.querySelectorAll(
-            "#yfin-list table tbody tr"
-          );
+    // if (memCache.get("live-currencies") && !isTask) {
+    //   resolve(memCache.get("live-currencies"));
+    // } else {
+      rp(url)
+        .then(function (response: { data: any }) {
+          const dom = response; //.data;
+          const $ = cheerio.load(dom);
+          const pairRows = $("#yfin-list table tbody tr", dom);
           const results: {
             name: string;
             price: number;
@@ -23,30 +20,24 @@ export const fetchRates = async (url: string, isTask=false) => {
             percentChange: string;
             symbol: string;
           }[] = [];
-
-          pairRows.forEach((pairRow: any) => {
+          for (const pairRow of pairRows) {
             const rate = {
-              name:
-                pairRow.querySelector('td[aria-label="Name"]')?.textContent ||
-                "",
+              name: $(pairRow).find('td[aria-label="Name"]')?.text() || "",
               price: parseFloat(
                 (
-                  pairRow.querySelector('td[aria-label="Last Price"]')
-                    ?.textContent || ""
+                  $(pairRow).find('td[aria-label="Last Price"]')?.text() || ""
                 ).replaceAll(",", "")
               ),
-              change:
-                pairRow.querySelector('td[aria-label="Change"]')?.textContent ||
-                "",
+              change: $(pairRow).find('td[aria-label="Change"]')?.text() || "",
               percentChange:
-                pairRow.querySelector('td[aria-label="% Change"]')
-                  ?.textContent || "",
+                $(pairRow).find('td[aria-label="% Change"]')?.text() || "",
               symbol:
-                  pairRow.querySelector('td[aria-label="Symbol"]').querySelector('a')
-                    ?.textContent || ""
+                $(pairRow).find('td[aria-label="Symbol"]')!.find("a")?.text() ||
+                "",
             };
+            console.log(rate)
             results.push(rate);
-          });
+          }
           const _response: { status: boolean; data: any } = {
             status: true,
             data: results,
@@ -55,14 +46,14 @@ export const fetchRates = async (url: string, isTask=false) => {
           memCache.set("live-currencies", _response, 120);
           resolve(_response);
         })
-        .catch((error) => {
+        .catch((error: any) => {
+          console.log(error);
           resolve({
             status: false,
             data: null,
             error: error,
           });
         });
-    }
+    // }
   });
 };
-

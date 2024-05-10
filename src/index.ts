@@ -9,7 +9,9 @@ import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "./services/v1/comparison.service";
 import "./services/v1/task.service";
 import { enquiriesService } from "./services/v1/enquiries.service";
+import liveCrypto from "./routes/v1/cryptoCurrencies.route";
 dotenvConfig();
+dotenvConfig({path:`.env.prod`});
 // Create an Express application
 const app = express();
 const PORT = 8000;
@@ -39,6 +41,9 @@ app.post("/api/v1/contact", enquiriesService)
 
 app.use("/api/v1", compareRoute);
 app.use("/api/v1", liveRates);
+app.use("/api/v1", liveCrypto);
+
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
