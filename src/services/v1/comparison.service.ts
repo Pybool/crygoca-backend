@@ -53,7 +53,7 @@ export async function compareExchangeProviders(
     to: to.toUpperCase(),
     currencyFrom: currencyFrom.toUpperCase(),
     currencyTo: currencyTo.toUpperCase(),
-    amount: parseInt(amount),
+    amount: parseInt(amount) || 1,
     maxAge: 0,
   };
 
