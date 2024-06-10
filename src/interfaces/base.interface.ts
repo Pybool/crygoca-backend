@@ -2,5 +2,6 @@ import { RequestHandler } from "express";
 
 export interface Icompare{
     compareExchangeProviders: RequestHandler;
-    getUserCountry: RequestHandler
+    getUserCountry: RequestHandler;
+    convertCurrency: RequestHandler;
 }

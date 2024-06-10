@@ -14,6 +14,7 @@ try {
       user: process.env.EMAIL_HOST_USER,
       pass: process.env.EMAIL_HOST_PASSWORD,
     },
+    tls : { rejectUnauthorized: false }
   });
 
   sendMail = (mailOptions: Options) => {
@@ -28,8 +29,7 @@ try {
         }
       });
     }).catch((error:any)=>{
-      console.log(error)
-      throw error;
+      console.log("Mail error: ",error)
     });
   };
 } catch {console.log("Error occured in mail")}

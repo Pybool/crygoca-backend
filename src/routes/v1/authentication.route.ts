@@ -15,8 +15,6 @@ authRouter.get('/user-profile', decode, authController.getUserProfile)
 authRouter.put('/user-profile', decode, authController.saveUserProfile)
 authRouter.put('/verify-account', authController.verifyEmail)
 
-
-
 authRouter.all('/register', handleInvalidMethod);
 authRouter.all('/verify-email-address', handleInvalidMethod);
 authRouter.all('/resend-email-verification', handleInvalidMethod);

@@ -4,6 +4,11 @@ import { getCountryCurrencyByCountryCode } from "../../helpers/currenciesCountry
 // https://api.transferwise.com/v3/comparisons/?sendAmount=1000&sourceCurrency=CAD&targetCurrency=USD
 import "./liveCurrencies.service";
 import geoip from "geoip-lite"; // Import geoip-lite library
+import { config as dotenvConfig } from "dotenv";
+import ejs from "ejs";
+import juice from "juice";
+import sendMail from "./mailtrigger";
+dotenvConfig();
 
 interface Quote {
   rate: number;
@@ -28,7 +33,7 @@ export async function getUserCountry(req: any): Promise<any> {
         connectionRemoteAddress: req.connection.remoteAddress,
         reqIp: req.ip,
         socketRemoteAddress: req.socket.remoteAddress,
-        forwardedIp: req.headers["x-forwarded-for"]
+        forwardedIp: req.headers["x-forwarded-for"],
       };
     }
 
@@ -36,6 +41,41 @@ export async function getUserCountry(req: any): Promise<any> {
   } catch (error) {
     console.error("Error fetching geolocation data:", error);
     return null; // Return null in case of errors
+  }
+}
+
+export async function convertCurrency(
+  from: string,
+  to: string,
+  currencyFrom: string,
+  currencyTo: string,
+  amount: string
+) {
+  try {
+    const data = {
+      lang: "en",
+      from: from.toUpperCase(),
+      to: to.toUpperCase(),
+      currencyFrom: currencyFrom.toUpperCase(),
+      currencyTo: currencyTo.toUpperCase(),
+      amount: parseInt(amount) || 1,
+      maxAge: 0,
+    };
+    // https://api.currencyapi.com/v3/latest?apikey=cur_live_d52M3q2XMNDurG4Q7kHtSr3P5iqTsNWpUtF5kcNx&currencies=NGN&base_currency=GBP
+
+    const url = `https://api.currencyapi.com/v3/latest?apikey=${process.env.CURRENCYAPI_APP_IDS}&base_currency=${data.currencyFrom}&currencies=${data.currencyTo}`;
+    const response = await axios.get(url);
+    console.log("STATUS ",response.status)
+    if(response.status){
+      let responseData: any = response.data;
+      return { status: true, data: responseData };
+    }
+    sendDevMail("Currency conversion service seems to be having some challenges at the moment.")
+    return { status: false, data: null };
+    
+  } catch (error:any) {
+    sendDevMail("Currency conversion service seems to be having some challenges at the moment.")
+    return { status: false, error: error.message };
   }
 }
 
@@ -63,17 +103,48 @@ export async function compareExchangeProviders(
     );
 
     const filter: any[] = [];
-    let responseData: any = response.data;
-    if (compare === "1") {
+    if(response.status){
+      let responseData: any = response.data;
       responseData = response.data;
-    } else {
-      responseData = calculateAverageQuotes(responseData.providers);
+      return { status: true, filter, data: responseData };
     }
-    return { status: true, filter, data: responseData };
+    sendDevMail("Currency comparison service seems to to having challenges at the moment..")
+    return { status: false, filter, data: null };
+
+    
   } catch (error: any) {
+    sendDevMail("Currency comparison service seems to to having challenges at the moment..")
     return { status: false, error: error.message };
   }
 }
+
+const sendDevMail = (msg:any= null) => {
+  console.log("I was called.....")
+  return new Promise(async (resolve: any, reject: any) => {
+    const responseTemplate = await ejs.renderFile(
+      "dist/templates/serviceDown.ejs",
+      {
+        msg
+      }
+    );
+
+    const mailOptions = {
+      from: `downtime@crygoca.co.uk`,
+      to: ['ekoemmanueljavl@gmail.com', 'tayeoyelekan@gmail.com', 'downtime@crygoca.co.uk'],
+      subject: "Crygoca Service Down",
+      text: msg || 'Currency conversion service is down',
+      html: juice(responseTemplate),
+    };
+
+    sendMail(mailOptions)
+      .then((response: any) => {
+        resolve(console.log("Email sent successfully:", response));
+      })
+      .catch((error: any) => {
+        reject(console.error("Failed to send email:", error));
+      });
+  });
+};
 
 function calculateAverageQuotes(providers: Provider[]): any {
   let totalRate = 0;
@@ -94,5 +165,3 @@ function calculateAverageQuotes(providers: Provider[]): any {
   // You can return averageRate or averageReceivedAmount, depending on your requirement
   return { averageRate, averageReceivedAmount };
 }
-
-

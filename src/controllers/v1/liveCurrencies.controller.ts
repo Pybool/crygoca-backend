@@ -13,7 +13,7 @@ export const liveCurrenciesController: any = {
     res: Response
   ) => {
     try {
-      const result = await fetchRates("https://finance.yahoo.com/currencies");
+      const result = await fetchRates("https://ng.investing.com/currencies/streaming-forex-rates-majors");
       if (result) {
         res.status(200).json(result);
       } else {

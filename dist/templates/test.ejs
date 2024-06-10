@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+    <body>
+
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="https://connect.facebook.net/de_DE/all.js"></script>
+
+    <script type="text/javascript">
+
+        function init(){
+            FB.init({
+                appId  : 377584258023732,
+                status : true, // check login status
+                cookie : true, // enable cookies to allow the server to access the session
+                xfbml  : true, // parse XFBML
+            });
+            setupApp();
+        }
+
+        function setupApp() {
+
+            FB.getLoginStatus(
+                function(response) {
+                    if (!response.session) {
+                        FB.ui({method: "", "perms": ''} , getUserId);
+                    } else {
+                        // the user previously authorized the app
+                        getUserId(response);
+                        console.log("Response ==> ",response)
+                        window.location = "fanAuthorized.php";
+                    }
+                });
+            return false;
+        }
+
+        function getUserId(data){
+            if(data.status !== 'notConnected' || data.session !== null){
+                // the user has just authorized the app
+                userId = data.session.uid;
+                accessToken = data.session.access_token;
+                console.log("Access Tokemn ==> ",accessToken)
+                window.location = "fanAuthorized.php";
+            } else {
+                // the user has just denied to authorize the app
+                window.location = "fanUnauthorized.php";
+            }
+        }
+
+        init();
+
+    </script>
+
+</body>
+
+</html>
