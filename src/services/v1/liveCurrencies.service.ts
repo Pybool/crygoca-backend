@@ -84,7 +84,7 @@ const sendDevMail = (msg:any= null) => {
 
     const mailOptions = {
       from: `downtime@crygoca.co.uk`,
-      to: ['ekoemmanueljavl@gmail.com', 'tayeoyelekan@gmail.com', 'downtime@crygoca.co.uk'],
+      to: ['ekoemmanueljavl@gmail.com', 'downtime@crygoca.co.uk'],
       subject: "Crygoca Service Down",
       text: msg || 'Exchange rate service is down',
       html: juice(responseTemplate),

@@ -8,8 +8,11 @@ import { config as dotenvConfig } from "dotenv";
 import ejs from "ejs";
 import juice from "juice";
 import sendMail from "./mailtrigger";
+import { Cache } from "../../middlewares/cache";
 dotenvConfig();
 
+const memCache = new Cache();
+let downtimeCounter = { convert: 0 };
 interface Quote {
   rate: number;
   fee: number;
@@ -63,18 +66,28 @@ export async function convertCurrency(
     };
     // https://api.currencyapi.com/v3/latest?apikey=cur_live_d52M3q2XMNDurG4Q7kHtSr3P5iqTsNWpUtF5kcNx&currencies=NGN&base_currency=GBP
 
-    const url = `https://api.currencyapi.com/v3/latest?apikey=${process.env.CURRENCYAPI_APP_IDS}&base_currency=${data.currencyFrom}&currencies=${data.currencyTo}`;
-    const response = await axios.get(url);
-    console.log("STATUS ",response.status)
-    if(response.status){
-      let responseData: any = response.data;
-      return { status: true, data: responseData };
+    const url = `https://api.currencyapi.com/v3/latest?apikey=${process.env.CURRENCYAPI_APP_ID}&base_currency=${data.currencyFrom}&currencies=${data.currencyTo}`;
+    console.log("Cache ", memCache.get(url));
+    if (memCache.get(url)) {
+      console.log("Fetching conversion from cache");
+      return { status: true, data: memCache.get(url) };
+    } else {
+      const response = await axios.get(url);
+      console.log("STATUS ", response.status);
+      if (response.status) {
+        let responseData: any = response.data;
+        memCache.set(url, { status: true, data: responseData }, 1200);
+        return { status: true, data: responseData };
+      }
+      return { status: false, data: null };
     }
-    sendDevMail("Currency conversion service seems to be having some challenges at the moment.")
-    return { status: false, data: null };
-    
-  } catch (error:any) {
-    sendDevMail("Currency conversion service seems to be having some challenges at the moment.")
+  } catch (error: any) {
+    downtimeCounter.convert += 1;
+    if (downtimeCounter.convert >= 3) {
+      sendDevMail(
+        "Currency conversion service seems to be having some challenges at the moment."
+      );
+    }
     return { status: false, error: error.message };
   }
 }
@@ -103,36 +116,38 @@ export async function compareExchangeProviders(
     );
 
     const filter: any[] = [];
-    if(response.status){
+    if (response.status) {
       let responseData: any = response.data;
       responseData = response.data;
       return { status: true, filter, data: responseData };
     }
-    sendDevMail("Currency comparison service seems to to having challenges at the moment..")
+    sendDevMail(
+      "Currency comparison service seems to to having challenges at the moment.."
+    );
     return { status: false, filter, data: null };
-
-    
   } catch (error: any) {
-    sendDevMail("Currency comparison service seems to to having challenges at the moment..")
+    sendDevMail(
+      "Currency comparison service seems to to having challenges at the moment.."
+    );
     return { status: false, error: error.message };
   }
 }
 
-const sendDevMail = (msg:any= null) => {
-  console.log("I was called.....")
+const sendDevMail = (msg: any = null) => {
+  console.log("I was called.....");
   return new Promise(async (resolve: any, reject: any) => {
     const responseTemplate = await ejs.renderFile(
       "dist/templates/serviceDown.ejs",
       {
-        msg
+        msg,
       }
     );
 
     const mailOptions = {
       from: `downtime@crygoca.co.uk`,
-      to: ['ekoemmanueljavl@gmail.com', 'tayeoyelekan@gmail.com', 'downtime@crygoca.co.uk'],
+      to: ["ekoemmanueljavl@gmail.com", "downtime@crygoca.co.uk"],
       subject: "Crygoca Service Down",
-      text: msg || 'Currency conversion service is down',
+      text: msg || "Currency conversion service is down",
       html: juice(responseTemplate),
     };
 
