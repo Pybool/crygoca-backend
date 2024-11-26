@@ -1,6 +1,7 @@
 import JWT from "jsonwebtoken";
 import createError from "http-errors";
-// import client from '../init.redis';
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig();
 import { NextFunction, Response } from "express";
 import Xrequest from "../interfaces/extensions.interface";
 
@@ -14,6 +15,7 @@ const jwthelper = {
         issuer: process.env.ISSUER,
         audience: accountId,
       };
+      console.log("Secret ", process.env.ACCESS_TOKEN_SECRET!)
       JWT.sign(payload, secret, options, (err, token) => {
         if (err) {
           console.log(err.message);

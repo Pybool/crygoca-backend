@@ -26,7 +26,7 @@ const authController: IAuth = {
     }
   },
 
-  sendPasswordResetLink: async (
+  sendPasswordResetOtp: async (
     req: Xrequest,
     res: Response,
     next: NextFunction
@@ -34,7 +34,7 @@ const authController: IAuth = {
     try {
       let status = 400;
       const authentication = new Authentication(req);
-      const result = await authentication.sendPasswordResetLink();
+      const result = await authentication.sendPasswordResetOtp();
       if (result.status) status = 200;
       res.status(status).json(result);
     } catch (error: any) {
@@ -52,6 +52,23 @@ const authController: IAuth = {
       let status = 200;
       const authentication = new Authentication(req);
       const result: any = await authentication.sendEmailConfirmationOtp();
+      if (!result.status) status = 400;
+      res.status(status).json(result);
+    } catch (error: any) {
+      if (error.isJoi === true) error.status = 422;
+      next(error);
+    }
+  },
+
+  verifyPasswordResetOtp: async (
+    req: Xrequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      let status = 200;
+      const authentication = new Authentication(req);
+      const result: any = await authentication.verifyPasswordResetOtp();
       if (!result.status) status = 400;
       res.status(status).json(result);
     } catch (error: any) {
@@ -103,6 +120,26 @@ const authController: IAuth = {
         res
           .status(400)
           .json({ status: false, message: "Could not process login request!" });
+      }
+    }
+  },
+
+  checkUserName:async (req: Xrequest, res: Response, next: NextFunction) => {
+    try {
+      let status = 400;
+      const authentication = new Authentication(req);
+      const result = await authentication.checkUserName();
+      status = 200;
+      return res.status(status).json(result);
+    } catch (error: any) {
+      if (error.isJoi === true) {
+        res
+          .status(400)
+          .json({ status: false, message: "" });
+      } else {
+        res
+          .status(400)
+          .json({ status: false, message: "Could not process request!" });
       }
     }
   },

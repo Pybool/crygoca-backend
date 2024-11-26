@@ -6,9 +6,13 @@ import { decode, ensureAdmin } from '../../middlewares/jwt';
 
 authRouter.post('/register', authController.register)
 authRouter.get('/verify-email-address', authController.verifyEmail)
+authRouter.post('/check-username', authController.checkUserName)
 authRouter.post('/resend-email-verification-otp', authController.sendEmailConfirmationOtp)
-authRouter.post('/send-reset-password-link', authController.sendPasswordResetLink)
+/* Password reset */
+authRouter.post('/send-reset-password-otp', authController.sendPasswordResetOtp)
+authRouter.post('/verify-reset-password-otp', authController.verifyPasswordResetOtp)
 authRouter.post('/reset-password', authController.resetPassword)
+
 authRouter.post('/login', authController.login)
 authRouter.post('/refresh-token', authController.getRefreshToken)
 authRouter.get('/user-profile', decode, authController.getUserProfile)

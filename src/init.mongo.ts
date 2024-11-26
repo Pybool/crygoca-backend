@@ -1,24 +1,26 @@
 import mongoose from 'mongoose';
 import { config as dotenvConfig } from 'dotenv';
+import { insertLogos, onBoardCryptos } from "./services/v2/onboardCrypto";
 // import logger from './logger';
 dotenvConfig()
-// const uri = `mongodb+srv://ekoemmanueljavl:${process.env.MONGODB_PASSWORD}@cluster0.n8o8vva.mongodb.net/?retryWrites=true&w=majority`;
 
-const mongouri:any = `mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One` || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'
-console.log(process.env.DB_NAME, mongouri)
+const mongouri:any = process.env.MONGODB_URI
 mongoose 
   .connect(mongouri, {
-    dbName: 'CRYGOCA',
+    dbName: process.env.DB_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as mongoose.ConnectOptions)
-  .then(() => {
+  .then(async() => {
     console.log('MongoDB connected Successfully.')
   })
-  .catch((err) => console.log(err.message))
+  .catch((err:any) => console.log(err.message))
 
-mongoose.connection.on('connected', () => {
+mongoose.connection.on('connected', async() => {
   console.log('Mongoose connected to db')
+  // const result = await onBoardCryptos()
+  const result = await insertLogos()
+  console.log(result)
 })
 
 mongoose.connection.on('error', (err) => {

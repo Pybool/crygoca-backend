@@ -108,6 +108,7 @@ AccountsSchema.methods.getProfile = async function () {
   }
 }
 
+AccountsSchema.index({ username: 1 }, { collation: { locale: 'en', strength: 2 } });
 
 const Accounts = mongoose.model('accounts', AccountsSchema)
 export default Accounts

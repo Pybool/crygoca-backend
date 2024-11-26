@@ -9,7 +9,13 @@ import validations from "../../helpers/validators/joiAuthValidators";
 import Xrequest from "../../interfaces/extensions.interface";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { generateOtp, getExpirableCode, setExpirableCode } from "./helper";
+import {
+  deleteExpirableCode,
+  generateOtp,
+  generatePasswordResetHash,
+  getExpirableCode,
+  setExpirableCode,
+} from "./helper";
 
 export class Authentication {
   req: Xrequest;
@@ -61,11 +67,11 @@ export class Authentication {
         await validations.authSendEmailConfirmOtpSchema.validateAsync(
           this.req.body
         );
-      const user: any = await Accounts.findOne({ email: result.email });
+      const user: any = await Accounts.findOne({ _id: result.accountId });
       if (!user) {
         throw createError.NotFound(
           utils.joinStringsWithSpace([
-            result.email,
+            result.accountId,
             message.auth.notRegisteredPartText,
           ])
         );
@@ -75,29 +81,71 @@ export class Authentication {
         return { status: false, message: message.auth.emailAlreadyVerified };
       }
       const otp: string = generateOtp();
-      await setExpirableCode(result.email, "account-verification", otp);
-      return await mailActions.auth.sendEmailConfirmationOtp(result.email, otp);
+      await setExpirableCode(user.email, "account-verification", otp);
+      return await mailActions.auth.sendEmailConfirmationOtp(user.email, otp);
     } catch (error) {
       console.log(error);
       throw error;
     }
   }
 
-  public async sendPasswordResetLink() {
+  public async sendPasswordResetOtp() {
     try {
-      const result = await validations.authSendResetPasswordLink.validateAsync(
+      const result = await validations.authSendResetPasswordOtp.validateAsync(
         this.req.body
       );
       const user = await Accounts.findOne({ email: result.email });
       if (!user) {
-        throw createError.NotFound(
-          utils.joinStringsWithSpace([
+        return {
+          status: false,
+          message: utils.joinStringsWithSpace([
             result.email,
             message.auth.notRegisteredPartText,
-          ])
-        );
+          ]),
+        };
       }
+      const otp: string = generateOtp();
+      await setExpirableCode(user._id.toString(), "password-reset", otp);
+      console.log("Password reset otp: ", otp);
       return mailActions.auth.sendPasswordResetMail(result, user);
+    } catch (error: any) {
+      console.log(error);
+      throw error.message;
+    }
+  }
+
+  public async verifyPasswordResetOtp() {
+    try {
+      const result = this.req.body;
+      const user = await Accounts.findOne({ email: result.email });
+      if (!user) {
+        return {
+          status: false,
+          message: utils.joinStringsWithSpace([
+            result.email,
+            message.auth.notRegisteredPartText,
+          ]),
+        };
+      }
+      const cachedOtp = await getExpirableCode(
+        "password-reset",
+        user._id.toString()
+      );
+      if (!cachedOtp || cachedOtp?.code.toString() !== result.otp.toString()) {
+        return {
+          status: false,
+          message:
+            "This otp is incorrect or has expired, please resend an otp...",
+        };
+      }
+      // await deleteExpirableCode(`password-reset${result.email}`);
+      const hash = generatePasswordResetHash(result.email, result.otp);
+      await setExpirableCode(user._id.toString(), "password-reset-token", hash);
+      return {
+        status: true,
+        message: "Otp has been verified successfully.",
+        data: { uid: user._id.toString(), token: hash },
+      };
     } catch (error: any) {
       console.log(error);
       throw error.message;
@@ -106,29 +154,39 @@ export class Authentication {
 
   public async resetPassword() {
     try {
-      if (!this.req.query.token)
-        throw createError.BadRequest(message.auth.invalidTokenSupplied);
       const result = await validations.authResetPassword.validateAsync(
         this.req.body
       );
+      const cachedToken = await getExpirableCode(
+        "password-reset-token",
+        result.uid! as string
+      );
+
+      if (
+        !cachedToken ||
+        cachedToken?.code.toString() !== result.token
+      ) {
+        throw createError.BadRequest(message.auth.invalidTokenSupplied);
+      }
+
       const account = await Accounts.findOne({
-        reset_password_token: this.req.query.token,
-        reset_password_expires: { $gt: Date.now() },
+        _id: result.uid as string,
       });
       if (!account) {
-        throw createError.NotFound(
-          utils.joinStringsWithSpace([
-            result.email,
+        return {
+          status: false,
+          message: utils.joinStringsWithSpace([
+            result.uid,
             message.auth.userNotRequestPasswordReset,
-          ])
-        );
+          ]),
+        };
       }
+
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(result.password, salt);
       account.password = hashedPassword; // Set to the new password provided by the account
-      account.reset_password_token = undefined;
-      account.reset_password_expires = undefined;
       await account.save();
+      await deleteExpirableCode(`password-reset-token${result.uid}`);
       return { status: true, message: message.auth.passwordResetOk };
     } catch (error) {
       console.log(error);
@@ -137,24 +195,33 @@ export class Authentication {
   }
 
   public async verifyEmail() {
-    const { otp, email } = this.req.body as any;
+    const { otp, accountId } = this.req.body as any;
     if (!otp) {
       return { status: false, message: message.auth.missingConfToken };
     }
+    const account: any = await Accounts.findOne({ _id: accountId });
+    if (!account) {
+      return {
+        status: false,
+        message:
+          "No account is associated with this request, please create an account.",
+      };
+    }
+    const email = account.email;
     const cachedOtp = await getExpirableCode("account-verification", email);
     if (!cachedOtp || cachedOtp?.code.toString() !== otp.toString()) {
       return {
         status: false,
-        message: "This otp is incorrect or has expired...",
+        message:
+          "This otp is incorrect or has expired, please resend an otp...",
       };
     }
 
     try {
-      const account: any = await Accounts.findOne({ email });
       if (!account.email_confirmed) {
         account.email_confirmed = true;
         await account.save();
-
+        await deleteExpirableCode(`account-verification${email}`);
         return { status: true, message: message.auth.emailVerifiedOk };
       }
       return { status: false, message: "Account already verified!" };
@@ -196,6 +263,22 @@ export class Authentication {
     }
   }
 
+  async checkUserName() {
+    try {
+      const { userName } = this.req.body;
+      const users = await Accounts.find({
+        username: { $regex: `^${userName}$`, $options: "i" },
+      });
+
+      return {
+        status: true,
+        data: users.length,
+      };
+    } catch (error: any) {
+      return { status: false, message: error.message };
+    }
+  }
+
   public async getRefreshToken(next: any) {
     try {
       const { refreshToken } = this.req.body;
@@ -211,7 +294,7 @@ export class Authentication {
       }
     } catch (error: any) {
       console.log(error);
-      return { status: false, message: error.mesage };
+      return { status: false, message: error.message };
     }
   }
 

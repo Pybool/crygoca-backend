@@ -5,6 +5,8 @@ import sendMail from "./mailtrigger";
 import { Options } from "nodemailer/lib/mailer";
 import jwthelper from "../../helpers/jwt_helper";
 import utils from "../../helpers/misc";
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig();
 
 const mailActions = {
   auth: {
@@ -15,9 +17,10 @@ const mailActions = {
             "src/templates/emailConfirmation.ejs",
             { email, otp }
           );
+          console.log("OTP==> ", otp)
 
           const mailOptions = {
-            from: "info.crygoca@gmail.com",
+            from: process.env.EMAIL_HOST_USER,
             to: email,
             subject: "Confirm your registration",
             text: `Use the otp in this mail to complete your account onboarding`,

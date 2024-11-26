@@ -1,5 +1,5 @@
 import {Request, Response } from "express";
-import { fetchCrypto } from "../../services/v1/cryptolisting.service";
+import { createListingForSale, fetchCrypto, fetchOrFilterListingsForSale } from "../../services/v1/cryptolisting.service";
 
 interface Xrequest extends Request {
     body:any;
@@ -10,7 +10,7 @@ export const liveCryptoCurrenciesController: any = {
     req: Xrequest,
     res: Response
   ) => {
-    // try {
+    try {
       const url:string = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=${req.query.limit as string}&convert=USD&CMC_PRO_API_KEY=${process.env.COIN_CAP_KEY}`
       const result = await fetchCrypto(url);
       if (result) {
@@ -18,10 +18,44 @@ export const liveCryptoCurrenciesController: any = {
       } else {
         return res.status(422).json(result);
       }
-    // } 
-    // catch (error: any) {
-    //   res.status(500).json({ status: false, message: error?.message });
-    // }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  createListing: async (
+    req: Xrequest,
+    res: Response
+  ) => {
+    try {
+      const result = await createListingForSale(req)
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        return res.status(422).json(result);
+      }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  fetchOrFilterListings: async (
+    req: Xrequest,
+    res: Response
+  ) => {
+    try {
+      const result = await fetchOrFilterListingsForSale(req)
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        return res.status(422).json(result);
+      }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
   },
 
 };

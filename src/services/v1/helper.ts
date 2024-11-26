@@ -1,7 +1,22 @@
 import bcrypt from "bcryptjs";
+const crypto = require("crypto");
+
 import { redisClient } from "./init.redis";
 const gredisClient = redisClient.generic
 
+export function generatePasswordResetHash(email: string, number: string) {
+  // Combine email and number into a single string
+  const input = `${email}:${number}`;
+
+  // Create a SHA-256 hash using the input string
+  const hash = crypto.createHash("sha256");
+
+  // Update the hash with the input
+  hash.update(input);
+
+  // Return the hash as a hexadecimal string
+  return hash.digest("hex");
+}
 
 export const setExpirableCode = async (
   email: string,

@@ -16,7 +16,6 @@ export const decode = (req:Xrequest, res:Response, next:any) => {
   try {
     const decoded:any = jwt.verify(accessToken, SECRET_KEY);
     req.accountId = decoded.aud;
-    req.account = Accounts.findOne({_id:req.accountId})
     return next();
   } catch (error:any) {
     return res.status(401).json({ success: false, message: error.message });
