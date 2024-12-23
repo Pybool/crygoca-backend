@@ -3,6 +3,7 @@ const authRouter = express.Router();
 import { handleInvalidMethod } from '../../middlewares/invalidrequest'
 import authController from '../../controllers/v1/authentication.controller';
 import { decode, ensureAdmin } from '../../middlewares/jwt';
+import { SocialAuthentication } from '../../services/v1/auth/authentication.social.service';
 
 authRouter.post('/register', authController.register)
 authRouter.get('/verify-email-address', authController.verifyEmail)

@@ -3,11 +3,11 @@ import {
   validateComment,
   validateEmail,
   validatePhone,
-} from "../../helpers/validators/validations_core";
-import Xrequest from "../../interfaces/extensions.interface";
-import Enquiries from "../../models/enquiries.model";
-import sendMail from "./mailtrigger";
-import { logo } from "./logo";
+} from "../../../helpers/validators/validations_core";
+import Xrequest from "../../../interfaces/extensions.interface";
+import Enquiries from "../../../models/enquiries.model";
+import sendMail from "../mail/mailtrigger";
+import { logo } from "../logo";
 import juice from "juice";
 
 export const enquiriesService = async (req: Xrequest, res: any) => {

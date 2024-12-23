@@ -6,6 +6,7 @@ export interface ISalelisting{
   cryptoName: string;
   cryptoCode: string;
   cryptoLogo?:string;
+  cryptoCurrency?:string;
   units: number;
   minUnits: number;
   currency: string;
@@ -30,6 +31,10 @@ const CryptoListingSchema = new Schema({
   cryptoLogo: {
     type: String,
     required: true
+  },
+  cryptoCurrency:{
+    type: Schema.Types.ObjectId, ref: "cryptocurrencies",
+    required: true,
   },
   units: {
     type: Number,

@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "lib": ["es2021"]
   },
-  "include": ["**/*"],
+  "include": ["**/*", "src/**/*.d.ts", "src/flutterwave.d.ts" ],
   "exclude": ["node_modules"]
 }

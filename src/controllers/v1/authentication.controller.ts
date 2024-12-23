@@ -2,7 +2,7 @@ import message from "../../helpers/messages";
 import { NextFunction, Response } from "express";
 import Xrequest from "../../interfaces/extensions.interface";
 import { IAuth } from "../../interfaces/auth.interface";
-import { Authentication } from "../../services/v1/auth.service";
+import { Authentication } from "../../services/v1/auth/auth.service";
 
 const authController: IAuth = {
   register: async (req: Xrequest, res: Response, next: NextFunction) => {

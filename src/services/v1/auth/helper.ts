@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
+import { redisClient } from "../../../redis/init.redis";
 const crypto = require("crypto");
 
-import { redisClient } from "./init.redis";
 const gredisClient = redisClient.generic
 
 export function generatePasswordResetHash(email: string, number: string) {

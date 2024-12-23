@@ -11,7 +11,7 @@ const jwthelper = {
       const payload = {};
       const secret = process.env.ACCESS_TOKEN_SECRET as string;
       const options = {
-        expiresIn: "600s",
+        expiresIn: "60000s",
         issuer: process.env.ISSUER,
         audience: accountId,
       };

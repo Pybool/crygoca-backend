@@ -1,7 +1,7 @@
 import {Request, Response } from "express";
-import { compareExchangeProviders } from "../../services/v1/comparison.service";
+import { compareExchangeProviders } from "../../services/v1/conversions/comparison.service";
 import { Icompare } from "../../interfaces/base.interface";
-import { fetchRates } from "../../services/v1/liveCurrencies.service";
+import { fetchRates } from "../../services/v1/conversions/liveCurrencies.service";
 
 interface Xrequest extends Request {
     body:any;

@@ -3,7 +3,7 @@ import {
   compareExchangeProviders,
   convertCurrency,
   getUserCountry,
-} from "../../services/v1/comparison.service";
+} from "../../services/v1/conversions/comparison.service";
 import { Icompare } from "../../interfaces/base.interface";
 
 interface Xrequest extends Request {

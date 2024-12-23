@@ -1,12 +1,11 @@
-import Accounts from "../../models/accounts.model";
-import JWT from "jsonwebtoken";
+import Accounts from "../../../models/accounts.model";
 import createError from "http-errors";
-import message from "../../helpers/messages";
-import { utils } from "../../helpers/validators/validations_core";
-import jwthelper from "../../helpers/jwt_helper";
-import mailActions from "./mailservice";
-import validations from "../../helpers/validators/joiAuthValidators";
-import Xrequest from "../../interfaces/extensions.interface";
+import message from "../../../helpers/messages";
+import { utils } from "../../../helpers/validators/validations_core";
+import jwthelper from "../../../helpers/jwt_helper";
+import mailActions from "../mail/mailservice";
+import validations from "../../../helpers/validators/joiAuthValidators";
+import Xrequest from "../../../interfaces/extensions.interface";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import {
@@ -16,6 +15,8 @@ import {
   getExpirableCode,
   setExpirableCode,
 } from "./helper";
+import Devices from "../../../models/devices.model";
+import { getUserCountry } from "../conversions/comparison.service";
 
 export class Authentication {
   req: Xrequest;
@@ -29,19 +30,34 @@ export class Authentication {
   public async register() {
     try {
       const session = await mongoose.startSession();
-      const result = await validations.authSchema.validateAsync(this.req.body);
+      const result: any = await validations.registerSchema.validateAsync(
+        this.req.body
+      );
       const user = await Accounts.findOne({ email: result.email }).session(
         session
       );
       if (user) {
         throw createError.Conflict(message.auth.alreadyExistPartText);
       }
+
+      let referredBy: string | null = null;
+      if (result.referralCode) {
+        const referrer = await Accounts.findOne({
+          referralCode: result.referralCode,
+        });
+        if (referrer) {
+          referredBy = referrer.referralCode!;
+          referrer.referralCount += 1; // Increment the referrer's referral count
+          await referrer.save(); // Save the updated referrer
+        }
+      }
+      result.referredBy = referredBy;
       const pendingAccount = new Accounts(result);
-      // pendingAccount.email_confirmed = true; //Remove this line
       const savedUser: any = await pendingAccount.save();
 
       if (savedUser._id.toString()) {
         const otp: string = generateOtp();
+        console.log("Register OTP ", otp);
         await setExpirableCode(result.email, "account-verification", otp);
         mailActions.auth.sendEmailConfirmationOtp(result.email, otp);
         return {
@@ -162,10 +178,7 @@ export class Authentication {
         result.uid! as string
       );
 
-      if (
-        !cachedToken ||
-        cachedToken?.code.toString() !== result.token
-      ) {
+      if (!cachedToken || cachedToken?.code.toString() !== result.token) {
         throw createError.BadRequest(message.auth.invalidTokenSupplied);
       }
 
@@ -231,6 +244,21 @@ export class Authentication {
     }
   }
 
+  public static async addDevice(account: any, deviceInformation: any, ipAddress:string = '127.0.0.1:27017') {
+    const device = await Devices.findOne({
+      account: account._id,
+      fingerprint: deviceInformation.fingerprint,
+    });
+    if (!device) {
+      await Devices.create({
+        account: account._id,
+        ipAddress: ipAddress,
+        fingerprint: deviceInformation.fingerprint,
+        deviceInformation,
+      });
+    }
+  }
+
   public async login() {
     try {
       const result = await validations.authSchema.validateAsync(this.req.body);
@@ -256,6 +284,12 @@ export class Authentication {
 
       const accessToken = await jwthelper.signAccessToken(account.id);
       const refreshToken = await jwthelper.signRefreshToken(account.id);
+      const userIpData = await getUserCountry(this.req);
+      const reqIp = userIpData?.reqIp
+      account.lastLogin = new Date();
+      await account.save()
+
+      await Authentication.addDevice(account, result.deviceInformation, reqIp);
       return { status: true, data: account, accessToken, refreshToken };
     } catch (error) {
       console.log(error);
