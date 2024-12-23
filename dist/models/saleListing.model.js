@@ -22,6 +22,10 @@ const CryptoListingSchema = new Schema({
         type: String,
         required: true
     },
+    cryptoCurrency: {
+        type: Schema.Types.ObjectId, ref: "cryptocurrencies",
+        required: true,
+    },
     units: {
         type: Number,
         required: true,

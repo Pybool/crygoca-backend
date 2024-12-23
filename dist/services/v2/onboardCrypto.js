@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertLogos = exports.onBoardCryptos = void 0;
+exports.appendCryptoToListings = exports.insertLogos = exports.onBoardCryptos = void 0;
 // Import the JSON file
 const cryptocurrencies_model_1 = __importDefault(require("../../models/cryptocurrencies.model"));
+const saleListing_model_1 = __importDefault(require("../../models/saleListing.model"));
 const cryptolist_json_1 = __importDefault(require("./cryptolist.json"));
 const legacycrypto_1 = require("./legacycrypto");
 const onBoardCryptos = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,12 +44,31 @@ const onBoardCryptos = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.onBoardCryptos = onBoardCryptos;
 const insertLogos = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const cryptodata = legacycrypto_1.legacyCrypto;
     for (let crypto of cryptodata) {
         const cryptocurrency = yield cryptocurrencies_model_1.default.findOne({ symbol: crypto.symbol });
         if (cryptocurrency) {
-            cryptocurrency.logo = crypto.icon_url;
-            yield cryptocurrency.save();
+            if (!cryptocurrency.logo) {
+                cryptocurrency.logo = crypto.img_url
+                    .replace("https://raw.githubusercontent.com/ErikThiart/cryptocurrency-icons/master", "https://be.crygoca.co.uk");
+                yield cryptocurrency.save();
+            }
+        }
+        else {
+            const payload = {
+                cryptoId: (crypto === null || crypto === void 0 ? void 0 : crypto.id) || null,
+                name: crypto.name,
+                logo: crypto.img_url.replace("https://raw.githubusercontent.com/ErikThiart/cryptocurrency-icons/master", "https://be.crygoca.co.uk"),
+                symbol: crypto === null || crypto === void 0 ? void 0 : crypto.symbol,
+                slug: crypto === null || crypto === void 0 ? void 0 : crypto.slug,
+                tags: ((_a = crypto === null || crypto === void 0 ? void 0 : crypto.tags) === null || _a === void 0 ? void 0 : _a.join(",")) || "",
+                platform: (crypto === null || crypto === void 0 ? void 0 : crypto.platform) || null,
+                crygocaSupported: false,
+                dateAdded: (crypto === null || crypto === void 0 ? void 0 : crypto.date_added) || new Date(),
+                createdAt: new Date()
+            };
+            yield cryptocurrencies_model_1.default.create(payload);
         }
     }
     return {
@@ -58,3 +78,19 @@ const insertLogos = () => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.insertLogos = insertLogos;
+const appendCryptoToListings = () => __awaiter(void 0, void 0, void 0, function* () {
+    const listings = yield saleListing_model_1.default.find({});
+    for (let listing of listings) {
+        const _crypto = yield cryptocurrencies_model_1.default.findOne({ symbol: listing.cryptoCode });
+        if (_crypto) {
+            listing.cryptoCurrency = _crypto._id;
+            yield listing.save();
+        }
+    }
+    return {
+        status: true,
+        message: "Done Filling Listings With crypto ID",
+        code: 200
+    };
+});
+exports.appendCryptoToListings = appendCryptoToListings;

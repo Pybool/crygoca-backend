@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.liveCurrenciesController = void 0;
-const liveCurrencies_service_1 = require("../../services/v1/liveCurrencies.service");
+const liveCurrencies_service_1 = require("../../services/v1/conversions/liveCurrencies.service");
 exports.liveCurrenciesController = {
     fetchRates: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {

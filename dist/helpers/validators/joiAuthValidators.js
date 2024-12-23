@@ -7,6 +7,14 @@ const joi_1 = __importDefault(require("@hapi/joi"));
 const authSchema = joi_1.default.object({
     email: joi_1.default.string().email().lowercase().required(),
     password: joi_1.default.string().min(8).required(),
+    deviceInformation: joi_1.default.object()
+});
+const registerSchema = joi_1.default.object({
+    username: joi_1.default.string().min(5).required(),
+    email: joi_1.default.string().email().lowercase().required(),
+    password: joi_1.default.string().min(8).required(),
+    referralCode: joi_1.default.string().min(8),
+    geoData: joi_1.default.object()
 });
 const authSendEmailConfirmOtpSchema = joi_1.default.object({
     accountId: joi_1.default.string().required(),
@@ -21,6 +29,7 @@ const authResetPassword = joi_1.default.object({
 });
 const validations = {
     authSchema,
+    registerSchema,
     authSendEmailConfirmOtpSchema,
     authSendResetPasswordOtp,
     authResetPassword,

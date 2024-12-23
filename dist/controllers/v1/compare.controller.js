@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.compareController = void 0;
-const comparison_service_1 = require("../../services/v1/comparison.service");
+const comparison_service_1 = require("../../services/v1/conversions/comparison.service");
 exports.compareController = {
     compareExchangeProviders: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {

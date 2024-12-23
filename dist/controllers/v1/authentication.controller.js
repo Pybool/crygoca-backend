@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const messages_1 = __importDefault(require("../../helpers/messages"));
-const auth_service_1 = require("../../services/v1/auth.service");
+const auth_service_1 = require("../../services/v1/auth/auth.service");
 const authController = {
     register: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         let status = 200;

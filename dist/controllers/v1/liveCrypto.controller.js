@@ -10,12 +10,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.liveCryptoCurrenciesController = void 0;
-const cryptolisting_service_1 = require("../../services/v1/cryptolisting.service");
+const cryptolisting_service_1 = require("../../services/v1/listingsServices/cryptolisting.service");
 exports.liveCryptoCurrenciesController = {
     fetchCrypto: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=${req.query.limit}&convert=USD&CMC_PRO_API_KEY=${process.env.COIN_CAP_KEY}`;
             const result = yield (0, cryptolisting_service_1.fetchCrypto)(url);
+            if (result) {
+                res.status(200).json(result);
+            }
+            else {
+                return res.status(422).json(result);
+            }
+        }
+        catch (error) {
+            res.status(500).json({ status: false, message: error === null || error === void 0 ? void 0 : error.message });
+        }
+    }),
+    getCryptos: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const result = yield (0, cryptolisting_service_1.getCryptos)(req);
             if (result) {
                 res.status(200).json(result);
             }

@@ -704,3 +704,8 @@ info: DATABASE NAME CRYGOCA {"timestamp":"2024-12-23T15:03:46.076+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2024-12-23T15:04:31.326+01:00"}
 info: connection timed out {"timestamp":"2024-12-23T15:04:31.333+01:00"}
 info: connection timed out {"timestamp":"2024-12-23T15:04:31.338+01:00"}
+info: MONGO_URI: mongodb://127.0.0.1:27017/ {"timestamp":"2024-12-23T19:19:32.676+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2024-12-23T19:19:32.687+01:00"}
+info: Mongoose connected to db {"timestamp":"2024-12-23T19:19:38.477+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2024-12-23T19:19:38.483+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2024-12-23T19:19:42.527+01:00"}

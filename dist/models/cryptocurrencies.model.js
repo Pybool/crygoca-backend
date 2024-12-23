@@ -15,6 +15,11 @@ const CryptoCurrenciesSchema = new Schema({
         required: false,
         default: null
     },
+    quote: {
+        type: Schema.Types.Mixed,
+        required: false,
+        default: {},
+    },
     name: {
         type: String,
         required: false,
