@@ -6,9 +6,14 @@ import { FailedVerificationQueue } from "../payments/flutterwave.service";
 // Define the task that fetches rates
 const retryVerification = async () => {
   console.log("Task running");
+  let extension = ".ts"
+
+    if(process.env.NODE_ENV==="prod"){
+      extension = '.js'
+    }
 
   // The path to your liveCurrencies.service.js file (or where your fetchRates method is defined)
-  const scriptPath = path.resolve(__dirname, "./scripts/verifycardpayment.ts"); // Adjust this path accordingly
+  const scriptPath = path.resolve(__dirname, `./scripts/verifycardpayment${extension}`); // Adjust this path accordingly
   // Fork a child process to run the task independently
 
   const child = fork(scriptPath, []);

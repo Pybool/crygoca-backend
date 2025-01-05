@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/bootstrap/server.ts",
-    "start": "node dist/bootstrap/server.js",
+    "start": "node dist/src/bootstrap/server.js",
     "prebuild": "tsc -p .",
     "build": "copyfiles -u 1 ./src/templates/* dist/"
   },

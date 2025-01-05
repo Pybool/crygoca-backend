@@ -24,9 +24,15 @@ const fetchCryptoLiveUpdates = async () => {
       return;
     }
 
+    let extension = ".ts"
+
+    if(process.env.NODE_ENV==="prod"){
+      extension = '.js'
+    }
+
     const scriptPath = path.resolve(
       __dirname,
-      "./scripts/cryptoLiveUpdates.ts"
+      `./scripts/cryptoLiveUpdates${extension}`
     );
     const child: ChildProcess = fork(scriptPath, [startValues[index], limit]);
 
