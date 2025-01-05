@@ -1,6 +1,5 @@
 import express from "express";
 import { flutterWaveController } from "../../controllers/v1/flutterwave.controller";
-import Xrequest from "../../interfaces/extensions.interface";
 import axios from "axios";
 import { FlutterWaveService } from "../../services/v1/payments/flutterwave.service";
 
