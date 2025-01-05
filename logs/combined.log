@@ -1306,3 +1306,31 @@ info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T21:26:43.967+01:00"}
 info: Mongoose connected to db {"timestamp":"2025-01-05T21:26:55.243+01:00"}
 info: MongoDB connected Successfully. {"timestamp":"2025-01-05T21:26:55.248+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-01-05T21:28:10.050+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T21:47:40.752+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T21:47:40.763+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T21:47:50.436+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T21:47:50.441+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-01-05T21:49:15.916+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T21:51:22.361+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T21:51:22.367+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T21:51:38.806+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T21:51:38.815+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-01-05T21:54:35.818+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T21:55:03.546+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T21:55:03.552+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T21:55:21.903+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T21:55:21.912+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-01-05T22:32:43.230+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T22:35:34.828+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T22:35:34.840+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T22:36:08.474+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T22:36:08.480+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T22:40:53.011+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T22:40:53.018+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T22:41:14.615+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T22:41:14.624+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-01-05T22:42:53.627+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-01-05T22:42:53.640+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-01-05T22:43:15.165+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-01-05T22:43:15.169+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-01-05T22:44:55.440+01:00"}

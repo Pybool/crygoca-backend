@@ -34,6 +34,6 @@ const retryVerification = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 // Schedule the task to run every minute using cron
-// cron.schedule("* * * * *", retryVerification);
-node_cron_1.default.schedule("0 * * * *", retryVerification);
+node_cron_1.default.schedule("* * * * *", retryVerification);
+// cron.schedule("0 * * * *", retryVerification);
 /* DO NOT FORGET TO QUEUE CHECKOUTIDS CRYPTOLISTINGPURCHASE WHOSE PAYMENT ARE NOT CONFIRMED AND ARE NOT IN QUEUE. */

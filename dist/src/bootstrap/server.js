@@ -63,8 +63,8 @@ _app_1.default.use((0, cors_1.default)({
     credentials: true, // Allow cookies and credentials to be sent
 }));
 // Configure body-parser or express.json() with a higher limit
-_app_1.default.use(express_1.default.json({ limit: '10mb' })); // Increase to 10MB or adjust as needed
-_app_1.default.use(express_1.default.urlencoded({ limit: '10mb', extended: true }));
+_app_1.default.use(express_1.default.json({ limit: '50mb' })); // Increase to 10MB or adjust as needed
+_app_1.default.use(express_1.default.urlencoded({ limit: '50mb', extended: true }));
 _app_1.default.use(session_1.sessionMiddleware);
 _app_1.default.use((0, express_session_1.default)({
     secret: "secret",

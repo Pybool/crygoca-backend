@@ -16,8 +16,8 @@ import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "../services/v1/conversions/comparison.service";
 import { sessionMiddleware } from "../middlewares/session";
 
-import "../services/v1/tasks/flutterwave.service";
-import "../services/v1/tasks/task.service";
+// import "../services/v1/tasks/flutterwave.service";
+// import "../services/v1/tasks/task.service";
 import "../services/v1/tasks/cryptoLiveUpdates.service";
 
 import { enquiriesService } from "../services/v1/contact/enquiries.service";
