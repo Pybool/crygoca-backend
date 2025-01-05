@@ -78,10 +78,9 @@ export async function convertCurrency(
       return cacheData;
     } else {
       const response = await axios.get(url);
-      console.log("STATUS ", response.status);
       if (response.status) {
         let responseData: any = response.data;
-        memCache.set(url, { status: true, data: responseData }, 3600);
+        memCache.set(url, { status: true, data: responseData }, 14400);
         return { status: true, data: responseData };
       }
       return { status: false, data: null };

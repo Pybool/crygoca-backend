@@ -5,6 +5,8 @@ import Payout from "../../../models/payouts.model";
 import Accounts from "../../../models/accounts.model";
 import ReferralReward from "../../../models/referralrewards.model";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
+import { getCountryCodeByCurrencyCode } from "../../../models/countries";
+import { convertCurrency } from "../conversions/comparison.service";
 
 interface Data {
   resultForward?: number;
@@ -249,7 +251,7 @@ export class DashboardService {
         {
           $addFields: {
             sales: {
-              $multiply: ["$units", "$cryptoListing.unitPrice"], // Compute sales per purchase
+              $multiply: ["$units", "$unitPriceAtPurchaseTime"], // Compute sales per purchase
             },
           },
         },
@@ -295,11 +297,48 @@ export class DashboardService {
       pipelineForward
     );
 
+    const account = await Accounts.findOne({ _id: accountId });
+    if (!account) {
+      return null;
+    }
+
+    const currencyTo = account.geoData.currency?.code || 'USD';
+    const currencyFrom = "USD";
+    const from = getCountryCodeByCurrencyCode(currencyFrom.toUpperCase())!.code;
+
+    const to = getCountryCodeByCurrencyCode(currencyTo.toUpperCase())!.code;
+    console.log(from, to, currencyFrom, currencyTo);
+
+    const convertToDefaultCurrency = async (amount: number) => {
+      if (from && to && currencyFrom && currencyTo) {
+        return await convertCurrency(
+          from,
+          to,
+          currencyFrom,
+          currencyTo,
+          amount?.toString()
+        );
+      }
+      return null;
+    };
+
+    const exchangeRateData:any = await convertToDefaultCurrency(1);
+
+    const exchangeRate = exchangeRateData?.data?.data[currencyTo]?.value || 1;
+
+    console.log("exchangeRate ===> ", exchangeRate)
+    console.log("Sales ====> ", (resultForward[0] || { purchases: [], totalSales: 0 })
+    .totalSales)
+
+    const convertedResultForward =(resultForward[0] || { purchases: [], totalSales: 0 })
+    .totalSales * exchangeRate;
+
+    const convertedResultBackward = (resultBackward[0] || { purchases: [], totalSales: 0 })
+    .totalSales * exchangeRate;
+
     const results: Data = {
-      resultForward: (resultForward[0] || { purchases: [], totalSales: 0 })
-        .totalSales,
-      resultBackward: (resultBackward[0] || { purchases: [], totalSales: 0 })
-        .totalSales,
+      resultForward: convertedResultForward,
+      resultBackward: convertedResultBackward,
     };
     results.percentageChange = calculatePercentageChange(results);
     return results;
@@ -493,6 +532,7 @@ export class DashboardService {
         {
           $match: {
             createdAt: { $gte: startDate, $lte: endDate }, // Filter by date range
+            paymentConfirmed: true,
           },
         },
         {
@@ -674,13 +714,13 @@ export class DashboardService {
       const accountId: string = req.accountId as string;
       let recentTransactions: any = await CryptoListingPurchase.find({
         account: accountId,
-        paymentConfirmed: true
+        paymentConfirmed: true,
       })
         .populate({
           path: "cryptoListing",
           populate: {
             path: "account",
-            select: "avatar username",
+            select: "avatar username provider",
           },
         })
         .sort({ createdAt: -1 })

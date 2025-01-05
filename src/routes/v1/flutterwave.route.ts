@@ -2,25 +2,41 @@ import express from "express";
 import { flutterWaveController } from "../../controllers/v1/flutterwave.controller";
 import Xrequest from "../../interfaces/extensions.interface";
 import axios from "axios";
+import { FlutterWaveService } from "../../services/v1/payments/flutterwave.service";
 
 const flwRouter = express.Router();
 
-flwRouter.post('/flw/initiate-payment', flutterWaveController.initiateCardPayment)
-flwRouter.post('/flw/verify-payment', flutterWaveController.verifyCardPayment)
+flwRouter.post(
+  "/flw/initiate-payment",
+  flutterWaveController.initiateCardPayment
+);
+flwRouter.post("/flw/verify-payment", flutterWaveController.verifyCardPayment);
 
-flwRouter.post('/flw/initiate-googlepay-payment', flutterWaveController.initiateGooglePayPayment)
-flwRouter.post('/flw/initiate-ach-payment', flutterWaveController.initiateACHPayment)
+flwRouter.post(
+  "/flw/initiate-googlepay-payment",
+  flutterWaveController.initiateGooglePayPayment
+);
+flwRouter.post(
+  "/flw/initiate-googlepay-tokenized-charge",
+  flutterWaveController.googlePayTokenizedCharge
+);
 
+flwRouter.post(
+  "/flw/initiate-ach-payment",
+  flutterWaveController.initiateACHPayment
+);
 
-flwRouter.get('/flw/convert-currencies', async (req, res) => {
+flwRouter.get("/flw/convert-currencies", async (req, res) => {
   try {
     const from = req.query.from as string;
     const to = req.query.to as string;
-    const amount = parseFloat(req.query.amount! as string)
-    const BASE_URL = "https://api.flutterwave.com/v3"
+    const amount = parseFloat(req.query.amount! as string);
+    const BASE_URL = "https://api.flutterwave.com/v3";
 
     if (!from || !to) {
-      return res.status(400).json({ error: 'Missing required query parameters: from and to' });
+      return res
+        .status(400)
+        .json({ error: "Missing required query parameters: from and to" });
     }
 
     const url = `${BASE_URL}/rates?from=${from}&to=${to}&amount=${amount}`;
@@ -33,15 +49,12 @@ flwRouter.get('/flw/convert-currencies', async (req, res) => {
     // Return the response from Flutterwave API
     res.status(200).json(response.data);
   } catch (error) {
-    console.error('Error fetching conversion rate:', error);
-    res.status(500).json({ error: 'Failed to fetch conversion rate' });
+    console.error("Error fetching conversion rate:", error);
+    res.status(500).json({ error: "Failed to fetch conversion rate" });
   }
 });
 
-
-
-
-flwRouter.post("/flw/payment/webhook", (req, res) => {
+flwRouter.post("/flw/payment/webhook", async (req, res) => {
   // Uncomment for production
   // const secretHash = process.env.FLW_SECRET_HASH;
   // const signature = req.headers["verif-hash"];
@@ -49,28 +62,38 @@ flwRouter.post("/flw/payment/webhook", (req, res) => {
   //     res.status(401).end();
   // }
 
-
   const event = req.body;
-
-  // Handle the event data as required
-  // console.log("Received Webhook Event:", event);
-
-  // Check the event type and handle accordingly
   if (event.event === "payment.success") {
-    // console.log("Payment was successful:", event.data);
-    // Handle successful payment (e.g., update database, send notification, etc.)
+    res.status(200).send("Webhook received");
   } else if (event.event === "payment.failed") {
-    // console.log("Payment failed:", event.data);
-    // Handle payment failure
+    res.status(200).send("Webhook received");
   }
 
-  // Respond to acknowledge receipt of the webhook
-  res.status(200).send("Webhook received");
+  if (
+    event.event === "charge.completed" &&
+    event.data.payment_type === "googlepay"
+  ) {
+    // Respond to acknowledge receipt of the webhook
+    console.log(
+      "GooglePay Webhook Event ====> ",
+      JSON.stringify(event, null, 2)
+    );
+    const verificationResponse = await FlutterWaveService.verifyCardPayment({
+      paymentReference: event.data.id,
+      expectedAmount: event.data.amount,
+      expectedCurrency: event.data.currency?.toUpperCase(),
+      payment_type: event.data.payment_type,
+    },event.data);
+    res.status(200).send({
+      status: true,
+      message: "Googlepay Webhook received",
+      data: verificationResponse
+    });
+  }
 });
 
 export default flwRouter;
 //Event
-
 
 // {
 //   event: 'charge.completed',

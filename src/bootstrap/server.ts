@@ -15,9 +15,10 @@ import authRouter from "../routes/v1/authentication.route";
 import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "../services/v1/conversions/comparison.service";
 import { sessionMiddleware } from "../middlewares/session";
-// import "../services/v1/tasks/flutterwave.service";
+
+import "../services/v1/tasks/flutterwave.service";
 import "../services/v1/tasks/task.service";
-// import "../services/v1/tasks/cryptoLiveUpdates.service";
+import "../services/v1/tasks/cryptoLiveUpdates.service";
 
 import { enquiriesService } from "../services/v1/contact/enquiries.service";
 import liveCrypto from "../routes/v1/cryptoCurrencies.route";
@@ -27,11 +28,11 @@ import ordersRouter from "../routes/v1/orders.routes";
 import dashboardRouter from "../routes/v1/dashboard.routes";
 import passport from "../services/v1/auth/passport-auth";
 import session from "express-session";
-import { getAccountData, setAccountData } from "../redis/redis.service";
 import { SocialAuthentication } from "../services/v1/auth/authentication.social.service";
 import { verifyGoogleToken } from "../middlewares/jwt";
 import profileRouter from "../routes/v1/profile.routes";
 import Accounts from "../models/accounts.model";
+import payoutRouter from "../routes/v1/payouts.route";
 
 dotenvConfig();
 dotenvConfig({ path: `.env.prod` });
@@ -52,7 +53,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:4200",
-      "https://b1d7-105-119-6-63.ngrok-free.app"
+      "https://b1d7-105-119-6-63.ngrok-free.app",
+      "https://test.crygoca.co.uk",
     ], // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
   })
@@ -183,6 +185,8 @@ app.use("/api/v1", flwRouter);
 app.use("/api/v1", checkoutRouter);
 app.use("/api/v1", ordersRouter);
 app.use("/api/v1", dashboardRouter);
+app.use("/api/v1", payoutRouter);
+
 app.use("/api/v1/profile", profileRouter);
 
 
@@ -197,7 +201,7 @@ app.use(
       res.setHeader(
         "Cache-Control",
         `public, max-age=${oneYearInMilliseconds}`
-      ); // 1 Year in seconds
+      );
     },
   })
 );

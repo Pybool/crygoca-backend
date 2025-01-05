@@ -19,7 +19,7 @@ passport.use(
       // callbackURL: `http://localhost:${
       //   process.env.CRYGOCA_MAIN_SERVER_PORT || 8000
       // }/auth/google/callback`,
-      callbackURL: "http://localhost:8000/auth/google/callback",
+      callbackURL: `${process.env.CRYGOCA_SERVER_URL}/auth/google/callback`,
       passReqToCallback: true,
     },
     async (

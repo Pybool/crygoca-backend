@@ -14,6 +14,8 @@ mongoose
     dbName: process.env.CRYGOCA_DATABASE_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    socketTimeoutMS: 240000, // Set timeout to 4 minutes (240,000 milliseconds)
+    serverSelectionTimeoutMS: 240000, // Optionally ensure server selection timeout matches
   } as mongoose.ConnectOptions)
   .then(async() => {
     logger.info('MongoDB connected Successfully.')

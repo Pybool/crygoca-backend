@@ -7,7 +7,11 @@ import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import VerifiedTransactionsNoAuth from "../../../models/verifiedtransactionsNoAccount.model";
 import { updatePaymentConfirmation } from "../listingsServices/cryptolisting.service";
 import { redisClient } from "../../../redis/init.redis";
-import { achChargeSuccess } from "./mock.service";
+import {
+  achChargeSuccess,
+  mockGooglePayVerificationResponse,
+} from "./mock.service";
+import CryptoListingPurchase from "../../../models/listingPurchase.model";
 export const flutterwaveKeys = {
   PUBLIC: process.env.FLW_PUBLIC_KEY as string,
   SECRET: process.env.FLW_SECRET_KEY as string,
@@ -20,6 +24,7 @@ interface IverificationData {
   paymentReference: number;
   expectedAmount: number;
   expectedCurrency: string;
+  payment_type?:string;
   toRefund?: number;
 }
 
@@ -68,12 +73,39 @@ export class FlutterWaveService {
     }
   }
 
-  public static async verifyCardPayment(data: IverificationData | null = null) {
-    const { paymentReference, expectedAmount, expectedCurrency } = data!; // The transaction reference from Flutterwave
+  public static async devGooglepayVerificationResponse(data: any) {
+    const googlePayVerificationResponse = mockGooglePayVerificationResponse;
+    googlePayVerificationResponse.data.tx_ref = data.tx_ref;
+    googlePayVerificationResponse.data.amount = data.amount;
+    googlePayVerificationResponse.data.charged_amount = data.amount;
+    googlePayVerificationResponse.data.currency = data.currency;
+    googlePayVerificationResponse.data.customer.email = data.customer.email;
+    googlePayVerificationResponse.data.customer.name = data.customer.name;
+    googlePayVerificationResponse.data.created_at = new Date();
+    return googlePayVerificationResponse;
+  }
+
+  public static async verifyCardPayment(
+    data: IverificationData | null = null,
+    fullResponse: any = null
+  ) {
+    const { paymentReference, expectedAmount, expectedCurrency, payment_type } = data!; // The transaction reference from Flutterwave
     console.log("Verification data ", data);
     try {
       // Verify the payment with Flutterwave
-      const response = await flw.Transaction.verify({ id: paymentReference });
+      let response = null;
+      if (
+        payment_type === "googlepay" &&
+        process.env.MOCK_VERIFICATION_RESPONSE === "true"
+      ) {
+        response = await FlutterWaveService.devGooglepayVerificationResponse(
+          fullResponse
+        );
+      } else {
+        response = await flw.Transaction.verify({ id: paymentReference });
+      }
+
+      console.log("Verification response ", response)
 
       if (response.status !== "success") {
         const failedVerificationQueue =
@@ -97,11 +129,18 @@ export class FlutterWaveService {
           ],
         });
         if (account) {
-          await VerifiedTransactions.create({
+          const verifiedTransaction = await VerifiedTransactions.create({
             tx_ref: response.data.tx_ref,
             data: response.data,
             account: account._id,
           });
+          const cryptoPurchase = await CryptoListingPurchase.findOne({
+            checkOutId: verifiedTransaction.tx_ref,
+          });
+          if (cryptoPurchase) {
+            cryptoPurchase.verifiedTransaction = verifiedTransaction._id;
+            await cryptoPurchase.save();
+          }
           await updatePaymentConfirmation(response.data.tx_ref);
         } else {
           await VerifiedTransactionsNoAuth.create({

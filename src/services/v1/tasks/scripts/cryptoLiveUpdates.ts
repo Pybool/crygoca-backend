@@ -11,7 +11,7 @@ let downtimeCounter = { convert: 0 };
 async function saveCryptoQuotes(cryptocurrenciesData: any[]): Promise<void> {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/update-crypto-quotes",
+      `${process.env.CRYGOCA_SERVER_URL}/api/v1/update-crypto-quotes`,
       { data: cryptocurrenciesData }, // Pass the data in the request body
       {
         headers: {

@@ -108,8 +108,7 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
     const skip = (page - 1) * limit;
 
     // Initialize the filter object
-    let filter: any = {
-      $or: [], // Ensure $or is always an array
+    const filter: any = {
       $and: [],
     };
 
@@ -125,8 +124,10 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       });
     }
 
-    // Ensure units is greater than 0
+    // Ensure units are greater than 0
     filter.$and.push({ units: { $gt: 0 } });
+
+    console.log("Filter ===>", JSON.stringify(filter, null, 2));
 
     // Define common aggregation stages
     const commonAggregationStages: any = [
@@ -157,23 +158,7 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
     // Define the aggregation pipeline for fetching listings
     const aggregationPipeline: any = [
       ...commonAggregationStages,
-      {
-        $match: {
-          $or: [
-            {
-              "accountDetails.username": {
-                $regex: new RegExp(searchText, "i"),
-              },
-            }, // Search for username
-            {
-              "cryptoCurrencyDetails.tags": {
-                $regex: new RegExp(searchText, "i"),
-              },
-            }, // Search for tags in cryptoCurrency
-            ...filter.$or, // Add additional search conditions (cryptoName, cryptoCode, etc.)
-          ],
-        },
-      },
+      { $match: filter }, // Apply the constructed filter
       { $sort: { createdAt: -1 } }, // Sort by creation date (descending)
       { $skip: skip }, // Pagination: Skip
       { $limit: limit }, // Pagination: Limit
@@ -185,23 +170,7 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
     // Define the aggregation pipeline for counting total matching listings
     const countAggregationPipeline = [
       ...commonAggregationStages,
-      {
-        $match: {
-          $or: [
-            {
-              "accountDetails.username": {
-                $regex: new RegExp(searchText, "i"),
-              },
-            }, // Search for username
-            {
-              "cryptoCurrencyDetails.tags": {
-                $regex: new RegExp(searchText, "i"),
-              },
-            }, // Search for tags in cryptoCurrency
-            ...filter.$or, // Add additional search conditions (cryptoName, cryptoCode, etc.)
-          ],
-        },
-      },
+      { $match: filter }, // Apply the same filter for counting
       { $count: "totalCount" }, // Count the total matching results
     ];
 
@@ -231,15 +200,24 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
   }
 };
 
+
 export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
   try {
     let listing: any;
     const payload: IPurchaseSalelisting = data;
+    const cryptoListing = await CryptoListing.findOne({_id: payload.cryptoListing});
+    if(!cryptoListing){
+      return {
+        status: false,
+        message: "No crypto listing was found for this request"
+      }
+    }
 
     if (!payload?.checkOutId) {
       payload.checkOutId = generateUniqueCode();
       payload.createdAt = new Date();
       payload.updatedAt = new Date();
+      payload.unitPriceAtPurchaseTime = cryptoListing.unitPrice;
       listing = await CryptoListingPurchase.create(payload);
     } else {
       data.updatedAt = new Date();
@@ -361,6 +339,7 @@ export const updatePaymentConfirmation = async (tx_ref: string) => {
 
   if (listingPurchase) {
     listingPurchase.paymentConfirmed = true;
+    listingPurchase.fulfillmentStatus = "Pending";
     await listingPurchase.save();
     listingPurchase = JSON.parse(JSON.stringify(listingPurchase))
     listingPurchase.cryptoListing.account = await Accounts.findOne({
@@ -433,7 +412,7 @@ function generateRandomString(length: number) {
   return result;
 }
 
-function generateUniqueCode(): string {
+export function generateUniqueCode(): string {
   const prefix = "CR-";
   const randomString = generateRandomString(8);
   const timestamp = Date.now().toString(36).slice(-4);

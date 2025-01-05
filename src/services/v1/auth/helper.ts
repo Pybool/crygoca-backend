@@ -33,6 +33,34 @@ export const setExpirableCode = async (
   );
 };
 
+export const setExpirablePhoneCode = async (
+  phone: string,
+  prefix: string,
+  code: string,
+  EXP: number = 300
+) => {
+  const cacheKey = prefix + phone;
+  await gredisClient.set(
+    cacheKey,
+    JSON.stringify({ phone: phone, code: code }),
+    "EX",
+    EXP
+  );
+};
+
+export const getExpirablePhoneCode = async (prefix: string, phone: string) => {
+  const cacheKey = prefix + phone;
+  const codeCached = await gredisClient.get(cacheKey);
+  const ttl = await gredisClient.ttl(cacheKey);
+
+  if (codeCached !== null && ttl >= 0) {
+    return JSON.parse(codeCached);
+  } else {
+    await gredisClient.del(cacheKey);
+    return null;
+  }
+};
+
 export const setExpirableAccountData = async (
   email: string,
   prefix: string,
@@ -94,6 +122,31 @@ export async function makePassword(password: string) {
 
 export const deleteExpirableCode = async (key: string) => {
   await gredisClient.del(key);
+};
+
+
+// Function to normalize phone numbers
+export const normalizePhoneNumber = (countryCode: any, phone: string) => {
+  const dialCode = countryCode;
+
+  if (!dialCode) {
+    throw new Error("Invalid country code");
+  }
+
+  // Remove all non-numeric characters
+  let normalizedPhone = phone!.replace(/\D/g, "");
+
+  // If the phone number starts with '0', replace it with the dial code
+  if (normalizedPhone.startsWith("0")) {
+    normalizedPhone = dialCode + normalizedPhone.slice(1);
+  }
+
+  // If the phone number doesn't start with the dial code, prepend it
+  if (!normalizedPhone.startsWith(dialCode)) {
+    normalizedPhone = dialCode + normalizedPhone;
+  }
+
+  return normalizedPhone;
 };
 
 // export const getGeolocation = (req: Xrequest) => {

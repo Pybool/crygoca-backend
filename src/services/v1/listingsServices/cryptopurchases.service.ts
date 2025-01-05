@@ -41,6 +41,33 @@ export const fetchOrders = async (req: Xrequest) => {
       {
         $unwind: "$cryptoListing", // Unwind cryptoCurrencyDetails array
       },
+      // Adding this lookup to populate the 'account' field inside the cryptoListing
+      {
+        $lookup: {
+          from: "accounts", // The accounts collection to join with
+          localField: "cryptoListing.account", // The field in the cryptoListing that links to the accounts collection
+          foreignField: "_id", // Match it with the _id field in the accounts collection
+          as: "cryptoListing.accountDetails", // The alias for the populated account
+        },
+      },
+      {
+        $unwind: {
+          path: "$cryptoListing.accountDetails", // Unwind the accountDetails inside cryptoListing
+          preserveNullAndEmptyArrays: true, // Optional: this will include entries even if there is no match for accountDetails
+        },
+      },
+      // Add a new lookup for verifiedTransaction field
+      {
+        $lookup: {
+          from: "verifiedtransactions", // Replace with the collection containing the verifiedTransaction details
+          localField: "verifiedTransaction", // Field in CryptoListingPurchase that links to the transactions
+          foreignField: "_id", // Field in transactions to match
+          as: "verifiedTransaction", // Alias for the populated transaction
+        },
+      },
+      {
+        $unwind: "$verifiedTransaction",
+      },
     ];
 
     // Define the aggregation pipeline for fetching listings
@@ -109,6 +136,7 @@ export const fetchOrders = async (req: Xrequest) => {
           ],
         },
       },
+      
       { $sort: { createdAt: -1 } }, // Sort by creation date (descending)
       { $skip: skip }, // Pagination: Skip
       { $limit: limit }, // Pagination: Limit
@@ -244,6 +272,18 @@ export const fetchMyOrders = async (req: Xrequest) => {
       {
         $unwind: "$cryptoListing", // Unwind cryptoCurrencyDetails array
       },
+      // Add a new lookup for verifiedTransaction field
+      {
+        $lookup: {
+          from: "verifiedtransactions", // Replace with the collection containing the verifiedTransaction details
+          localField: "verifiedTransaction", // Field in CryptoListingPurchase that links to the transactions
+          foreignField: "_id", // Field in transactions to match
+          as: "verifiedTransaction", // Alias for the populated transaction
+        },
+      },
+      {
+        $unwind: "$verifiedTransaction",
+      },
       // Adding this lookup to populate the 'account' field inside the cryptoListing
       {
         $lookup: {
@@ -259,6 +299,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
           preserveNullAndEmptyArrays: true, // Optional: this will include entries even if there is no match for accountDetails
         },
       },
+      
     ];
 
     // Define the aggregation pipeline for fetching listings
@@ -289,7 +330,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
                   },
                 },
                 {
-                  buyerFulfillmentClaim:{
+                  buyerFulfillmentClaim: {
                     $regex: new RegExp(searchText, "i"),
                   },
                 },
@@ -333,6 +374,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
           ],
         },
       },
+
       { $sort: { createdAt: -1 } }, // Sort by creation date (descending)
       { $skip: skip }, // Pagination: Skip
       { $limit: limit }, // Pagination: Limit
@@ -369,7 +411,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
                   },
                 },
                 {
-                  buyerFulfillmentClaim:{
+                  buyerFulfillmentClaim: {
                     $regex: new RegExp(searchText, "i"),
                   },
                 },
@@ -517,7 +559,7 @@ export const updateBuyerClaim = async (req: Xrequest) => {
       .populate("account")
       .populate("cryptoListing");
     if (listingPurchase) {
-      if (listingPurchase.fulfillmentStatus!=="Completed") {
+      if (listingPurchase.fulfillmentStatus !== "Completed") {
         return {
           status: false,
           message: "An orders must have been completed to Approve or Dispute",

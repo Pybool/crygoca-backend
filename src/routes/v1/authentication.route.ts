@@ -19,6 +19,8 @@ authRouter.post('/refresh-token', authController.getRefreshToken)
 authRouter.get('/user-profile', decode, authController.getUserProfile)
 authRouter.put('/user-profile', decode, authController.saveUserProfile)
 authRouter.put('/verify-account', authController.verifyEmail)
+authRouter.post('/resend-2fa-signin-otp', authController.resendtwoFaLoginOtp)
+authRouter.post('/2fa-signin-verify', authController.twofaSignInVerification)
 
 authRouter.all('/register', handleInvalidMethod);
 authRouter.all('/verify-email-address', handleInvalidMethod);

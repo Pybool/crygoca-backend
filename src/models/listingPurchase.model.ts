@@ -4,6 +4,9 @@ import VerifiedTransactions from "./verifiedtransactions.model";
 import ReferralReward from "./referralrewards.model";
 import { checkIfTransactionHasReward } from "../services/v1/listingsServices/reward.service";
 import { ADMIN_SETTINGS } from "./settings";
+import { constant } from "lodash";
+import { convertCurrency } from "../services/v1/conversions/comparison.service";
+import { getCountryCodeByCurrencyCode } from "./countries";
 const Schema = mongoose.Schema;
 
 export interface IPurchaseSalelisting {
@@ -13,12 +16,14 @@ export interface IPurchaseSalelisting {
   walletAddress: string;
   paymentOption: string;
   units: number;
+  unitPriceAtPurchaseTime?: number;
   notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export const orderStatuses = [
+  "Not-Started",
   "Pending",
   "In-Progress",
   "Completed",
@@ -41,6 +46,11 @@ const CryptoListingPurchaseSchema = new Schema({
     ref: "cryptolisting",
     required: true,
   },
+  verifiedTransaction: {
+    type: Schema.Types.ObjectId,
+    ref: "verifiedTransactions",
+    required: false,
+  },
   walletAddress: {
     type: String,
     required: false,
@@ -52,6 +62,11 @@ const CryptoListingPurchaseSchema = new Schema({
   units: {
     type: Number,
     required: true,
+    default: 0,
+  },
+  unitPriceAtPurchaseTime: {
+    type: Number,
+    required: false,
     default: 0,
   },
   notes: {
@@ -70,7 +85,7 @@ const CryptoListingPurchaseSchema = new Schema({
   fulfillmentStatus: {
     type: String,
     enum: orderStatuses,
-    default: "Pending",
+    default: "Not-Started",
   },
   buyerFulfillmentClaim: {
     type: Schema.Types.Mixed,
@@ -115,16 +130,50 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
         .findById(doc.cryptoListing);
 
       const buyer = await mongoose.model("accounts").findById(doc.account);
+      const seller = await mongoose
+        .model("accounts")
+        .findById(cryptoListing.account);
 
       // Ensure the cryptoListing and its vendor are found
-      if (!cryptoListing || !cryptoListing.account) {
+      if (!cryptoListing || !cryptoListing.account || !seller) {
         throw new Error("Vendor not found for the given cryptoListing.");
       }
+
+      if (!seller) {
+        throw new Error("Vendor not found for the given cryptoListing.");
+      }
+
+      console.log("cryptoListing.account.geoData", seller.geoData);
+
+      const currencyTo = seller.geoData.currency.code;
+      const currencyFrom = verifiedTransaction.data.currency;
+      const from = getCountryCodeByCurrencyCode(
+        currencyFrom.toUpperCase()
+      )!.code;
+
+      const to = getCountryCodeByCurrencyCode(currencyTo.toUpperCase())!.code;
+      console.log(from,
+        to,
+        currencyFrom,
+        currencyTo,)
+
+      const convertToDefaultCurrency = async (amount: number) => {
+        if (from && to && currencyFrom && currencyTo) {
+          return await convertCurrency(
+            from,
+            to,
+            currencyFrom,
+            currencyTo,
+            amount?.toString()
+          );
+        }
+        return null;
+      };
 
       //Revisit
       const computePayout = (units: number, unitPrice: number) => {
         let amount_settled = verifiedTransaction.data.amount_settled;
-        return (amount_settled - (amount_settled * ADMIN_SETTINGS.escrowFeefactor))
+        return amount_settled - amount_settled * ADMIN_SETTINGS.escrowFeefactor;
       };
 
       const getLastDayOfMonth = () => {
@@ -141,7 +190,16 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
       };
 
       // Calculate the payout amount
-      const payoutAmount = computePayout(doc.units, cryptoListing.unitPrice); // Example logic for payout amount
+      let isConverted = false;
+      let payoutAmount = computePayout(doc.units, doc.unitPriceAtPurchaseTime!);
+      const payoutAmountUnconverted = JSON.parse(JSON.stringify(payoutAmount))
+      const conversionResult = await convertToDefaultCurrency(payoutAmount);
+      console.log("conversionResult ==> ",conversionResult)
+      if (conversionResult.status) {
+        isConverted = true;
+        payoutAmount = (payoutAmount * conversionResult?.data?.data[currencyTo]?.value);
+      }
+      
       // Create the payout record within the transaction
       const payout = new Payout({
         checkOutId: doc.checkOutId,
@@ -149,13 +207,20 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
         vendorAccount: cryptoListing.account, // Assuming the vendor is linked to the `cryptoListing`
         payout: payoutAmount,
         paymentMethod: doc.paymentOption,
+        isConverted: isConverted,
         payoutDate: getLastDayOfMonth(), // Assuming payment option is used to determine payment method
+        conversionMetaData: {
+          from,
+          to,
+          currencyFrom,
+          currencyTo,
+          payoutAmount: payoutAmountUnconverted,
+        },
       });
 
       // Save the payout within the same transaction
       await payout.save();
-
-      console.log("Buyer ", buyer);
+      console.log("Payout =====>  ", payout);
 
       if (
         ADMIN_SETTINGS.referrals.isActive &&

@@ -13,10 +13,15 @@ import {
   generateOtp,
   generatePasswordResetHash,
   getExpirableCode,
+  getExpirablePhoneCode,
+  normalizePhoneNumber,
   setExpirableCode,
+  setExpirablePhoneCode,
 } from "./helper";
 import Devices from "../../../models/devices.model";
 import { getUserCountry } from "../conversions/comparison.service";
+import { SmsService } from "../sms/termii.service";
+import { handleErrors } from "../../../bootstrap/global.error.handler";
 
 export class Authentication {
   req: Xrequest;
@@ -244,7 +249,11 @@ export class Authentication {
     }
   }
 
-  public static async addDevice(account: any, deviceInformation: any, ipAddress:string = '127.0.0.1:27017') {
+  public static async addDevice(
+    account: any,
+    deviceInformation: any,
+    ipAddress: string = "127.0.0.1:27017"
+  ) {
     const device = await Devices.findOne({
       account: account._id,
       fingerprint: deviceInformation.fingerprint,
@@ -285,9 +294,9 @@ export class Authentication {
       const accessToken = await jwthelper.signAccessToken(account.id);
       const refreshToken = await jwthelper.signRefreshToken(account.id);
       const userIpData = await getUserCountry(this.req);
-      const reqIp = userIpData?.reqIp
+      const reqIp = userIpData?.reqIp;
       account.lastLogin = new Date();
-      await account.save()
+      await account.save();
 
       await Authentication.addDevice(account, result.deviceInformation, reqIp);
       return { status: true, data: account, accessToken, refreshToken };
@@ -388,6 +397,130 @@ export class Authentication {
         status: false,
         message: error.message,
       };
+    }
+  }
+
+  @handleErrors()
+  public async resendtwoFaLoginOtp() {
+    try {
+      const { accountId, otpChannel } = this.req.body;
+      const otp: string = generateOtp();
+      const account: any = await Accounts.findById(accountId);
+      if (!account) {
+        return {
+          status: false,
+          data: null,
+          message: "Account identity does not exist",
+        };
+      }
+      if (otpChannel === "email") {
+        await setExpirableCode(account.email, "email-2fa-signin-otp", otp);
+        console.log("Email 2FA OTP ===> ", Number(otp));
+        await mailActions.auth.sendEmailConfirmationOtp(account.email, otp);
+      } else if (otpChannel === "sms") {
+        const key = "sms-2fa-signin-otp";
+        await this.sendPhoneOtp(key, account, "");
+      }
+      return {
+        status: true,
+        message: "Otp sent successfully",
+      };
+    } catch (error: any) {
+      console.log(error);
+      return {
+        status: false,
+        message: error.message,
+      };
+    }
+  }
+
+  @handleErrors()
+  public async sendPhoneOtp(key: string, account: any, messageType: string) {
+    let otpType = key;
+    const phone: string = account.phone!;
+    const countryCode = account.geoData.dialling_code;
+    console.log("Account ==> ", JSON.stringify(account.geoData, null, 2));
+    const parsedPhone = normalizePhoneNumber(countryCode, phone);
+    const otp: string = generateOtp();
+    await setExpirablePhoneCode(parsedPhone, otpType, otp);
+    const data = {
+      api_key: "API_KEY",
+      message_type: "NUMERIC",
+      to: parsedPhone,
+      from: "Efielounge",
+      channel: "generic",
+      pin_attempts: 10,
+      pin_time_to_live: 5,
+      pin_length: 4,
+      pin_placeholder: "< 1234 >",
+      message_text: "Your GTR pin is < 1234 >",
+      pin_type: "NUMERIC",
+    };
+    console.log("2FA OTP ===> ", Number(otp));
+    // SmsService.sendSms(messageType, Number(otp), data);
+    return {
+      status: true,
+      code: 200,
+    };
+  }
+
+  @handleErrors()
+  public async twofaSignInVerification() {
+    const { code, accountId, otpChannel, deviceInformation } = this.req.body! as any;
+    const getTokensAndLogin = (async(cachedOtp:any)=>{
+      if (cachedOtp?.code === code) {
+        const accessToken = await jwthelper.signAccessToken(account.id);
+        const refreshToken = await jwthelper.signRefreshToken(account.id);
+        const userIpData = await getUserCountry(this.req);
+        const reqIp = userIpData?.reqIp;
+        account.lastLogin = new Date();
+        await account.save();
+        await Authentication.addDevice(account, deviceInformation, reqIp);
+        return { status: true, data: account, accessToken, refreshToken };
+      }
+      return { status: false, message: message.auth.loginError };
+    })
+    const account: any = await Accounts.findById(accountId);
+    if (!account) {
+      return {
+        status: false,
+        data: null,
+        message: "Account identity does not exist",
+      };
+    }
+    if (otpChannel === "email") {
+      const cachedOtp = await getExpirableCode(
+        "email-2fa-signin-otp",
+        account.email
+      );
+      if (!cachedOtp) {
+        return {
+          status: false,
+          data: null,
+          message: "Invalid or expired otp, please request for a new otp",
+        };
+      }
+      console.log("cachedOtp email ===> ", cachedOtp);
+      return await getTokensAndLogin(cachedOtp)
+          
+    } else if (otpChannel === "sms") {
+      const parsedPhone = normalizePhoneNumber(
+        account.geoData.dialling_code,
+        account.phone
+      );
+      const cachedOtp = await getExpirablePhoneCode(
+        "sms-2fa-signin-otp",
+        parsedPhone
+      );
+      if (!cachedOtp) {
+        return {
+          status: false,
+          data: null,
+          message: "Invalid or expired otp, please request for a new otp",
+        };
+      }
+      console.log("cachedOtp sms ===> ", cachedOtp);
+      return await getTokensAndLogin(cachedOtp)
     }
   }
 }

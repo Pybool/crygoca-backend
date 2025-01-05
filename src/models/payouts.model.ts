@@ -15,9 +15,19 @@ const PayoutSchema = new Schema({
     ref: "accounts",
     required: true,
   },
+  conversionMetaData:{
+    type: Schema.Types.Mixed,
+    default: null,
+    required: false,
+  },
   payout: {
     type: Number,
     required: true,
+  },
+  isConverted: {
+    type: Boolean,
+    default: false,
+    required: false,
   },
   paymentMethod: {
     type: String,

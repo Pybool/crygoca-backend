@@ -185,6 +185,33 @@ const authController: IAuth = {
       next(error);
     }
   },
+
+  resendtwoFaLoginOtp: async (req: Xrequest, res: Response, next: NextFunction) => {
+    try {
+      let status = 400;
+      const authentication = new Authentication(req);
+      const result = await authentication.resendtwoFaLoginOtp();
+      if (result) status = 200;
+      res.status(status).json(result);
+    } catch (error: any) {
+      error.status = 422;
+      next(error);
+    }
+  },
+
+  twofaSignInVerification: async (req: Xrequest, res: Response, next: NextFunction) => {
+    try {
+      let status = 400;
+      const authentication = new Authentication(req);
+      const result = await authentication.twofaSignInVerification();
+      if (result) status = 200;
+      res.status(status).json(result);
+    } catch (error: any) {
+      error.status = 422;
+      next(error);
+    }
+  },
+  
 };
 
 export default authController;

@@ -78,6 +78,11 @@ const AccountsSchema = new Schema({
     required: false,
     default: {},
   },
+  bankInfo: {
+    type: Schema.Types.Mixed,
+    required: false,
+    default: {},
+  },
   google2fa: {
     type: Boolean,
     default: false,

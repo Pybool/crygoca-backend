@@ -12,5 +12,7 @@ export interface IAuth{
     getRefreshToken: RequestHandler;
     getUserProfile: RequestHandler;
     saveUserProfile: RequestHandler;
+    resendtwoFaLoginOtp: RequestHandler;
+    twofaSignInVerification: RequestHandler;
   }
   
