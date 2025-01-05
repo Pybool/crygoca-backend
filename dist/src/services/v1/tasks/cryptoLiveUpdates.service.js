@@ -32,7 +32,11 @@ const fetchCryptoLiveUpdates = () => __awaiter(void 0, void 0, void 0, function*
             isCronRunning = false;
             return;
         }
-        const scriptPath = path_1.default.resolve(__dirname, "./scripts/cryptoLiveUpdates.ts");
+        let extension = ".ts";
+        if (process.env.NODE_ENV === "prod") {
+            extension = '.js';
+        }
+        const scriptPath = path_1.default.resolve(__dirname, `./scripts/cryptoLiveUpdates${extension}`);
         const child = (0, child_process_1.fork)(scriptPath, [startValues[index], limit]);
         console.log(`Processing start value: ${startValues[index]}`);
         child.on("message", (message) => {
@@ -64,6 +68,6 @@ const fetchCryptoLiveUpdates = () => __awaiter(void 0, void 0, void 0, function*
     processTask(0);
 });
 // Schedule the task to run every hour
-node_cron_1.default.schedule("0 * * * *", fetchCryptoLiveUpdates);
-// cron.schedule('* * * * *', fetchCryptoLiveUpdates);
+// cron.schedule("0 * * * *", fetchCryptoLiveUpdates);
+node_cron_1.default.schedule('* * * * *', fetchCryptoLiveUpdates);
 console.log("Cron job scheduled to run every hour.");

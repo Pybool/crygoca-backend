@@ -25,12 +25,10 @@ const authController = {
                 res.status(status).json(result);
             }
             else {
-                console.log("result ", result);
                 return res.status(200).json(result);
             }
         }
         catch (error) {
-            console.log("Auth error ", error.message);
             if (error.isJoi === true) {
                 error.status = 422;
             }
@@ -83,7 +81,6 @@ const authController = {
         }
     }),
     resetPassword: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("reset password token ", req.query.token);
         try {
             let status = 400;
             const authentication = new auth_service_1.Authentication(req);

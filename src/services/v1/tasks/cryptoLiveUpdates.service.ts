@@ -82,9 +82,9 @@ const fetchCryptoLiveUpdates = async () => {
 };
 
 // Schedule the task to run every hour
-cron.schedule("0 * * * *", fetchCryptoLiveUpdates);
+// cron.schedule("0 * * * *", fetchCryptoLiveUpdates);
 
-// cron.schedule('* * * * *', fetchCryptoLiveUpdates);
+cron.schedule('* * * * *', fetchCryptoLiveUpdates);
 
 console.log("Cron job scheduled to run every hour.");
 

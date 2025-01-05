@@ -27,8 +27,12 @@ const path_1 = __importDefault(require("path")); // Path module to resolve the f
 // Define the task that fetches rates
 const fetchRatesTask = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Task running");
+    let extension = ".ts";
+    if (process.env.NODE_ENV === "prod") {
+        extension = '.js';
+    }
     // The path to your liveCurrencies.service.js file (or where your fetchRates method is defined)
-    const scriptPath = path_1.default.resolve(__dirname, './scripts/livecurrencies.ts'); // Adjust this path accordingly
+    const scriptPath = path_1.default.resolve(__dirname, `./scripts/livecurrencies${extension}`); // Adjust this path accordingly
     // console.log("scriptPath ", scriptPath)
     // Fork a child process to run the task independently
     const child = (0, child_process_1.fork)(scriptPath, ['https://ng.investing.com/currencies/streaming-forex-rates-majors', 'true']);
@@ -41,3 +45,4 @@ const fetchRatesTask = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 // Schedule the task to run every minute using cron
 node_cron_1.default.schedule('* * * * *', fetchRatesTask);
+// cron.schedule("0 * * * *", fetchRatesTask);

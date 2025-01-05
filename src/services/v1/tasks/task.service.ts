@@ -24,7 +24,7 @@ const fetchRatesTask = async () => {
     }
 
     // The path to your liveCurrencies.service.js file (or where your fetchRates method is defined)
-    const scriptPath = path.resolve(__dirname, `./scripts/livecurrencies.${extension}`);  // Adjust this path accordingly
+    const scriptPath = path.resolve(__dirname, `./scripts/livecurrencies${extension}`);  // Adjust this path accordingly
     // console.log("scriptPath ", scriptPath)
     // Fork a child process to run the task independently
     const child = fork(scriptPath, ['https://ng.investing.com/currencies/streaming-forex-rates-majors', 'true']);
@@ -40,3 +40,4 @@ const fetchRatesTask = async () => {
 
 // Schedule the task to run every minute using cron
 cron.schedule('* * * * *', fetchRatesTask);
+// cron.schedule("0 * * * *", fetchRatesTask);
