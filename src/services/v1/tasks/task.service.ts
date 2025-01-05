@@ -39,5 +39,5 @@ const fetchRatesTask = async () => {
 };
 
 // Schedule the task to run every minute using cron
-cron.schedule('* * * * *', fetchRatesTask);
-// cron.schedule("0 * * * *", fetchRatesTask);
+// cron.schedule('* * * * *', fetchRatesTask);
+cron.schedule("0 * * * *", fetchRatesTask);
