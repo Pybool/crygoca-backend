@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateUniqueCode = exports.getListingChanges = exports.updatePaymentConfirmation = exports.purchaseListingQuota = exports.fetchOrFilterListingsForSale = exports.createListingForSale = exports.getCryptos = exports.fetchCrypto = void 0;
-const crypto = require("crypto");
+exports.getListingChanges = exports.updatePaymentConfirmation = exports.purchaseListingQuota = exports.fetchOrFilterListingsForSale = exports.createListingForSale = exports.getCryptos = exports.fetchCrypto = void 0;
 const axios_1 = __importDefault(require("axios"));
 const cache_1 = require("../../../middlewares/cache");
 const mockcrypto_response_1 = require("../mockcrypto.response");
@@ -24,6 +23,7 @@ const notifications_model_1 = require("../../../models/notifications.model");
 const mailservice_1 = __importDefault(require("../mail/mailservice"));
 const verifiedtransactions_model_1 = __importDefault(require("../../../models/verifiedtransactions.model"));
 const accounts_model_1 = __importDefault(require("../../../models/accounts.model"));
+const helpers_1 = require("../helpers");
 const memCache = new cache_1.Cache();
 const fetchCrypto = (url_1, ...args_1) => __awaiter(void 0, [url_1, ...args_1], void 0, function* (url, isTask = false) {
     return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
@@ -195,15 +195,17 @@ const purchaseListingQuota = (data) => __awaiter(void 0, void 0, void 0, functio
     try {
         let listing;
         const payload = data;
-        const cryptoListing = yield saleListing_model_1.default.findOne({ _id: payload.cryptoListing });
+        const cryptoListing = yield saleListing_model_1.default.findOne({
+            _id: payload.cryptoListing,
+        });
         if (!cryptoListing) {
             return {
                 status: false,
-                message: "No crypto listing was found for this request"
+                message: "No crypto listing was found for this request",
             };
         }
         if (!(payload === null || payload === void 0 ? void 0 : payload.checkOutId)) {
-            payload.checkOutId = generateUniqueCode();
+            payload.checkOutId = (0, helpers_1.generateReferenceCode)();
             payload.createdAt = new Date();
             payload.updatedAt = new Date();
             payload.unitPriceAtPurchaseTime = cryptoListing.unitPrice;
@@ -227,73 +229,26 @@ const purchaseListingQuota = (data) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.purchaseListingQuota = purchaseListingQuota;
 const createNewSellerPurchaseNotifications = (listingPurchase) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c, _d;
     //Notification for seller
     const userId = listingPurchase.cryptoListing.account._id;
+    const verifiedTransaction = yield verifiedtransactions_model_1.default.findOne({
+        tx_ref: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
+    });
     yield notifications_model_1.NotificationModel.create({
         user: userId,
-        title: "New Order",
-        message: `You have a new order "${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} placed by ${listingPurchase.account.username}`,
+        title: `You have a new order "${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId}"`,
+        message: `${listingPurchase.account.username} purchased ${listingPurchase.units} of ${listingPurchase.cryptoListing.cryptoName} at ${(_a = verifiedTransaction === null || verifiedTransaction === void 0 ? void 0 : verifiedTransaction.data) === null || _a === void 0 ? void 0 : _a.currency}${((_b = verifiedTransaction === null || verifiedTransaction === void 0 ? void 0 : verifiedTransaction.data) === null || _b === void 0 ? void 0 : _b.amount) || 'N/A'}`,
         createdAt: new Date(),
         status: "UNREAD",
         class: "info",
         meta: {
-            url: `${process.env.WEBSITE_URL}/listing-orders?uid=${listingPurchase._id}`,
+            url: `${process.env.CRYGOCA_FRONTEND_BASE_URL}/notifications?uid=${listingPurchase._id}`,
         },
-    });
-    const verifiedTransaction = yield verifiedtransactions_model_1.default.findOne({
-        tx_ref: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
     });
     if (verifiedTransaction) {
         const email = listingPurchase.cryptoListing.account.email;
-        const date = formatTimestamp(listingPurchase.createdAt);
-        const data = {
-            checkOutId: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
-            cryptoName: listingPurchase.cryptoListing.cryptoName,
-            cryptoCode: listingPurchase.cryptoListing.cryptoCode,
-            cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
-            units: listingPurchase.units,
-            currency: (_b = (_a = listingPurchase.cryptoListing) === null || _a === void 0 ? void 0 : _a.currency) === null || _b === void 0 ? void 0 : _b.toUpperCase(),
-            amount: verifiedTransaction.data.amount,
-            walletAddress: listingPurchase.walletAddress,
-            buyerUserName: listingPurchase.account.username,
-            sellerUserName: listingPurchase.cryptoListing.account.username,
-            paymentOption: listingPurchase.paymentOption,
-            date
-        };
-        mailservice_1.default.orders.sendSellerOrderReceivedMail(email, data);
-    }
-});
-const createNewBuyerPurchaseNotifications = (listingPurchase) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c, _d;
-    //Notification for buyer
-    const userId = listingPurchase.account._id;
-    yield notifications_model_1.NotificationModel.create({
-        user: userId,
-        title: "Order Successful",
-        message: `You order "${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} was successful. The seller has been notified.`,
-        createdAt: new Date(),
-        status: "UNREAD",
-        class: "success",
-        meta: {
-            url: `${process.env.WEBSITE_URL}/listing-orders?uid=${listingPurchase._id}`,
-        },
-    });
-    const verifiedTransaction = yield verifiedtransactions_model_1.default.findOne({
-        tx_ref: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
-    });
-    if (verifiedTransaction) {
-        const email = listingPurchase.account.email;
-        const date = listingPurchase.createdAt.toLocaleString('en-US', {
-            weekday: 'long', // "Monday"
-            year: 'numeric', // "2024"
-            month: 'long', // "December"
-            day: 'numeric', // "1"
-            hour: '2-digit', // "08"
-            minute: '2-digit', // "45"
-            second: '2-digit', // "32"
-            hour12: true // 12-hour format with AM/PM
-        });
+        const date = (0, helpers_1.formatTimestamp)(listingPurchase.createdAt);
         const data = {
             checkOutId: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
             cryptoName: listingPurchase.cryptoListing.cryptoName,
@@ -306,7 +261,54 @@ const createNewBuyerPurchaseNotifications = (listingPurchase) => __awaiter(void 
             buyerUserName: listingPurchase.account.username,
             sellerUserName: listingPurchase.cryptoListing.account.username,
             paymentOption: listingPurchase.paymentOption,
-            date
+            date,
+        };
+        mailservice_1.default.orders.sendSellerOrderReceivedMail(email, data);
+    }
+});
+const createNewBuyerPurchaseNotifications = (listingPurchase) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e, _f;
+    //Notification for buyer
+    const userId = listingPurchase.account._id;
+    yield notifications_model_1.NotificationModel.create({
+        user: userId,
+        title: `Your order ${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId} was successful`,
+        message: `You order "${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} was successful. The seller has been notified.`,
+        createdAt: new Date(),
+        status: "UNREAD",
+        class: "success",
+        meta: {
+            url: `${process.env.CRYGOCA_FRONTEND_BASE_URL}/notifications?uid=${listingPurchase._id}`,
+        },
+    });
+    const verifiedTransaction = yield verifiedtransactions_model_1.default.findOne({
+        tx_ref: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
+    });
+    if (verifiedTransaction) {
+        const email = listingPurchase.account.email;
+        const date = listingPurchase.createdAt.toLocaleString("en-US", {
+            weekday: "long", // "Monday"
+            year: "numeric", // "2024"
+            month: "long", // "December"
+            day: "numeric", // "1"
+            hour: "2-digit", // "08"
+            minute: "2-digit", // "45"
+            second: "2-digit", // "32"
+            hour12: true, // 12-hour format with AM/PM
+        });
+        const data = {
+            checkOutId: listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId,
+            cryptoName: listingPurchase.cryptoListing.cryptoName,
+            cryptoCode: listingPurchase.cryptoListing.cryptoCode,
+            cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
+            units: listingPurchase.units,
+            currency: (_f = (_e = listingPurchase.cryptoListing) === null || _e === void 0 ? void 0 : _e.currency) === null || _f === void 0 ? void 0 : _f.toUpperCase(),
+            amount: verifiedTransaction.data.amount,
+            walletAddress: listingPurchase.walletAddress,
+            buyerUserName: listingPurchase.account.username,
+            sellerUserName: listingPurchase.cryptoListing.account.username,
+            paymentOption: listingPurchase.paymentOption,
+            date,
         };
         mailservice_1.default.orders.sendBuyerOrderReceivedMail(email, data);
     }
@@ -377,38 +379,3 @@ const getListingChanges = (listing) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getListingChanges = getListingChanges;
-// Helper method to generate a random alphanumeric string of a given length
-function generateRandomString(length) {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let result = "";
-    const randomBytes = crypto.randomBytes(length);
-    for (let i = 0; i < length; i++) {
-        const randomValue = randomBytes[i] % characters.length;
-        result += characters[randomValue];
-    }
-    return result;
-}
-function generateUniqueCode() {
-    const prefix = "CR-";
-    const randomString = generateRandomString(8);
-    const timestamp = Date.now().toString(36).slice(-4);
-    return (prefix + randomString + timestamp).toUpperCase();
-}
-exports.generateUniqueCode = generateUniqueCode;
-function formatTimestamp(timestamp) {
-    // Create a Date object from the given timestamp
-    const date = new Date(timestamp);
-    // Define the formatting options
-    const options = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true, // To use 12-hour format with AM/PM
-    };
-    // Create a formatter with the given options
-    const formatter = new Intl.DateTimeFormat('en-US', options);
-    // Format and return the date
-    return formatter.format(date);
-}

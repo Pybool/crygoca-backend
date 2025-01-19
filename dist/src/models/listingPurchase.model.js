@@ -21,6 +21,8 @@ const reward_service_1 = require("../services/v1/listingsServices/reward.service
 const settings_1 = require("./settings");
 const comparison_service_1 = require("../services/v1/conversions/comparison.service");
 const countries_1 = require("./countries");
+const wallet_model_1 = require("./wallet.model");
+const transfers_queue_1 = require("../services/v1/tasks/wallet/transfers.queue");
 const Schema = mongoose_1.default.Schema;
 exports.orderStatuses = [
     "Not-Started",
@@ -167,7 +169,8 @@ CryptoListingPurchaseSchema.post("save", function (doc) {
                 console.log("conversionResult ==> ", conversionResult);
                 if (conversionResult.status) {
                     isConverted = true;
-                    payoutAmount = (payoutAmount * ((_d = (_c = conversionResult === null || conversionResult === void 0 ? void 0 : conversionResult.data) === null || _c === void 0 ? void 0 : _c.data[currencyTo]) === null || _d === void 0 ? void 0 : _d.value));
+                    payoutAmount =
+                        payoutAmount * ((_d = (_c = conversionResult === null || conversionResult === void 0 ? void 0 : conversionResult.data) === null || _c === void 0 ? void 0 : _c.data[currencyTo]) === null || _d === void 0 ? void 0 : _d.value);
                 }
                 // Create the payout record within the transaction
                 const payout = new payouts_model_1.default({
@@ -189,13 +192,32 @@ CryptoListingPurchaseSchema.post("save", function (doc) {
                 // Save the payout within the same transaction
                 yield payout.save();
                 console.log("Payout =====>  ", payout);
+                const vendorWallet = yield wallet_model_1.Wallet.findOne({
+                    user: payout.vendorAccount,
+                });
+                console.log("vendorWallet ", vendorWallet);
+                if (vendorWallet) {
+                    const meta = {
+                        walletAccountNo: vendorWallet.walletAccountNo,
+                        payoutConversionMetrics: payout.conversionMetaData,
+                        operationType: "credit",
+                        payoutId: payout._id,
+                        verifiedTransactionId: verifiedTransaction._id,
+                    };
+                    //Wrong implementation , job queue must be used
+                    // await WalletService.updateWalletBalance(
+                    //   "payout-topup",
+                    //   payout.payout,
+                    //   meta
+                    // );
+                    yield (0, transfers_queue_1.addWalletBalanceUpdateJob)("payout-topup", payout.payout, meta);
+                }
                 if (settings_1.ADMIN_SETTINGS.referrals.isActive &&
                     buyer.referredBy &&
                     ((_f = (_e = buyer === null || buyer === void 0 ? void 0 : buyer.referredBy) === null || _e === void 0 ? void 0 : _e.toString()) === null || _f === void 0 ? void 0 : _f.trim()) !== "") {
                     const referrer = yield mongoose_1.default
                         .model("accounts")
                         .findOne({ referralCode: buyer.referredBy });
-                    console.log("referrer ", referrer);
                     if (referrer) {
                         const transactionIsRewardable = yield (0, reward_service_1.checkIfTransactionHasReward)(verifiedTransaction);
                         if (transactionIsRewardable.eligibleForReward) {

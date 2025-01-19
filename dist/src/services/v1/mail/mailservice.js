@@ -39,7 +39,6 @@ const mailActions = {
                 }
             })).catch((error) => {
                 console.log(error);
-                throw error;
             });
         }),
         sendPasswordResetMail: (email, user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -68,7 +67,6 @@ const mailActions = {
                 }
             })).catch((error) => {
                 console.log(error);
-                throw error;
             });
         }),
         sendSellerOrderReceivedMail: (email, data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -92,7 +90,6 @@ const mailActions = {
                 }
             })).catch((error) => {
                 console.log(error);
-                throw error;
             });
         }),
         sendOrderStatusUpdateMail: (email, data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -116,9 +113,111 @@ const mailActions = {
                 }
             })).catch((error) => {
                 console.log(error);
-                throw error;
             });
         }),
-    }
+    },
+    wallet: {
+        sendCreditAlertMail: (email, data) => __awaiter(void 0, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                var _a, _b;
+                try {
+                    // const template = await ejs.renderFile(
+                    //   "src/templates/orderStatusUpdateTemplate.ejs",
+                    //   { email, otp }
+                    // );
+                    const mailOptions = {
+                        from: process.env.EMAIL_HOST_USER,
+                        to: email,
+                        subject: "Credit Alert!",
+                        text: `Credit alert ${data.walletTransaction.amount} on your wallet from ${((_a = data === null || data === void 0 ? void 0 : data.walletTransaction) === null || _a === void 0 ? void 0 : _a.debitWalletAccountNo) || ((_b = data === null || data === void 0 ? void 0 : data.walletTransaction) === null || _b === void 0 ? void 0 : _b.payout)}`,
+                        html: "",
+                    };
+                    yield (0, mailtrigger_1.default)(mailOptions);
+                    resolve({ status: true });
+                }
+                catch (error) {
+                    console.log(error);
+                    resolve({ status: false });
+                }
+            })).catch((error) => {
+                console.log(error);
+            });
+        }),
+        sendDebitAlertMail: (email, data) => __awaiter(void 0, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    // const template = await ejs.renderFile(
+                    //   "src/templates/orderStatusUpdateTemplate.ejs",
+                    //   { email, otp }
+                    // );
+                    const mailOptions = {
+                        from: process.env.EMAIL_HOST_USER,
+                        to: email,
+                        subject: "Debit Alert!",
+                        text: `Debit alert ${data.walletTransaction.amount} on your wallet`,
+                        html: "",
+                    };
+                    yield (0, mailtrigger_1.default)(mailOptions);
+                    resolve({ status: true });
+                }
+                catch (error) {
+                    console.log(error);
+                    resolve({ status: false });
+                }
+            })).catch((error) => {
+                console.log(error);
+            });
+        }),
+        sendTransferConfirmationOtp: (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    // const template = await ejs.renderFile(
+                    //   "src/templates/orderStatusUpdateTemplate.ejs",
+                    //   { email, otp }
+                    // );
+                    const mailOptions = {
+                        from: process.env.EMAIL_HOST_USER,
+                        to: email,
+                        subject: "Transfer OTP Code",
+                        text: `Your transfer otp code is ${otp}`,
+                        html: "",
+                    };
+                    yield (0, mailtrigger_1.default)(mailOptions);
+                    resolve({ status: true });
+                }
+                catch (error) {
+                    console.log(error);
+                    resolve({ status: false });
+                }
+            })).catch((error) => {
+                console.log(error);
+            });
+        }),
+        sendWithdrawalConfirmationOtp: (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    // const template = await ejs.renderFile(
+                    //   "src/templates/orderStatusUpdateTemplate.ejs",
+                    //   { email, otp }
+                    // );
+                    const mailOptions = {
+                        from: process.env.EMAIL_HOST_USER,
+                        to: email,
+                        subject: "Withdrawal OTP Code",
+                        text: `Your withdrawal otp code is ${otp}`,
+                        html: "",
+                    };
+                    yield (0, mailtrigger_1.default)(mailOptions);
+                    resolve({ status: true });
+                }
+                catch (error) {
+                    console.log(error);
+                    resolve({ status: false });
+                }
+            })).catch((error) => {
+                console.log(error);
+            });
+        }),
+    },
 };
 exports.default = mailActions;

@@ -16,12 +16,69 @@ const express_1 = __importDefault(require("express"));
 const flutterwave_controller_1 = require("../../controllers/v1/flutterwave.controller");
 const axios_1 = __importDefault(require("axios"));
 const flutterwave_service_1 = require("../../services/v1/payments/flutterwave.service");
+const banks_service_1 = require("../../services/v1/wallet/banks.service");
 const flwRouter = express_1.default.Router();
 flwRouter.post("/flw/initiate-payment", flutterwave_controller_1.flutterWaveController.initiateCardPayment);
 flwRouter.post("/flw/verify-payment", flutterwave_controller_1.flutterWaveController.verifyCardPayment);
 flwRouter.post("/flw/initiate-googlepay-payment", flutterwave_controller_1.flutterWaveController.initiateGooglePayPayment);
 flwRouter.post("/flw/initiate-googlepay-tokenized-charge", flutterwave_controller_1.flutterWaveController.googlePayTokenizedCharge);
 flwRouter.post("/flw/initiate-ach-payment", flutterwave_controller_1.flutterWaveController.initiateACHPayment);
+flwRouter.get("/flw/get-intl-banks", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const countryCode = req.query.country;
+        const result = yield (0, banks_service_1.getIntlBanksForCountry)(countryCode);
+        return res.status(200).json(result);
+    }
+    catch (error) {
+        console.error("Error fetching banks:", error);
+        res.status(500).json({ error: "Failed to fetch banks" });
+    }
+}));
+flwRouter.get("/flw/get-banks", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const country = req.query.country;
+        const BASE_URL = "https://api.flutterwave.com/v3/banks/";
+        if (!country) {
+            return res
+                .status(400)
+                .json({ error: "Missing required query parameters: country" });
+        }
+        const url = `${BASE_URL}${country}`;
+        const response = yield axios_1.default.get(url, {
+            headers: {
+                Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
+            },
+        });
+        // Return the response from Flutterwave API
+        res.status(200).json(response.data);
+    }
+    catch (error) {
+        console.error("Error fetching banks:", error);
+        res.status(500).json({ error: "Failed to fetch banks" });
+    }
+}));
+flwRouter.get("/flw/get-bank-branches", ((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bankId = req.query.bankId;
+        const BASE_URL = `https://api.flutterwave.com/v3/banks/${bankId}/branches`;
+        if (!bankId) {
+            return res
+                .status(400)
+                .json({ error: "Missing required query parameters: bankId" });
+        }
+        const url = `${BASE_URL}`;
+        const response = yield axios_1.default.get(url, {
+            headers: {
+                Authorization: `Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X`,
+            },
+        });
+        // Return the response from Flutterwave API
+        res.status(200).json(response.data);
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to fetch bank branches" });
+    }
+})));
 flwRouter.get("/flw/convert-currencies", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const from = req.query.from;

@@ -189,7 +189,7 @@ class DashboardService {
     }
     static getTotalSalesData(req) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e;
             const accountDateFilter = DashboardService.getAccountDateFilter(req);
             const accountId = accountDateFilter.accountId;
             const dateFilterBackWard = accountDateFilter.dateFilter.backward;
@@ -304,9 +304,14 @@ class DashboardService {
                 .totalSales * exchangeRate;
             const convertedResultBackward = (resultBackward[0] || { purchases: [], totalSales: 0 })
                 .totalSales * exchangeRate;
+            let activeCurrency = null;
+            if (!((_e = (_d = exchangeRateData === null || exchangeRateData === void 0 ? void 0 : exchangeRateData.data) === null || _d === void 0 ? void 0 : _d.data[currencyTo]) === null || _e === void 0 ? void 0 : _e.value)) {
+                activeCurrency = currencyFrom;
+            }
             const results = {
                 resultForward: convertedResultForward,
                 resultBackward: convertedResultBackward,
+                activeCurrency: activeCurrency
             };
             results.percentageChange = calculatePercentageChange(results);
             return results;

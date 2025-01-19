@@ -1,7 +1,7 @@
 import axios from "axios";
 import Xrequest from "../../../interfaces/extensions.interface";
-import { generateUniqueCode } from "../listingsServices/cryptolisting.service";
 import { googlePayChargeSuccess } from "./mock.service";
+import { generateReferenceCode } from "../helpers";
 
 
 export class GooglePayService {
@@ -60,7 +60,7 @@ export class GooglePayService {
     const url = "https://api.flutterwave.com/v3/charges?type=googlepay";
     const secretKey = process.env.FLW_SECRET_KEY! as string; // Replace with your actual secret key
     const payload = req.body;
-    payload.tx_ref = generateUniqueCode()
+    payload.tx_ref = generateReferenceCode()
     
     try {
       const response = await axios.post(url, payload, {

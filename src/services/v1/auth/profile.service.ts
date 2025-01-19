@@ -50,6 +50,16 @@ export class ProfileService {
       };
     }
 
+    const Account: any = await Accounts.findOne(
+      { _id: accountId }
+    )
+
+    if(Account){
+      if(Account?.geoData?.code){
+        delete payload.geoData
+      }
+    }
+
     const updatedAccount: any = await Accounts.findOneAndUpdate(
       { _id: accountId },
       payload,

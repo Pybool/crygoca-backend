@@ -22,6 +22,7 @@ import Devices from "../../../models/devices.model";
 import { getUserCountry } from "../conversions/comparison.service";
 import { SmsService } from "../sms/termii.service";
 import { handleErrors } from "../../../bootstrap/global.error.handler";
+import { WalletService } from "../wallet/wallet.service";
 
 export class Authentication {
   req: Xrequest;
@@ -238,6 +239,10 @@ export class Authentication {
     try {
       if (!account.email_confirmed) {
         account.email_confirmed = true;
+        const wallet = await WalletService.createWallet(account._id);
+        if (wallet) {
+          account.walletCreated = true;
+        }
         await account.save();
         await deleteExpirableCode(`account-verification${email}`);
         return { status: true, message: message.auth.emailVerifiedOk };
@@ -271,7 +276,7 @@ export class Authentication {
   public async login() {
     try {
       const result = await validations.authSchema.validateAsync(this.req.body);
-      console.log("Login pauyload ", result);
+      console.log("Login payload ", result);
       const account: any = await Accounts.findOne({ email: result.email });
       if (!account) return createError.NotFound(message.auth.userNotRegistered);
 
@@ -447,7 +452,7 @@ export class Authentication {
       api_key: "API_KEY",
       message_type: "NUMERIC",
       to: parsedPhone,
-      from: "Efielounge",
+      from: "CRYGOCA",
       channel: "generic",
       pin_attempts: 10,
       pin_time_to_live: 5,
@@ -466,8 +471,9 @@ export class Authentication {
 
   @handleErrors()
   public async twofaSignInVerification() {
-    const { code, accountId, otpChannel, deviceInformation } = this.req.body! as any;
-    const getTokensAndLogin = (async(cachedOtp:any)=>{
+    const { code, accountId, otpChannel, deviceInformation } = this.req
+      .body! as any;
+    const getTokensAndLogin = async (cachedOtp: any) => {
       if (cachedOtp?.code === code) {
         const accessToken = await jwthelper.signAccessToken(account.id);
         const refreshToken = await jwthelper.signRefreshToken(account.id);
@@ -479,7 +485,7 @@ export class Authentication {
         return { status: true, data: account, accessToken, refreshToken };
       }
       return { status: false, message: message.auth.loginError };
-    })
+    };
     const account: any = await Accounts.findById(accountId);
     if (!account) {
       return {
@@ -501,8 +507,7 @@ export class Authentication {
         };
       }
       console.log("cachedOtp email ===> ", cachedOtp);
-      return await getTokensAndLogin(cachedOtp)
-          
+      return await getTokensAndLogin(cachedOtp);
     } else if (otpChannel === "sms") {
       const parsedPhone = normalizePhoneNumber(
         account.geoData.dialling_code,
@@ -520,7 +525,7 @@ export class Authentication {
         };
       }
       console.log("cachedOtp sms ===> ", cachedOtp);
-      return await getTokensAndLogin(cachedOtp)
+      return await getTokensAndLogin(cachedOtp);
     }
   }
 }

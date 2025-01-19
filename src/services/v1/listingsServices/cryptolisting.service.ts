@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 import axios from "axios";
 import { Cache } from "../../../middlewares/cache";
 import { response } from "../mockcrypto.response";
@@ -12,23 +11,21 @@ import { NotificationModel } from "../../../models/notifications.model";
 import mailActions, { IEmailCheckoutData } from "../mail/mailservice";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import Accounts from "../../../models/accounts.model";
+import { formatTimestamp, generateReferenceCode } from "../helpers";
 const memCache = new Cache();
 
 export const fetchCrypto = async (url: string, isTask = false) => {
-  return new Promise(async(resolve: any, reject: any) => {
-    const cachedData = await memCache.get("crypto-currencies")
+  return new Promise(async (resolve: any, reject: any) => {
+    const cachedData = await memCache.get("crypto-currencies");
     if (cachedData && !isTask) {
-      console.log(
-        cachedData,
-        typeof cachedData
-      );
+      console.log(cachedData, typeof cachedData);
       resolve(cachedData);
     } else {
       await memCache.set("crypto-currencies", response, 120);
       resolve(response);
       axios
         .get(url)
-        .then(async(_response) => {
+        .then(async (_response) => {
           await memCache.set("crypto-currencies", _response.data, 120);
           resolve(_response.data);
         })
@@ -200,21 +197,22 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
   }
 };
 
-
 export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
   try {
     let listing: any;
     const payload: IPurchaseSalelisting = data;
-    const cryptoListing = await CryptoListing.findOne({_id: payload.cryptoListing});
-    if(!cryptoListing){
+    const cryptoListing = await CryptoListing.findOne({
+      _id: payload.cryptoListing,
+    });
+    if (!cryptoListing) {
       return {
         status: false,
-        message: "No crypto listing was found for this request"
-      }
+        message: "No crypto listing was found for this request",
+      };
     }
 
     if (!payload?.checkOutId) {
-      payload.checkOutId = generateUniqueCode();
+      payload.checkOutId = generateReferenceCode();
       payload.createdAt = new Date();
       payload.updatedAt = new Date();
       payload.unitPriceAtPurchaseTime = cryptoListing.unitPrice;
@@ -242,26 +240,28 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
 const createNewSellerPurchaseNotifications = async (listingPurchase: any) => {
   //Notification for seller
   const userId = listingPurchase.cryptoListing.account._id;
+  const verifiedTransaction = await VerifiedTransactions.findOne({
+    tx_ref: listingPurchase?.checkOutId,
+  });
   await NotificationModel.create({
     user: userId,
-    title: "New Order",
-    message: `You have a new order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} placed by ${listingPurchase.account.username}`,
+    title: `You have a new order "${listingPurchase?.checkOutId}"`,
+    message: `${listingPurchase.account.username} purchased ${listingPurchase.units} of ${listingPurchase.cryptoListing.cryptoName} at ${verifiedTransaction!?.data?.currency}${verifiedTransaction!?.data?.amount || 'N/A'}`,
     createdAt: new Date(),
     status: "UNREAD",
     class: "info",
     meta: {
-      url: `${process.env.WEBSITE_URL!}/listing-orders?uid=${
+      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
         listingPurchase._id
       }`,
     },
   });
 
-  const verifiedTransaction = await VerifiedTransactions.findOne({
-    tx_ref: listingPurchase?.checkOutId,
-  });
+  
+
   if (verifiedTransaction) {
     const email: string = listingPurchase.cryptoListing.account.email;
-    const date = formatTimestamp(listingPurchase.createdAt)
+    const date = formatTimestamp(listingPurchase.createdAt);
     const data: IEmailCheckoutData = {
       checkOutId: listingPurchase?.checkOutId,
       cryptoName: listingPurchase.cryptoListing.cryptoName,
@@ -274,7 +274,7 @@ const createNewSellerPurchaseNotifications = async (listingPurchase: any) => {
       buyerUserName: listingPurchase.account.username,
       sellerUserName: listingPurchase.cryptoListing.account.username,
       paymentOption: listingPurchase.paymentOption,
-      date
+      date,
     };
     mailActions.orders.sendSellerOrderReceivedMail(email, data);
   }
@@ -285,13 +285,13 @@ const createNewBuyerPurchaseNotifications = async (listingPurchase: any) => {
   const userId = listingPurchase.account._id;
   await NotificationModel.create({
     user: userId,
-    title: "Order Successful",
+    title: `Your order ${listingPurchase?.checkOutId} was successful`,
     message: `You order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} was successful. The seller has been notified.`,
     createdAt: new Date(),
     status: "UNREAD",
     class: "success",
     meta: {
-      url: `${process.env.WEBSITE_URL!}/listing-orders?uid=${
+      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
         listingPurchase._id
       }`,
     },
@@ -302,16 +302,16 @@ const createNewBuyerPurchaseNotifications = async (listingPurchase: any) => {
   });
   if (verifiedTransaction) {
     const email: string = listingPurchase.account.email;
-    const date = listingPurchase.createdAt.toLocaleString('en-US', {
-      weekday: 'long', // "Monday"
-      year: 'numeric', // "2024"
-      month: 'long', // "December"
-      day: 'numeric', // "1"
-      hour: '2-digit', // "08"
-      minute: '2-digit', // "45"
-      second: '2-digit', // "32"
-      hour12: true // 12-hour format with AM/PM
-    })
+    const date = listingPurchase.createdAt.toLocaleString("en-US", {
+      weekday: "long", // "Monday"
+      year: "numeric", // "2024"
+      month: "long", // "December"
+      day: "numeric", // "1"
+      hour: "2-digit", // "08"
+      minute: "2-digit", // "45"
+      second: "2-digit", // "32"
+      hour12: true, // 12-hour format with AM/PM
+    });
     const data: IEmailCheckoutData = {
       checkOutId: listingPurchase?.checkOutId,
       cryptoName: listingPurchase.cryptoListing.cryptoName,
@@ -324,14 +324,14 @@ const createNewBuyerPurchaseNotifications = async (listingPurchase: any) => {
       buyerUserName: listingPurchase.account.username,
       sellerUserName: listingPurchase.cryptoListing.account.username,
       paymentOption: listingPurchase.paymentOption,
-      date
+      date,
     };
     mailActions.orders.sendBuyerOrderReceivedMail(email, data);
   }
 };
 
 export const updatePaymentConfirmation = async (tx_ref: string) => {
-  let listingPurchase:any = await CryptoListingPurchase.findOne({
+  let listingPurchase: any = await CryptoListingPurchase.findOne({
     checkOutId: tx_ref,
   })
     .populate("account")
@@ -341,7 +341,7 @@ export const updatePaymentConfirmation = async (tx_ref: string) => {
     listingPurchase.paymentConfirmed = true;
     listingPurchase.fulfillmentStatus = "Pending";
     await listingPurchase.save();
-    listingPurchase = JSON.parse(JSON.stringify(listingPurchase))
+    listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
     listingPurchase.cryptoListing.account = await Accounts.findOne({
       _id: listingPurchase.cryptoListing.account,
     });
@@ -399,44 +399,3 @@ export const getListingChanges = async (listing: any) => {
     };
   }
 };
-
-// Helper method to generate a random alphanumeric string of a given length
-function generateRandomString(length: number) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let result = "";
-  const randomBytes = crypto.randomBytes(length);
-  for (let i = 0; i < length; i++) {
-    const randomValue = randomBytes[i] % characters.length;
-    result += characters[randomValue];
-  }
-  return result;
-}
-
-export function generateUniqueCode(): string {
-  const prefix = "CR-";
-  const randomString = generateRandomString(8);
-  const timestamp = Date.now().toString(36).slice(-4);
-  return (prefix + randomString + timestamp).toUpperCase();
-}
-
-
-function formatTimestamp(timestamp: string): string {
-  // Create a Date object from the given timestamp
-  const date = new Date(timestamp);
-
-  // Define the formatting options
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true, // To use 12-hour format with AM/PM
-  };
-
-  // Create a formatter with the given options
-  const formatter = new Intl.DateTimeFormat('en-US', options);
-
-  // Format and return the date
-  return formatter.format(date);
-}

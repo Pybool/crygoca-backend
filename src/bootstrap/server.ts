@@ -1,10 +1,7 @@
 import cors, { CorsOptions } from "cors";
-
 import app from "./_app";
-
 import express, { Request, Response } from "express";
 import http from "http";
-// import cors from "cors";
 import "../redis/init.redis";
 import "./init.mongo";
 // import "../backgroundtasks/taskScheduler";
@@ -18,8 +15,10 @@ import { sessionMiddleware } from "../middlewares/session";
 
 // import "../services/v1/tasks/flutterwave.service";
 // import "../services/v1/tasks/task.service";
-import "../services/v1/tasks/cryptoLiveUpdates.service";
+// import "../services/v1/tasks/cryptoLiveUpdates.service";
+import "../services/v1/tasks/wallet/bankWithdrawals.worker";
 
+import { Server as SocketIOServer } from "socket.io";
 import { enquiriesService } from "../services/v1/contact/enquiries.service";
 import liveCrypto from "../routes/v1/cryptoCurrencies.route";
 import flwRouter from "../routes/v1/flutterwave.route";
@@ -33,6 +32,11 @@ import { verifyGoogleToken } from "../middlewares/jwt";
 import profileRouter from "../routes/v1/profile.routes";
 import Accounts from "../models/accounts.model";
 import payoutRouter from "../routes/v1/payouts.route";
+import walletRouter from "../routes/v1/wallet.routes";
+import { saveBanksForCountry } from "../services/v1/wallet/banks.service";
+import { CustomSocket, socketAuth } from "../middlewares/socketAuth";
+import { setupSocketHandlers } from "../controllers/v1/sockets/socket.controller";
+import notificationRouter from "../routes/v1/notifications.routes";
 
 dotenvConfig();
 dotenvConfig({ path: `.env.prod` });
@@ -41,6 +45,19 @@ const PORT = process.env.CRYGOCA_MAIN_SERVER_PORT! as string;
 const SERVER_URL = "0.0.0.0";
 
 const server = http.createServer(app);
+const io = new SocketIOServer(server, {
+  cors: {
+    origin: "*",
+  },
+});
+io.use(socketAuth);
+const wrap =
+  (middleware: any) => (socket: CustomSocket, next: (err?: any) => void) => {
+    middleware(socket.request, {}, next);
+  };
+io.use(wrap(sessionMiddleware));
+app.set("io", io);
+setupSocketHandlers(io);
 // const corsOptions = {
 //   origin: "*",
 //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -55,14 +72,15 @@ app.use(
       "http://localhost:4200",
       "https://b1d7-105-119-6-63.ngrok-free.app",
       "https://test.crygoca.co.uk",
+      "https://crygoca.co.uk",
     ], // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
   })
 );
 
 // Configure body-parser or express.json() with a higher limit
-app.use(express.json({ limit: '10mb' })); // Increase to 10MB or adjust as needed
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: "10mb" })); // Increase to 10MB or adjust as needed
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(sessionMiddleware);
 
@@ -79,7 +97,7 @@ app.use(passport.session());
 
 app.set("trust proxy", true);
 app.use(express.json());
-app.get("/", async(req, res) => {
+app.get("/", async (req, res) => {
   res.send("Crygoca Backend says hello!");
 });
 
@@ -91,10 +109,27 @@ app.get("/ip", async (req, res) => {
   });
 });
 
+app.post("/save-banks", async (req, res) => {
+  const countryCode = req.body.countryCode! as string;
+  const banks = req.body.banks;
+  const result = await saveBanksForCountry(banks, countryCode);
+  res.send({
+    status: true,
+    data: result,
+  });
+});
+
 // Login route
 app.post("/auth/google", verifyGoogleToken, async (req: any, res) => {
   req.gAccount = req.user; // Save user in session
-  const result = await SocialAuthentication.googleAuthentication(req.gAccount);
+  if (
+    req.query?.referralCode?.trim() !== "" &&
+    req.query?.referralCode?.trim() !== null
+  ) {
+    req.referralCode = req.query.referralCode;
+  }
+
+  const result = await SocialAuthentication.googleAuthentication(req);
   res.status(200).send(result); // Return user data to frontend
 });
 
@@ -169,6 +204,7 @@ app.get("/auth/logout", (req: any, res: any) => {
 // });
 
 // Protected route
+
 app.get("/profile", (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -188,7 +224,8 @@ app.use("/api/v1", dashboardRouter);
 app.use("/api/v1", payoutRouter);
 
 app.use("/api/v1/profile", profileRouter);
-
+app.use("/api/v1/wallet", walletRouter);
+app.use("/api/v1/notifications", notificationRouter);
 
 app.use(express.static("public"));
 const staticFolder = process.env.PUBLIC_FOLDER! as string;

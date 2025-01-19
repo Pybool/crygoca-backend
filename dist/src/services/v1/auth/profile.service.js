@@ -51,6 +51,7 @@ class ProfileService {
     }
     static saveBasicInfoAndPreferences(req) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const payload = req.body;
             const accountId = req.accountId;
             if (!accountId) {
@@ -60,6 +61,12 @@ class ProfileService {
                     data: null,
                     code: 200,
                 };
+            }
+            const Account = yield accounts_model_1.default.findOne({ _id: accountId });
+            if (Account) {
+                if ((_a = Account === null || Account === void 0 ? void 0 : Account.geoData) === null || _a === void 0 ? void 0 : _a.code) {
+                    delete payload.geoData;
+                }
             }
             const updatedAccount = yield accounts_model_1.default.findOneAndUpdate({ _id: accountId }, payload, { new: true });
             if (!updatedAccount) {

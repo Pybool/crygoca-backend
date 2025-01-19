@@ -6,6 +6,7 @@ import { Options } from "nodemailer/lib/mailer";
 import jwthelper from "../../../helpers/jwt_helper";
 import utils from "../../../helpers/misc";
 import { config as dotenvConfig } from "dotenv";
+import { IWalletTransaction } from "../../../models/wallet-transaction.model";
 dotenvConfig();
 
 export interface IEmailCheckoutData {
@@ -18,23 +19,22 @@ export interface IEmailCheckoutData {
   amount: number;
   walletAddress: string;
   sellerUserName?: string;
-  buyerUserName?:string;
+  buyerUserName?: string;
   paymentOption: string;
   date: Date | string;
-  status?:string;
+  status?: string;
 }
-
 
 const mailActions = {
   auth: {
-    sendEmailConfirmationOtp: async (email:string, otp:string) => {
+    sendEmailConfirmationOtp: async (email: string, otp: string) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
             "src/templates/emailConfirmation.ejs",
             { email, otp }
           );
-          console.log("OTP==> ", otp)
+          console.log("OTP==> ", otp);
 
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
@@ -45,13 +45,12 @@ const mailActions = {
           };
           await sendMail(mailOptions);
           resolve({ status: true });
-        } catch(error){
-          console.log(error)
+        } catch (error) {
+          console.log(error);
           resolve({ status: false });
         }
-      }).catch((error:any)=>{
-        console.log(error)
-        throw error
+      }).catch((error: any) => {
+        console.log(error);
       });
     },
 
@@ -59,15 +58,18 @@ const mailActions = {
       return { status: true, message: "" };
     },
   },
-  orders:{
-    sendBuyerOrderReceivedMail: async (email:string, data:IEmailCheckoutData) => {
+  orders: {
+    sendBuyerOrderReceivedMail: async (
+      email: string,
+      data: IEmailCheckoutData
+    ) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
             "src/templates/buyerPaymentSuccessTemplate.ejs",
             { data }
           );
-          console.log("Mail data ==> ", data)
+          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
@@ -78,24 +80,26 @@ const mailActions = {
           };
           await sendMail(mailOptions);
           resolve({ status: true });
-        } catch(error){
-          console.log(error)
+        } catch (error) {
+          console.log(error);
           resolve({ status: false });
         }
-      }).catch((error:any)=>{
-        console.log(error)
-        throw error
+      }).catch((error: any) => {
+        console.log(error);
       });
     },
-    
-    sendSellerOrderReceivedMail: async (email:string, data:IEmailCheckoutData) => {
+
+    sendSellerOrderReceivedMail: async (
+      email: string,
+      data: IEmailCheckoutData
+    ) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
             "src/templates/sellerPaymentSuccessTemplate.ejs",
             { data }
           );
-          console.log("Mail data ==> ", data)
+          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
@@ -106,24 +110,26 @@ const mailActions = {
           };
           await sendMail(mailOptions);
           resolve({ status: true });
-        } catch(error){
-          console.log(error)
+        } catch (error) {
+          console.log(error);
           resolve({ status: false });
         }
-      }).catch((error:any)=>{
-        console.log(error)
-        throw error
+      }).catch((error: any) => {
+        console.log(error);
       });
     },
 
-    sendOrderStatusUpdateMail: async (email:string, data:IEmailCheckoutData) => {
+    sendOrderStatusUpdateMail: async (
+      email: string,
+      data: IEmailCheckoutData
+    ) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
             "src/templates/orderStatusUpdateTemplate.ejs",
             { data }
           );
-          console.log("Mail data ==> ", data)
+          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
@@ -134,16 +140,129 @@ const mailActions = {
           };
           await sendMail(mailOptions);
           resolve({ status: true });
-        } catch(error){
-          console.log(error)
+        } catch (error) {
+          console.log(error);
           resolve({ status: false });
         }
-      }).catch((error:any)=>{
-        console.log(error)
-        throw error
+      }).catch((error: any) => {
+        console.log(error);
       });
     },
-  }
+  },
+
+  wallet: {
+    sendCreditAlertMail: async (
+      email: string,
+      data: { walletTransaction: IWalletTransaction }
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // const template = await ejs.renderFile(
+          //   "src/templates/orderStatusUpdateTemplate.ejs",
+          //   { email, otp }
+          // );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Credit Alert!",
+            text: `Credit alert ${data.walletTransaction.amount} on your wallet from ${data?.walletTransaction?.debitWalletAccountNo || data?.walletTransaction?.payout}`,
+            html: "",
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendDebitAlertMail: async (
+      email: string,
+      data: { walletTransaction: IWalletTransaction }
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // const template = await ejs.renderFile(
+          //   "src/templates/orderStatusUpdateTemplate.ejs",
+          //   { email, otp }
+          // );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Debit Alert!",
+            text: `Debit alert ${data.walletTransaction.amount} on your wallet`,
+            html: "",
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendTransferConfirmationOtp: async (
+      email: string,
+      otp: number
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // const template = await ejs.renderFile(
+          //   "src/templates/orderStatusUpdateTemplate.ejs",
+          //   { email, otp }
+          // );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Transfer OTP Code",
+            text: `Your transfer otp code is ${otp}`,
+            html: "",
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendWithdrawalConfirmationOtp: async (
+      email: string,
+      otp: number
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // const template = await ejs.renderFile(
+          //   "src/templates/orderStatusUpdateTemplate.ejs",
+          //   { email, otp }
+          // );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Withdrawal OTP Code",
+            text: `Your withdrawal otp code is ${otp}`,
+            html: "",
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+  },
 };
 
 export default mailActions;

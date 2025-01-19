@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GooglePayService = void 0;
 const axios_1 = __importDefault(require("axios"));
-const cryptolisting_service_1 = require("../listingsServices/cryptolisting.service");
 const mock_service_1 = require("./mock.service");
+const helpers_1 = require("../helpers");
 class GooglePayService {
     static makeGooglePayCharge(req) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -75,7 +75,7 @@ class GooglePayService {
             const url = "https://api.flutterwave.com/v3/charges?type=googlepay";
             const secretKey = process.env.FLW_SECRET_KEY; // Replace with your actual secret key
             const payload = req.body;
-            payload.tx_ref = (0, cryptolisting_service_1.generateUniqueCode)();
+            payload.tx_ref = (0, helpers_1.generateReferenceCode)();
             try {
                 const response = yield axios_1.default.post(url, payload, {
                     headers: {

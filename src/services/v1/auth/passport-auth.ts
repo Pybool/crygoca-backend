@@ -36,6 +36,7 @@ passport.use(
         displayName: profile.displayName,
         accessToken: accessToken,
         refreshToken: refreshToken,
+        referralCode: req.referralCode
       };
       const result = await SocialAuthentication.googleAuthentication(user);
       return done(null, profile);

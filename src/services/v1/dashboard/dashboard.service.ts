@@ -12,6 +12,7 @@ interface Data {
   resultForward?: number;
   resultBackward?: number;
   percentageChange?: number;
+  activeCurrency?: string;
 }
 
 function calculatePercentageChange(data: Data): number {
@@ -324,21 +325,28 @@ export class DashboardService {
 
     const exchangeRateData:any = await convertToDefaultCurrency(1);
 
-    const exchangeRate = exchangeRateData?.data?.data[currencyTo]?.value || 1;
+    const exchangeRate:any = exchangeRateData?.data?.data[currencyTo]?.value || 1;
 
     console.log("exchangeRate ===> ", exchangeRate)
     console.log("Sales ====> ", (resultForward[0] || { purchases: [], totalSales: 0 })
     .totalSales)
 
     const convertedResultForward =(resultForward[0] || { purchases: [], totalSales: 0 })
-    .totalSales * exchangeRate;
+    .totalSales * exchangeRate!;
 
     const convertedResultBackward = (resultBackward[0] || { purchases: [], totalSales: 0 })
-    .totalSales * exchangeRate;
+    .totalSales * exchangeRate!;
+
+    let activeCurrency:any = null;
+    
+    if(!exchangeRateData!?.data!?.data[currencyTo]?.value){
+      activeCurrency = currencyFrom
+    }
 
     const results: Data = {
       resultForward: convertedResultForward,
       resultBackward: convertedResultBackward,
+      activeCurrency: activeCurrency
     };
     results.percentageChange = calculatePercentageChange(results);
     return results;

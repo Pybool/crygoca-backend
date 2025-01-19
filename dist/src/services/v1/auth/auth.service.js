@@ -32,6 +32,7 @@ const helper_1 = require("./helper");
 const devices_model_1 = __importDefault(require("../../../models/devices.model"));
 const comparison_service_1 = require("../conversions/comparison.service");
 const global_error_handler_1 = require("../../../bootstrap/global.error.handler");
+const wallet_service_1 = require("../wallet/wallet.service");
 class Authentication {
     constructor(req) {
         this.req = req;
@@ -225,6 +226,10 @@ class Authentication {
             try {
                 if (!account.email_confirmed) {
                     account.email_confirmed = true;
+                    const wallet = yield wallet_service_1.WalletService.createWallet(account._id);
+                    if (wallet) {
+                        account.walletCreated = true;
+                    }
                     yield account.save();
                     yield (0, helper_1.deleteExpirableCode)(`account-verification${email}`);
                     return { status: true, message: messages_1.default.auth.emailVerifiedOk };
@@ -257,7 +262,7 @@ class Authentication {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield joiAuthValidators_1.default.authSchema.validateAsync(this.req.body);
-                console.log("Login pauyload ", result);
+                console.log("Login payload ", result);
                 const account = yield accounts_model_1.default.findOne({ email: result.email });
                 if (!account)
                     return http_errors_1.default.NotFound(messages_1.default.auth.userNotRegistered);
@@ -441,7 +446,7 @@ class Authentication {
                 api_key: "API_KEY",
                 message_type: "NUMERIC",
                 to: parsedPhone,
-                from: "Efielounge",
+                from: "CRYGOCA",
                 channel: "generic",
                 pin_attempts: 10,
                 pin_time_to_live: 5,
@@ -460,8 +465,9 @@ class Authentication {
     }
     twofaSignInVerification() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { code, accountId, otpChannel, deviceInformation } = this.req.body;
-            const getTokensAndLogin = ((cachedOtp) => __awaiter(this, void 0, void 0, function* () {
+            const { code, accountId, otpChannel, deviceInformation } = this.req
+                .body;
+            const getTokensAndLogin = (cachedOtp) => __awaiter(this, void 0, void 0, function* () {
                 if ((cachedOtp === null || cachedOtp === void 0 ? void 0 : cachedOtp.code) === code) {
                     const accessToken = yield jwt_helper_1.default.signAccessToken(account.id);
                     const refreshToken = yield jwt_helper_1.default.signRefreshToken(account.id);
@@ -473,7 +479,7 @@ class Authentication {
                     return { status: true, data: account, accessToken, refreshToken };
                 }
                 return { status: false, message: messages_1.default.auth.loginError };
-            }));
+            });
             const account = yield accounts_model_1.default.findById(accountId);
             if (!account) {
                 return {

@@ -61,6 +61,7 @@ function cryptoLiveUpdates() {
                 if (response.status == 200) {
                     let responseData = response.data;
                     if (((_b = responseData === null || responseData === void 0 ? void 0 : responseData.status) === null || _b === void 0 ? void 0 : _b.error_code) == 0) {
+                        console.log("responseData ", responseData);
                         const result = { status: true, data: responseData.data };
                         yield saveCryptoQuotes(responseData.data);
                         yield memCache.set(url, responseData.data, 3600);

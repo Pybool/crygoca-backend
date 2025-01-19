@@ -80,9 +80,21 @@ const AccountsSchema = new Schema({
     },
     useLoginOtp: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     receiveNotifications: {
+        type: Boolean,
+        default: true,
+    },
+    allowRealNamesInTransfers: {
+        type: Boolean,
+        default: true,
+    },
+    useTransferOtpSms: {
+        type: Boolean,
+        default: false,
+    },
+    useTransferOtpEmail: {
         type: Boolean,
         default: true,
     },
@@ -105,6 +117,10 @@ const AccountsSchema = new Schema({
         default: false,
     },
     email2fa: {
+        type: Boolean,
+        default: true,
+    },
+    walletCreated: {
         type: Boolean,
         default: false,
     },

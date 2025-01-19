@@ -7,6 +7,9 @@ import { ADMIN_SETTINGS } from "./settings";
 import { constant } from "lodash";
 import { convertCurrency } from "../services/v1/conversions/comparison.service";
 import { getCountryCodeByCurrencyCode } from "./countries";
+import { ItopUps, WalletService } from "../services/v1/wallet/wallet.service";
+import { IWallet, Wallet } from "./wallet.model";
+import { addWalletBalanceUpdateJob } from "../services/v1/tasks/wallet/transfers.queue";
 const Schema = mongoose.Schema;
 
 export interface IPurchaseSalelisting {
@@ -152,10 +155,7 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
       )!.code;
 
       const to = getCountryCodeByCurrencyCode(currencyTo.toUpperCase())!.code;
-      console.log(from,
-        to,
-        currencyFrom,
-        currencyTo,)
+      console.log(from, to, currencyFrom, currencyTo);
 
       const convertToDefaultCurrency = async (amount: number) => {
         if (from && to && currencyFrom && currencyTo) {
@@ -192,14 +192,15 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
       // Calculate the payout amount
       let isConverted = false;
       let payoutAmount = computePayout(doc.units, doc.unitPriceAtPurchaseTime!);
-      const payoutAmountUnconverted = JSON.parse(JSON.stringify(payoutAmount))
+      const payoutAmountUnconverted = JSON.parse(JSON.stringify(payoutAmount));
       const conversionResult = await convertToDefaultCurrency(payoutAmount);
-      console.log("conversionResult ==> ",conversionResult)
+      console.log("conversionResult ==> ", conversionResult);
       if (conversionResult.status) {
         isConverted = true;
-        payoutAmount = (payoutAmount * conversionResult?.data?.data[currencyTo]?.value);
+        payoutAmount =
+          payoutAmount * conversionResult?.data?.data[currencyTo]?.value;
       }
-      
+
       // Create the payout record within the transaction
       const payout = new Payout({
         checkOutId: doc.checkOutId,
@@ -221,6 +222,26 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
       // Save the payout within the same transaction
       await payout.save();
       console.log("Payout =====>  ", payout);
+      const vendorWallet: IWallet | null = await Wallet.findOne({
+        user: payout.vendorAccount,
+      });
+      console.log("vendorWallet ", vendorWallet);
+      if (vendorWallet) {
+        const meta: ItopUps = {
+          walletAccountNo: vendorWallet.walletAccountNo,
+          payoutConversionMetrics: payout.conversionMetaData,
+          operationType: "credit",
+          payoutId: payout._id,
+          verifiedTransactionId: verifiedTransaction._id,
+        };
+        //Wrong implementation , job queue must be used
+        // await WalletService.updateWalletBalance(
+        //   "payout-topup",
+        //   payout.payout,
+        //   meta
+        // );
+        await addWalletBalanceUpdateJob("payout-topup", payout.payout, meta);
+      }
 
       if (
         ADMIN_SETTINGS.referrals.isActive &&
@@ -230,7 +251,7 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
         const referrer = await mongoose
           .model("accounts")
           .findOne({ referralCode: buyer.referredBy });
-        console.log("referrer ", referrer);
+
         if (referrer) {
           const transactionIsRewardable: any =
             await checkIfTransactionHasReward(verifiedTransaction);

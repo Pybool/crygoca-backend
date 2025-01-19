@@ -2,6 +2,7 @@ import express from "express";
 import { flutterWaveController } from "../../controllers/v1/flutterwave.controller";
 import axios from "axios";
 import { FlutterWaveService } from "../../services/v1/payments/flutterwave.service";
+import { getIntlBanksForCountry } from "../../services/v1/wallet/banks.service";
 
 const flwRouter = express.Router();
 
@@ -23,6 +24,76 @@ flwRouter.post(
 flwRouter.post(
   "/flw/initiate-ach-payment",
   flutterWaveController.initiateACHPayment
+);
+
+flwRouter.get("/flw/get-intl-banks", async (req, res) => {
+  try {
+    const countryCode = req.query.country as string;
+    const result = await getIntlBanksForCountry(countryCode)
+    return res.status(200).json(result);
+  }
+  catch (error) {
+    console.error("Error fetching banks:", error);
+    res.status(500).json({ error: "Failed to fetch banks" });
+  }
+})
+
+
+
+flwRouter.get("/flw/get-banks", async (req, res) => {
+  try {
+    const country = req.query.country as string;
+    const BASE_URL = "https://api.flutterwave.com/v3/banks/";
+
+    if (!country) {
+      return res
+        .status(400)
+        .json({ error: "Missing required query parameters: country" });
+    }
+
+    const url = `${BASE_URL}${country}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.FLW_SECRET_KEY!}`,
+      },
+    });
+
+    // Return the response from Flutterwave API
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Error fetching banks:", error);
+    res.status(500).json({ error: "Failed to fetch banks" });
+  }
+});
+
+
+
+flwRouter.get(
+  "/flw/get-bank-branches",
+  (async(req, res)=>{
+    try {
+      const bankId = req.query.bankId as string;
+      const BASE_URL = `https://api.flutterwave.com/v3/banks/${bankId}/branches`;
+  
+      if (!bankId) {
+        return res
+          .status(400)
+          .json({ error: "Missing required query parameters: bankId" });
+      }
+  
+      const url = `${BASE_URL}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X`,
+        },
+      });
+  
+      // Return the response from Flutterwave API
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch bank branches" });
+    }
+  })
 );
 
 flwRouter.get("/flw/convert-currencies", async (req, res) => {
@@ -52,6 +123,9 @@ flwRouter.get("/flw/convert-currencies", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch conversion rate" });
   }
 });
+
+
+
 
 flwRouter.post("/flw/payment/webhook", async (req, res) => {
   // Uncomment for production

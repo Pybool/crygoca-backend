@@ -37,6 +37,7 @@ passport_1.default.use(new GoogleStrategy({
         displayName: profile.displayName,
         accessToken: accessToken,
         refreshToken: refreshToken,
+        referralCode: req.referralCode
     };
     const result = yield authentication_social_service_1.SocialAuthentication.googleAuthentication(user);
     return done(null, profile);

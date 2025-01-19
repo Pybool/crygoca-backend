@@ -603,13 +603,15 @@ const createStatusUpdateNotification = async (
   const userId = listingPurchase.account._id;
   await NotificationModel.create({
     user: userId,
-    title: `Order ${status}`,
+    title: `Your order has new status :${status}`,
     message: `Your order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} is now ${status}.`,
     createdAt: new Date(),
     status: "UNREAD",
     class: "success",
     meta: {
-      url: `/`,
+      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        listingPurchase._id
+      }`,
     },
   });
 

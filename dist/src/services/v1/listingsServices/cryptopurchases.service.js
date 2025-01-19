@@ -607,13 +607,13 @@ const createStatusUpdateNotification = (status, listingPurchase) => __awaiter(vo
     const userId = listingPurchase.account._id;
     yield notifications_model_1.NotificationModel.create({
         user: userId,
-        title: `Order ${status}`,
+        title: `Your order has new status :${status}`,
         message: `Your order "${listingPurchase === null || listingPurchase === void 0 ? void 0 : listingPurchase.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} is now ${status}.`,
         createdAt: new Date(),
         status: "UNREAD",
         class: "success",
         meta: {
-            url: `/`,
+            url: `${process.env.CRYGOCA_FRONTEND_BASE_URL}/notifications?uid=${listingPurchase._id}`,
         },
     });
     const verifiedTransaction = yield verifiedtransactions_model_1.default.findOne({

@@ -44,5 +44,5 @@ const fetchRatesTask = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 // Schedule the task to run every minute using cron
-node_cron_1.default.schedule('* * * * *', fetchRatesTask);
-// cron.schedule("0 * * * *", fetchRatesTask);
+// cron.schedule('* * * * *', fetchRatesTask);
+node_cron_1.default.schedule("0 * * * *", fetchRatesTask);

@@ -16,7 +16,6 @@ const cors_1 = __importDefault(require("cors"));
 const _app_1 = __importDefault(require("./_app"));
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
-// import cors from "cors";
 require("../redis/init.redis");
 require("./init.mongo");
 // import "../backgroundtasks/taskScheduler";
@@ -27,9 +26,11 @@ const authentication_route_1 = __importDefault(require("../routes/v1/authenticat
 const dotenv_1 = require("dotenv");
 const comparison_service_1 = require("../services/v1/conversions/comparison.service");
 const session_1 = require("../middlewares/session");
-require("../services/v1/tasks/flutterwave.service");
-require("../services/v1/tasks/task.service");
-require("../services/v1/tasks/cryptoLiveUpdates.service");
+// import "../services/v1/tasks/flutterwave.service";
+// import "../services/v1/tasks/task.service";
+// import "../services/v1/tasks/cryptoLiveUpdates.service";
+require("../services/v1/tasks/wallet/bankWithdrawals.worker");
+const socket_io_1 = require("socket.io");
 const enquiries_service_1 = require("../services/v1/contact/enquiries.service");
 const cryptoCurrencies_route_1 = __importDefault(require("../routes/v1/cryptoCurrencies.route"));
 const flutterwave_route_1 = __importDefault(require("../routes/v1/flutterwave.route"));
@@ -42,12 +43,29 @@ const authentication_social_service_1 = require("../services/v1/auth/authenticat
 const jwt_1 = require("../middlewares/jwt");
 const profile_routes_1 = __importDefault(require("../routes/v1/profile.routes"));
 const payouts_route_1 = __importDefault(require("../routes/v1/payouts.route"));
+const wallet_routes_1 = __importDefault(require("../routes/v1/wallet.routes"));
+const banks_service_1 = require("../services/v1/wallet/banks.service");
+const socketAuth_1 = require("../middlewares/socketAuth");
+const socket_controller_1 = require("../controllers/v1/sockets/socket.controller");
+const notifications_routes_1 = __importDefault(require("../routes/v1/notifications.routes"));
 (0, dotenv_1.config)();
 (0, dotenv_1.config)({ path: `.env.prod` });
 // Create an Express application
 const PORT = process.env.CRYGOCA_MAIN_SERVER_PORT;
 const SERVER_URL = "0.0.0.0";
 const server = http_1.default.createServer(_app_1.default);
+const io = new socket_io_1.Server(server, {
+    cors: {
+        origin: "*",
+    },
+});
+io.use(socketAuth_1.socketAuth);
+const wrap = (middleware) => (socket, next) => {
+    middleware(socket.request, {}, next);
+};
+io.use(wrap(session_1.sessionMiddleware));
+_app_1.default.set("io", io);
+(0, socket_controller_1.setupSocketHandlers)(io);
 // const corsOptions = {
 //   origin: "*",
 //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -59,12 +77,13 @@ _app_1.default.use((0, cors_1.default)({
         "http://localhost:4200",
         "https://b1d7-105-119-6-63.ngrok-free.app",
         "https://test.crygoca.co.uk",
+        "https://crygoca.co.uk",
     ], // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
 }));
 // Configure body-parser or express.json() with a higher limit
-_app_1.default.use(express_1.default.json({ limit: '50mb' })); // Increase to 10MB or adjust as needed
-_app_1.default.use(express_1.default.urlencoded({ limit: '50mb', extended: true }));
+_app_1.default.use(express_1.default.json({ limit: "10mb" })); // Increase to 10MB or adjust as needed
+_app_1.default.use(express_1.default.urlencoded({ limit: "10mb", extended: true }));
 _app_1.default.use(session_1.sessionMiddleware);
 _app_1.default.use((0, express_session_1.default)({
     secret: "secret",
@@ -86,10 +105,24 @@ _app_1.default.get("/ip", (req, res) => __awaiter(void 0, void 0, void 0, functi
         data: result,
     });
 }));
+_app_1.default.post("/save-banks", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const countryCode = req.body.countryCode;
+    const banks = req.body.banks;
+    const result = yield (0, banks_service_1.saveBanksForCountry)(banks, countryCode);
+    res.send({
+        status: true,
+        data: result,
+    });
+}));
 // Login route
 _app_1.default.post("/auth/google", jwt_1.verifyGoogleToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d;
     req.gAccount = req.user; // Save user in session
-    const result = yield authentication_social_service_1.SocialAuthentication.googleAuthentication(req.gAccount);
+    if (((_b = (_a = req.query) === null || _a === void 0 ? void 0 : _a.referralCode) === null || _b === void 0 ? void 0 : _b.trim()) !== "" &&
+        ((_d = (_c = req.query) === null || _c === void 0 ? void 0 : _c.referralCode) === null || _d === void 0 ? void 0 : _d.trim()) !== null) {
+        req.referralCode = req.query.referralCode;
+    }
+    const result = yield authentication_social_service_1.SocialAuthentication.googleAuthentication(req);
     res.status(200).send(result); // Return user data to frontend
 }));
 _app_1.default.get("/auth/google/callback", passport_auth_1.default.authenticate("google", { failureRedirect: "/" }), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -165,6 +198,8 @@ _app_1.default.use("/api/v1", orders_routes_1.default);
 _app_1.default.use("/api/v1", dashboard_routes_1.default);
 _app_1.default.use("/api/v1", payouts_route_1.default);
 _app_1.default.use("/api/v1/profile", profile_routes_1.default);
+_app_1.default.use("/api/v1/wallet", wallet_routes_1.default);
+_app_1.default.use("/api/v1/notifications", notifications_routes_1.default);
 _app_1.default.use(express_1.default.static("public"));
 const staticFolder = process.env.PUBLIC_FOLDER;
 const oneYearInMilliseconds = 365 * 24 * 60 * 60 * 1000; // 1 year in milliseconds

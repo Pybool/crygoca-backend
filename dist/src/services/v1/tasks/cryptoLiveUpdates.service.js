@@ -68,6 +68,6 @@ const fetchCryptoLiveUpdates = () => __awaiter(void 0, void 0, void 0, function*
     processTask(0);
 });
 // Schedule the task to run every hour
-// cron.schedule("0 * * * *", fetchCryptoLiveUpdates);
-node_cron_1.default.schedule('* * * * *', fetchCryptoLiveUpdates);
+node_cron_1.default.schedule("0 * * * *", fetchCryptoLiveUpdates);
+// cron.schedule('* * * * *', fetchCryptoLiveUpdates);
 console.log("Cron job scheduled to run every hour.");

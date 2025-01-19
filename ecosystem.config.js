@@ -5,7 +5,7 @@ module.exports = {
   apps: [
     {
       name: "crygoca",
-      script: "./dist/server.js",
+      script: "./dist/src/bootstrap/server.js",
       env_production: {
         NODE_ENV: "prod",
         ...process.env
