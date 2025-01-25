@@ -717,9 +717,9 @@ export class WalletService {
         }
       }
 
-      if (20 > 10) {
-        throw new Error("Error to test rollback mechanism");
-      }
+      // if (20 > 10) {
+      //   throw new Error("Error to test rollback mechanism");
+      // }
 
       if (wallet) {
         walletTransaction = await WalletTransaction.create({
