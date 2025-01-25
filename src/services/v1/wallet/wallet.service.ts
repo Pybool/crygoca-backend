@@ -561,9 +561,9 @@ export class WalletService {
         throw new Error("No wallet was fund for account number.");
       }
 
-      if (1 < 2) {
-        throw new Error("Just a test error");
-      }
+      // if (1 < 2) {
+      //   throw new Error("Just a test error");
+      // }
 
       if (wallet) {
         // Add rollback for debit (re-add the amount if something goes wrong later)
