@@ -7,6 +7,7 @@ import ReferralReward from "../../../models/referralrewards.model";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import { getCountryCodeByCurrencyCode } from "../../../models/countries";
 import { convertCurrency } from "../conversions/comparison.service";
+import { DashboardWalletService } from "./dashboard-wallet.service";
 
 interface Data {
   resultForward?: number;
@@ -49,6 +50,7 @@ export class DashboardService {
         req
       );
       const accountDateFilter = DashboardService.getAccountDateFilter(req);
+      const walletStatistics = await DashboardService.fetchWalletTransactionData(req);
       return {
         status: true,
         data: {
@@ -61,6 +63,7 @@ export class DashboardService {
           popularCryptoData,
           recentTransactions: recentTransactions,
           accountDateFilter,
+          walletStatistics
         },
       };
     } catch (error: any) {
@@ -745,6 +748,18 @@ export class DashboardService {
       }
       return recentTransactions;
     } catch (error: any) {
+      return null;
+    }
+  }
+
+  public static async fetchWalletTransactionData(req:Xrequest){
+    try{
+      const accountId:string = req.accountId! as string;
+      const timePeriod:any = req.query.timePeriod || 'daily';
+      const operationType:any = req.query.operationType || 'credit';
+      const walletStatistics = await DashboardWalletService.fetchWalletTransactionData(accountId, operationType, timePeriod);
+      return walletStatistics;
+    }catch(error:any){
       return null;
     }
   }

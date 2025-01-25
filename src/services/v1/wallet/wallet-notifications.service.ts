@@ -6,9 +6,11 @@ import {
 import { NotificationModel } from "../../../models/notifications.model";
 import mailActions from "../mail/mailservice";
 import { NotificationService } from "../notifications/notification.service";
+import { IWallet } from "../../../models/wallet.model";
 
 export class WalletNotificationService {
   public static async createCreditNotification(
+    wallet:IWallet,
     walletTransaction: IWalletTransaction,
     isReversal: boolean = false
   ) {
@@ -40,11 +42,13 @@ export class WalletNotificationService {
       hasTransaction: true,
       walletTransaction,
       notification,
+      wallet
     });
     return notification;
   }
 
   public static async createDebitNotification(
+    wallet:IWallet,
     walletTransaction: IWalletTransaction,
     isReversal: boolean = false
   ) {
@@ -75,6 +79,7 @@ export class WalletNotificationService {
       hasTransaction: true,
       walletTransaction,
       notification,
+      wallet
     });
     return notification;
   }
@@ -85,6 +90,7 @@ export class WalletNotificationService {
       hasTransaction: boolean;
       walletTransaction: IWalletTransaction;
       notification: any;
+      wallet:IWallet
     }
   ) {
     await NotificationService.sendNotificationToUser(

@@ -72,4 +72,26 @@ export const dashboardController: any = {
       res.status(500).json({ status: false, message: error?.message });
     }
   },
+
+  _fetchWalletTransactionData: async (
+    req: Xrequest,
+    res: Response
+    ) => {
+    try {
+      const result = await DashboardService.fetchWalletTransactionData(req);
+      if (result) {
+        res.status(200).json({
+          status: true,
+          data: result
+        });
+      } else {
+        return res.status(422).json({
+          status: false,
+          data: result
+        });
+      }
+    } catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
 }

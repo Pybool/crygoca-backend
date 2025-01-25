@@ -13,6 +13,7 @@ export interface IWalletTransaction extends Document {
   user: mongoose.Types.ObjectId | IuserDetails;
   userDetails?: any;
   amount: number;
+  priorBalance?:number;
   creditWalletAccountNo?: string;
   debitWalletAccountNo?: string;
   payout?: any;
@@ -42,6 +43,7 @@ const WalletTransactionSchema = new Schema<IWalletTransaction>({
     required: false,
   },
   amount: { type: Number, required: true, default: 0 },
+  priorBalance:{ type: Number, required: true, default: 0 },
   type: {
     type: String,
     required: true,

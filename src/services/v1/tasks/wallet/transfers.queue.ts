@@ -1,4 +1,4 @@
-import { Queue, Worker, QueueEvents } from "bullmq";
+import { Queue, Worker, QueueEvents, JobType } from "bullmq";
 import REDIS_CONNECTION_CONFIG from "../../../../redis/connection";
 import { ItopUps, WalletService } from "../../wallet/wallet.service";
 
@@ -23,7 +23,11 @@ queueEvents.on("failed", ({ jobId, failedReason }) => {
 
 // Add a job to the queue for wallet operations
 export async function addWalletBalanceUpdateJob(
-  type: "wallet-transfer" | "direct-topup" | "payout-topup" | "wallet-withdrawal",
+  type:
+    | "wallet-transfer"
+    | "direct-topup"
+    | "payout-topup"
+    | "wallet-withdrawal",
   amount: number,
   meta: ItopUps | null,
   transferId?: string, // Concantenation of wallets AccountNo
@@ -43,18 +47,37 @@ export async function addWalletBalanceUpdateJob(
   console.log("Wallet job added to the queue.");
 }
 
+export async function getQueueJobsByStatus(
+  status: JobType = "failed",
+  uuid: string | null = null
+) {
+  try {
+    const existingJobs = await walletQueue.getJobs([status]);
+    if (!uuid) {
+      return existingJobs;
+    } else {
+      const duplicateJob = existingJobs.find(
+        (job) => job.data?.meta?.verifiedTransactionId === uuid
+      );
+      return duplicateJob;
+    }
+  } catch {
+    return null;
+  }
+}
+
 // Add a job to the queue for wallet operations
 export async function addWalletWithdrawalJob(
   type: "wallet-to-bank-withdrawal",
   data: any,
   hash: string,
-  accountId:string
+  accountId: string
 ) {
   await walletQueue.add(type, {
     type,
     withdrawalData: data,
     hash,
-    accountId
+    accountId,
   });
   console.log("Wallet withdrawal job added to the queue.");
 }
@@ -72,12 +95,16 @@ const worker = new Worker(
       saveBeneficiary,
       withdrawalData,
       hash,
-      accountId
+      accountId,
     } = job.data;
-    
 
     if (type === "wallet-to-bank-withdrawal") {
-      return await WalletService.processToLocalBankWithdrawal(type, withdrawalData, hash, accountId);
+      return await WalletService.processToLocalBankWithdrawal(
+        type,
+        withdrawalData,
+        hash,
+        accountId
+      );
     } else {
       await WalletService.updateWalletBalance(
         type,

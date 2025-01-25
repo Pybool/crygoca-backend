@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import bcrypt from "bcryptjs";
+import { generateReferralCode } from "../services/v1/helpers";
 
 const AccountsSchema = new Schema({
   email: {
@@ -155,22 +156,7 @@ AccountsSchema.pre("save", async function (next) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(this.password!, salt);
       this.password = hashedPassword;
-      const generateReferralCode = () => {
-        const length = 13
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        const randomPartLength = length - this.username!.length; // Ensure the code has the desired length
-
-        let referralCode = this.username!.substring(0, 4).toUpperCase(); // Take the first 3 letters of the username
-        // Generate random characters to fill up the remaining part of the referral code
-        for (let i = 0; i < randomPartLength; i++) {
-          const randomIndex = Math.floor(Math.random() * chars.length);
-          referralCode += chars[randomIndex];
-        }
-
-        return referralCode.toUpperCase();
-      };
-      this.referralCode = generateReferralCode();
-
+      this.referralCode = await generateReferralCode(this.username)
     }
     next();
   } catch (error: any) {

@@ -13,6 +13,7 @@ import { getCountryCodeByCurrencyCode } from "../../models/countries";
 import { IWallet, Wallet } from "../../models/wallet.model";
 import Accounts from "../../models/accounts.model";
 import { WalletAuthorization } from "../../services/v1/wallet/wallet-authorizations.service";
+import { WalletFundingService } from "../../services/v1/wallet/wallet-funding.service";
 
 export const createWallet = async (req: Xrequest, res: Response) => {
   try {
@@ -24,20 +25,19 @@ export const createWallet = async (req: Xrequest, res: Response) => {
         message: "No account found for user",
       });
     }
-    const wallet: IWallet | null = await WalletService.createWallet(
-      account._id
-    );
-    if (!wallet) {
-      return res.status(400).json({
-        status: false,
-        message:
-          "Failed to create your wallet, please ensure you have updated preferred currency in profile section or try again later!",
-      });
+    const walletResponse: {
+      status: boolean;
+      message: string;
+      data?: IWallet | null;
+    } = await WalletService.createWallet(account._id);
+
+    if (!walletResponse.status) {
+      return res.status(400).json(walletResponse);
     }
     return res.status(200).json({
       status: true,
       message: "Wallet created successfully",
-      data: wallet,
+      data: walletResponse.data,
     });
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
@@ -56,7 +56,6 @@ export const processWalletTransfer = async (req: Xrequest, res: Response) => {
   let amount: number = 0.0;
 
   try {
-
     const validatedSenderWallet = await WalletService.validateTransfer(
       debitDetails.walletAccountNo,
       creditDetails.walletAccountNo,
@@ -157,12 +156,10 @@ export const processWalletToBankWithdrawals = async (
       throw new Error("Insufficient balance in wallet");
     }
     if (!hashIsSame) {
-      return res
-        .status(200)
-        .json({
-          status: false,
-          message: "Non-matching/Invalid withdrawal request hash",
-        });
+      return res.status(200).json({
+        status: false,
+        message: "Non-matching/Invalid withdrawal request hash",
+      });
     }
     const authorizationResponse =
       await WalletAuthorization.getWithdrawalAuthorization(accountId, hash);
@@ -188,21 +185,14 @@ export const processWalletToBankWithdrawals = async (
 export const getReceipientWallet = async (req: Xrequest, res: Response) => {
   try {
     const walletId: string = req.query.walletId! as string;
+    const accountId: string = req.accountId! as string;
 
-    const wallet: IWallet | null = await WalletService.getReceipientWallet(
-      walletId
-    );
-    if (!wallet) {
-      return res.status(200).json({
-        status: false,
-        message: "Failed to retrieve receipient wallet!",
-      });
-    }
-    return res.status(200).json({
-      status: true,
-      message: "Wallet fetched successfully",
-      data: wallet,
-    });
+    const walletResponse: {
+      status: boolean;
+      message: string;
+      wallet?: IWallet;
+    } = await WalletService.getReceipientWallet(walletId, accountId);
+    return res.status(200).json(walletResponse);
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
   }
@@ -293,3 +283,16 @@ export const walletGetBeneficiaries = async (req: Xrequest, res: Response) => {
     res.status(500).json({ status: false, error: error.message });
   }
 };
+
+export const cardTopUpFundWallet = async (req: Xrequest, res: Response) => {
+  try {
+
+    const response = await WalletFundingService.cardTopUpFundWallet(req);
+    if (response) {
+      return res.status(200).json(response);
+    }
+    throw new Error("Failed to fund wallet");
+  } catch (error: any) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+}

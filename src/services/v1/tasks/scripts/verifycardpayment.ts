@@ -64,8 +64,7 @@ async function verifyCardPayment(data: IverificationData) {
 
 // Function to loop through the queue and process each verification with a delay
 async function processQueue() {
-  const failedVerificationQueue =
-    new FailedVerificationQueue<IverificationData>();
+  const failedVerificationQueue = new FailedVerificationQueue<IverificationData>();
 
   // Get the size of the queue
   let queueSize = await failedVerificationQueue.size();

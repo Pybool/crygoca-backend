@@ -23,6 +23,7 @@ import { getUserCountry } from "../conversions/comparison.service";
 import { SmsService } from "../sms/termii.service";
 import { handleErrors } from "../../../bootstrap/global.error.handler";
 import { WalletService } from "../wallet/wallet.service";
+import { IWallet } from "../../../models/wallet.model";
 
 export class Authentication {
   req: Xrequest;
@@ -47,7 +48,7 @@ export class Authentication {
       }
 
       let referredBy: string | null = null;
-      if (result.referralCode) {
+      if (result?.referralCode) {
         const referrer = await Accounts.findOne({
           referralCode: result.referralCode,
         });
@@ -74,6 +75,7 @@ export class Authentication {
       }
       return { status: false, message: "Registration was unsuccessful!" };
     } catch (error: any) {
+      console.log(error);
       let msg: string = "Registration was unsuccessful!";
       if (error.message.includes("already exists!")) {
         error.status = 200;
@@ -239,8 +241,12 @@ export class Authentication {
     try {
       if (!account.email_confirmed) {
         account.email_confirmed = true;
-        const wallet = await WalletService.createWallet(account._id);
-        if (wallet) {
+        const walletResponse: {
+          status: boolean;
+          message: string;
+          data?: IWallet | null;
+        } = await WalletService.createWallet(account._id);
+        if (walletResponse.status) {
           account.walletCreated = true;
         }
         await account.save();

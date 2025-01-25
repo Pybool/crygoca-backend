@@ -27,7 +27,10 @@ dashboardRouter.get(
   dashboardController._fetchPurchaseSpendTimelineData
 );
 
-
-
+dashboardRouter.get(
+  "/fetch-wallet-timeline-data",
+  decodeExt,
+  dashboardController._fetchWalletTransactionData
+);
 
 export default dashboardRouter;

@@ -19,7 +19,7 @@ import {
 } from "../../../models/wallet-beneficiaries.model";
 import Xrequest from "../../../interfaces/extensions.interface";
 import { WalletService } from "./wallet.service";
-import * as CryptoJS from 'crypto-js';
+import * as CryptoJS from "crypto-js";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -31,20 +31,27 @@ export interface ItopUps {
 }
 
 export class WalletAuthorization {
-
   public static async sendTransferOtp(transferIntent: {
     walletToDebit: string;
     walletToCredit: string;
   }) {
     try {
       if (transferIntent) {
-        let debitWallet: IWallet | null =
-          await WalletService.getReceipientWallet(transferIntent.walletToDebit);
-        let creditWallet: IWallet | null =
-          await WalletService.getReceipientWallet(
-            transferIntent.walletToCredit
-          );
-        if (!debitWallet || !creditWallet) {
+        let debitWalletResponse: {
+          status: boolean;
+          message: string;
+          wallet?: IWallet;
+        } = await WalletService.getReceipientWallet(
+          transferIntent.walletToDebit
+        );
+        let creditWalletResponse: {
+          status: boolean;
+          message: string;
+          wallet?: IWallet;
+        } = await WalletService.getReceipientWallet(
+          transferIntent.walletToCredit
+        );
+        if (!debitWalletResponse.wallet || !creditWalletResponse.wallet) {
           return {
             status: false,
             message: "Creditor/Debitor was not found for this request",
@@ -52,7 +59,9 @@ export class WalletAuthorization {
         }
         const otp: string = generateOtp();
         console.log("Transfers OTP ", otp);
-        let clonedWallet = JSON.parse(JSON.stringify(debitWallet));
+        let clonedWallet = JSON.parse(
+          JSON.stringify(debitWalletResponse.wallet)
+        );
         console.log("clonedWallet ==> ", clonedWallet);
         await setExpirableCode(
           `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`,
@@ -91,13 +100,21 @@ export class WalletAuthorization {
   }) {
     try {
       if (transferIntent) {
-        let debitWallet: IWallet | null =
-          await WalletService.getReceipientWallet(transferIntent.walletToDebit);
-        let creditWallet: IWallet | null =
-          await WalletService.getReceipientWallet(
-            transferIntent.walletToCredit
-          );
-        if (!debitWallet || !creditWallet) {
+        let debitWalletResponse: {
+          status: boolean;
+          message: string;
+          wallet?: IWallet;
+        } = await WalletService.getReceipientWallet(
+          transferIntent.walletToDebit
+        );
+        let creditWalletResponse: {
+          status: boolean;
+          message: string;
+          wallet?: IWallet;
+        } = await WalletService.getReceipientWallet(
+          transferIntent.walletToCredit
+        );
+        if (!debitWalletResponse.wallet || !creditWalletResponse.wallet) {
           return {
             status: false,
             message: "Creditor/Debitor was not found for this request",
@@ -244,7 +261,7 @@ export class WalletAuthorization {
     }
   }
 
-  public static comparePayloadHashes(hash:string, payload: any) {
+  public static comparePayloadHashes(hash: string, payload: any) {
     // Convert the payload to a string
     const payloadString = JSON.stringify(payload);
 
@@ -253,7 +270,7 @@ export class WalletAuthorization {
       CryptoJS.enc.Hex
     );
 
-    console.log('Comparing Payload hashes:',hash, hashedPayload);
+    console.log("Comparing Payload hashes:", hash, hashedPayload);
     return hashedPayload === hash;
   }
 }

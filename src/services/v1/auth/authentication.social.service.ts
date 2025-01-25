@@ -1,5 +1,6 @@
 import jwthelper from "../../../helpers/jwt_helper";
 import Accounts from "../../../models/accounts.model";
+import { generateReferralCode } from "../helpers";
 import { WalletService } from "../wallet/wallet.service";
 
 interface IGoogleUser {
@@ -12,21 +13,6 @@ interface IGoogleUser {
   createdAt?: Date;
   lastLogin?: Date;
 }
-
-const generateReferralCode = (googleId:any) => {
-  const length = 13
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const randomPartLength = length - googleId!.length; // Ensure the code has the desired length
-
-  let referralCode = googleId!.substring(0, 4).toUpperCase(); // Take the first 3 letters of the username
-  // Generate random characters to fill up the remaining part of the referral code
-  for (let i = 0; i < randomPartLength; i++) {
-    const randomIndex = Math.floor(Math.random() * chars.length);
-    referralCode += chars[randomIndex];
-  }
-
-  return referralCode.toUpperCase();
-};
 
 export class SocialAuthentication {
   public static async googleAuthentication(req:any) {
@@ -63,7 +49,7 @@ export class SocialAuthentication {
             await referrer.save(); // Save the updated referrer
           }
         }
-        googleUser.referralCode = generateReferralCode(`${googleUser.firstname}${googleUser.lastname}`)
+        googleUser.referralCode = await generateReferralCode(`${googleUser.firstname}${googleUser.lastname}`)
         googleUser.avatar = googleUser.avatar;
         googleUser.createdAt = new Date();
         googleUser.lastLogin = new Date();

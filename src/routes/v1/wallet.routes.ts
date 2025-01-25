@@ -9,10 +9,9 @@ import {
   verifyTransferOtp,
   sendWithdrawalOtp,
   verifyWithdrawalOtp,
-  walletGetBeneficiaries
+  walletGetBeneficiaries,
+  cardTopUpFundWallet
 } from "../../controllers/v1/wallet.controller";
-import mongoose from "mongoose";
-import { WalletService } from "../../services/v1/wallet/wallet.service";
 import { fetchTransactions } from "../../controllers/v1/waalet.transaction.controller";
 
 const walletRouter = express.Router();
@@ -37,6 +36,10 @@ walletRouter.post("/send-withdrawal-otp", decode, sendWithdrawalOtp);
 walletRouter.post("/verify-withdrawal-otp", decode, verifyWithdrawalOtp);
 
 walletRouter.get("/fetch-beneficiaries", decode, walletGetBeneficiaries);
+
+walletRouter.post("/card-topup-fund-wallet", decode, cardTopUpFundWallet);
+
+
 
 
 

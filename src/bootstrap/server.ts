@@ -3,9 +3,9 @@ import app from "./_app";
 import express, { Request, Response } from "express";
 import http from "http";
 import "../redis/init.redis";
+
+// import "../redis-subscriber";
 import "./init.mongo";
-// import "../backgroundtasks/taskScheduler";
-// import "./services/v1/tasks/task.service";
 import compareRoute from "../routes/v1/compare.routes";
 import liveRates from "../routes/v1/liveCurrencies.routes";
 import authRouter from "../routes/v1/authentication.route";
@@ -14,8 +14,8 @@ import { getUserCountry } from "../services/v1/conversions/comparison.service";
 import { sessionMiddleware } from "../middlewares/session";
 
 // import "../services/v1/tasks/flutterwave.service";
-// import "../services/v1/tasks/task.service";
-// import "../services/v1/tasks/cryptoLiveUpdates.service";
+import "../services/v1/tasks/scripts/cryptoLiveUpdates";
+import "../services/v1/tasks/scripts/livecurrencies";
 import "../services/v1/tasks/wallet/bankWithdrawals.worker";
 
 import { Server as SocketIOServer } from "socket.io";
@@ -37,9 +37,12 @@ import { saveBanksForCountry } from "../services/v1/wallet/banks.service";
 import { CustomSocket, socketAuth } from "../middlewares/socketAuth";
 import { setupSocketHandlers } from "../controllers/v1/sockets/socket.controller";
 import notificationRouter from "../routes/v1/notifications.routes";
+import { generateReferralCode } from "../services/v1/helpers";
+import { scheduleVerificationJob } from "../services/v1/jobs/payment-verification/processPaymentQueue";
+// import { addJob } fro../dev/interprocessjobjob";
 
 dotenvConfig();
-dotenvConfig({ path: `.env.prod` });
+dotenvConfig({ path: `.env` });
 // Create an Express application
 const PORT = process.env.CRYGOCA_MAIN_SERVER_PORT! as string;
 const SERVER_URL = "0.0.0.0";
@@ -212,6 +215,31 @@ app.get("/profile", (req, res) => {
   res.json(req.user);
 });
 
+
+app.get("/test-referal-code", async(req:any, res:any)=>{
+  const username = req.query.username! as string;
+  const referralCode: string = await generateReferralCode(username);
+  return res.status(200).json({
+    status: true,
+    message:" Referral code was generated",
+    data: referralCode
+  })
+})
+
+app.get("/test-payment-verification-job", async(req:any, res:any)=>{
+  const jobData = {
+    eventName: "card-payment-verification",
+    paymentReference: 123456,
+    expectedAmount: 5000,
+    expectedCurrency: "NGN",
+  };
+  // addJob(jobData)
+  return res.status(200).json({
+    status: true,
+    message:" Referral code was generated",
+  })
+})
+
 app.post("/api/v1/contact", enquiriesService);
 
 app.use("/api/v1", compareRoute);
@@ -260,6 +288,7 @@ function generateAsciiArt(text: string) {
   |  😊 Development Server started successfully.            |
   |  🎧 Listening on port ${PORT}...                           |
   |  💿 Database: CRYGOCA                                   |
+  |  👨🏽‍💻Author: Emmanuel Eko @Adonyneus                |
    ${line}
   `;
 }
