@@ -26,6 +26,7 @@ import { WithdrawalStatusQueue } from "./withdrawals-status.queue";
 import { addWalletBalanceUpdateJob } from "../tasks/wallet/transfers.queue";
 import { WalletFailedtasksHandler } from "./wallet-failurehandler.service";
 import { randomUUID } from "crypto";
+import Payout from "../../../models/payouts.model";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -441,6 +442,11 @@ export class WalletService {
     const reference = generateReferenceCode("CWP-");
 
     try {
+      const payout = await Payout.findOne({_id: meta.payoutId});
+      if(!payout){
+        throw new Error("No payout exists for meta.payoutId")
+      }
+      
       const positiveAmount = Math.abs(amount);
       let operation = { $inc: { balance: -1 * positiveAmount } }; // Debit Operation
       if (meta.operationType === "credit") {
@@ -518,6 +524,9 @@ export class WalletService {
             walletTransaction!
           );
       });
+      payout.status = "Completed"
+      payout.payoutDate = new Date();
+      await payout.save()
 
       console.log("Wallet operations completed successfully.");
     } catch (error: any) {
