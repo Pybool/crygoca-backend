@@ -57,12 +57,14 @@ export class WalletAuthorization {
             message: "Creditor/Debitor was not found for this request",
           };
         }
-        const otp: string = generateOtp();
+        let otp: string = generateOtp();
+        if(process.env.MOCK_EXCHANGE_RATE==='true'){
+          otp = "1234"
+        }
         console.log("Transfers OTP ", otp);
         let clonedWallet = JSON.parse(
           JSON.stringify(debitWalletResponse.wallet)
         );
-        console.log("clonedWallet ==> ", clonedWallet);
         await setExpirableCode(
           `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`,
           "transfers-otp",
@@ -125,6 +127,7 @@ export class WalletAuthorization {
           `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`
         );
         console.log("cachedCode", cachedCode);
+        console.log("OTPS ", cachedCode?.code, transferIntent.otp)
         if (cachedCode) {
           if (cachedCode?.code === transferIntent.otp) {
             return {

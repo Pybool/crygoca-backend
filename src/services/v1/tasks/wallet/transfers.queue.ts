@@ -31,7 +31,7 @@ export async function addWalletBalanceUpdateJob(
   amount: number,
   meta: ItopUps | null,
   transferId?: string, // Concantenation of wallets AccountNo
-  debitDetails?: { walletAccountNo: string; currency: string; amount: number },
+  debitDetails?: { walletAccountNo: string; currency: string; amount: number, otp?:string },
   creditDetails?: { walletAccountNo: string; currency: string; amount: number },
   saveBeneficiary?: boolean
 ) {

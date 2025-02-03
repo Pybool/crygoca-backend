@@ -6,7 +6,8 @@ const failureRegistrySchema = new mongoose.Schema({
   meta: { type: Object, default: null },
   amount: { type: Number, default: 0 },
   cycleCount: { type: Number, default: 0 },
-  status: { type: String, default: "pending", enum:["pending", "manual-resolve"] }, // "pending", "manual-resolve"
+  status: { type: String, default: "pending", enum:["pending", "manual-resolve"] },
+  createdAt:{ type: Date , required: false},
 });
 
 const FailureRegistry = mongoose.model("FailureRegistry", failureRegistrySchema);

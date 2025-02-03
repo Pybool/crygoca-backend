@@ -1,6 +1,23 @@
+import logger from "../../bootstrap/logger";
 import Accounts from "../../models/accounts.model";
 
+import mongoose from "mongoose";
+
 const crypto = require("crypto");
+
+
+
+/**
+ * Disconnects the MongoDB connection gracefully.
+ */
+export async function disconnectDatabase() {
+  try {
+    await mongoose.connection.close(); // Close all active connections
+    logger.info("MongoDB connection closed successfully.");
+  } catch (error) {
+    logger.error("Error closing MongoDB connection:", error);
+  }
+}
 
 
 // Helper method to generate a random alphanumeric string of a given length

@@ -1,0 +1,22 @@
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:00:49.343+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:00:49.347+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:00:49.349+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:01:53.289+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:01:53.291+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:01:53.294+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:29:15.873+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:29:15.876+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:29:15.878+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:45:12.438+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:45:12.445+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-29T12:45:12.450+01:00"}
+error: Transfer failed:TypeError: terminated {"timestamp":"2025-01-30T00:12:49.696+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-30T00:17:08.906+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-30T00:17:08.909+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-30T00:17:08.911+01:00"}
+error: Otp send failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:44:26.097+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:44:28.120+01:00"}
+error: Otp send failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:55:02.129+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:55:04.193+01:00"}
+error: Otp send failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:56:25.442+01:00"}
+error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:56:27.465+01:00"}

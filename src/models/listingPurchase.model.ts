@@ -234,12 +234,6 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
           payoutId: payout._id,
           verifiedTransactionId: verifiedTransaction._id,
         };
-        //Wrong implementation , job queue must be used
-        // await WalletService.updateWalletBalance(
-        //   "payout-topup",
-        //   payout.payout,
-        //   meta
-        // );
         await addWalletBalanceUpdateJob("payout-topup", payout.payout, meta);
       }
 

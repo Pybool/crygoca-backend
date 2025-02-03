@@ -67,13 +67,3 @@ export class Cache<T = any> {
     await this.redisClient.quit();
   }
 }
-
-
-const cache = new Cache();
-// Handle termination signals
-process.on('SIGINT', async () => {
-  console.log("Closing Redis client...");
-  await cache.clear();
-  await cache.close();
-  process.exit(0);
-});

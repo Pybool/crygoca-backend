@@ -1,28 +1,65 @@
-import { Worker } from "bullmq";
 import REDIS_CONNECTION_CONFIG from "../../../../redis/connection";
-
+import { Worker } from "bullmq";
+import CryptoListingPurchase from "../../../../models/listingPurchase.model";
+import Accounts from "../../../../models/accounts.model";
+import { NotificationService } from "../../notifications/notification.service";
+import CryptoListing from "../../../../models/saleListing.model";
 const redisConnection = REDIS_CONNECTION_CONFIG.generic;
 
-// import { processQueue } from "./path-to-your-script"; // Import your processQueue logic
-
-// Create a BullMQ worker
 const worker = new Worker(
-  "payment-verification-queue", // Queue name
+  "payment-verification-queue",
   async (job) => {
-    console.log(`Processing job: ${job.name}`);
+    const { tx_ref } = job.data;
+    console.log("Starting job====> ", tx_ref)
 
-    // Call your queue processing logic
-    // await processQueue();
+    let listingPurchase: any = await CryptoListingPurchase.findOne({
+      checkOutId: tx_ref,
+    })
+      .populate("account")
+      .populate("cryptoListing");
+
+    if (listingPurchase) {
+      listingPurchase.paymentConfirmed = true;
+      listingPurchase.fulfillmentStatus = "Pending";
+      await listingPurchase.save();
+
+      // Update cryptoListing units
+      if (listingPurchase.cryptoListing) {
+        const cryptoListing = await CryptoListing.findById(
+          listingPurchase.cryptoListing._id
+        );
+        if (cryptoListing) {
+          cryptoListing.units -= listingPurchase.units; // Deduct purchased units
+          await cryptoListing.save();
+        }
+      }
+
+      listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
+      listingPurchase.cryptoListing.account = await Accounts.findOne({
+        _id: listingPurchase.cryptoListing.account,
+      });
+
+      console.log(
+        "Notifications cryptoListing ",
+        listingPurchase.cryptoListing
+      );
+      await NotificationService.createNewSellerPurchaseNotifications(
+        listingPurchase
+      );
+      await NotificationService.createNewBuyerPurchaseNotifications(
+        listingPurchase
+      );
+    }
   },
-  { connection: redisConnection }
+  {
+    connection: redisConnection,
+  }
 );
 
-// Handle worker events
-worker.on("completed", (job:any) => {
-  console.log(`Job completed: ${job.id}`);
+worker.on("completed", (job) => {
+  console.log(`✅ Job ${job.id} completed successfully.`);
 });
 
-worker.on("failed", (job:any, err) => {
-  console.error(`Job failed: ${job.id}`, err);
+worker.on("failed", (job: any, err) => {
+  console.error(`❌ Job ${job.id} failed:`, err);
 });
-console.log("done")

@@ -71,16 +71,53 @@ export async function convertCurrency(
       data.amount
     }`;
 
+    console.log("process.env.MOCK_EXCHANGE_RATE==='true'", process.env.MOCK_EXCHANGE_RATE)
+
+    if(process.env.MOCK_EXCHANGE_RATE==='true'){
+      let value = 0.00
+      if(data.currencyFrom=='USD' && data.currencyTo=='GHS'){
+        value = 15.30
+      }
+      if(data.currencyFrom=='GHS' && data.currencyTo=='USD'){
+        value = 0.065
+      }
+      if(data.currencyFrom=='USD' && data.currencyTo=='ZAR'){
+        value = 18.50
+      }
+      if(data.currencyFrom=='ZAR' && data.currencyTo=='USD'){
+        value = 0.054
+      }
+      if(data.currencyFrom=='GHS' && data.currencyTo=='ZAR'){
+        value = 1.20
+      }
+      if(data.currencyFrom=='ZAR' && data.currencyTo=='GHS'){
+        value = 0.83
+      }
+
+      return {status: true, data:{
+        "meta": {
+          "last_updated_at": "2025-01-29T12:59:59Z"
+        },
+        "data": {
+          [data.currencyTo]: {
+            "code": data.currencyTo,
+            "value": value
+          }
+        }
+      }}
+    }
+
     console.log("URL ", url);
     const cacheData = await memCache.get(url);
     if (cacheData) {
-      console.log("Fetching conversion from cache");
+      console.log("Fetching conversion from cache", cacheData);
       return cacheData;
     } else {
       const response = await axios.get(url);
       if (response.status) {
         let responseData: any = response.data;
         memCache.set(url, { status: true, data: responseData }, 14400);
+        console.log("Exchange rate ",{ status: true, data: responseData })
         return { status: true, data: responseData };
       }
       return { status: false, data: null };

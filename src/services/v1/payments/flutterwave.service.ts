@@ -162,7 +162,6 @@ export class FlutterWaveService {
       }
     } catch (error) {
       console.error("Error verifying payment:", error);
-      throw error;
     }
   }
 

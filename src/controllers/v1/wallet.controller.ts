@@ -52,15 +52,18 @@ export const processWalletTransfer = async (req: Xrequest, res: Response) => {
     sourceCurrency,
     targetCurrency,
     saveBeneficiary,
+    otp
   } = req.body;
   let amount: number = 0.0;
 
   try {
+    console.log("Transfer otp from test ", otp)
     const validatedSenderWallet = await WalletService.validateTransfer(
       debitDetails.walletAccountNo,
       creditDetails.walletAccountNo,
       sourceCurrency,
-      sourceAmount
+      sourceAmount,
+      otp
     );
 
     if (!validatedSenderWallet) {
@@ -114,6 +117,7 @@ export const processWalletTransfer = async (req: Xrequest, res: Response) => {
     debitDetails.amount = sourceAmount; // Source/Raw amount
     debitDetails.currency = sourceCurrency;
   }
+  debitDetails.otp = otp;
   try {
     const meta: ItopUps | null = null;
     const transferId: string = `${debitDetails.accountNumber}-${creditDetails.accountNumber}`;
@@ -127,8 +131,8 @@ export const processWalletTransfer = async (req: Xrequest, res: Response) => {
       saveBeneficiary
     );
     res
-      .status(200)
-      .json({ status: true, message: "Transaction queued successfully" });
+    .status(200)
+    .json({ status: true, message: "Transaction queued successfully" });
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
   }

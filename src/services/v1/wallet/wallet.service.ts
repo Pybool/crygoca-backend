@@ -20,13 +20,17 @@ import {
 import Xrequest from "../../../interfaces/extensions.interface";
 import { WalletNotificationService } from "./wallet-notifications.service";
 import { withdrawToLocalBankHandler } from "./transfers.handlers";
-import { generateReferenceCode } from "../helpers";
+import { disconnectDatabase, generateReferenceCode } from "../helpers";
 import Withdrawals from "../../../models/withdrawals.model";
 import { WithdrawalStatusQueue } from "./withdrawals-status.queue";
 import { addWalletBalanceUpdateJob } from "../tasks/wallet/transfers.queue";
 import { WalletFailedtasksHandler } from "./wallet-failurehandler.service";
 import { randomUUID } from "crypto";
 import Payout from "../../../models/payouts.model";
+import { WalletAuthorization } from "./wallet-authorizations.service";
+import logger from "../../../bootstrap/logger";
+import { getTestConfig } from "../../../../config";
+import { processRollbacks, registerRollback } from "./rollback.service";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -35,7 +39,7 @@ export interface ItopUps {
   payoutId?: mongoose.Types.ObjectId;
   payoutConversionMetrics?: any;
   verifiedTransactionId?: mongoose.Types.ObjectId;
-  uuid?:string;
+  uuid?: string;
 }
 
 export class WalletService {
@@ -177,6 +181,7 @@ export class WalletService {
       walletAccountNo: string;
       currency: string;
       amount: number;
+      otp?: string;
     },
     creditDetails?: {
       walletAccountNo: string;
@@ -206,7 +211,8 @@ export class WalletService {
     senderWalletAccountNo: string,
     receiverWalletAccountNo: string,
     currency: string,
-    amount: number
+    amount: number,
+    otp: string
   ) {
     // Debit operation: Decrease balance for sender
     const senderWallet: IWallet | null = await Wallet.findOne({
@@ -216,6 +222,26 @@ export class WalletService {
     const receiverWallet: IWallet | null = await Wallet.findOne({
       walletAccountNo: receiverWalletAccountNo,
     });
+
+    const transferIntentWithCode: {
+      walletToDebit: string;
+      walletToCredit: string;
+      otp: string;
+    } = {
+      walletToDebit: senderWalletAccountNo,
+      walletToCredit: receiverWalletAccountNo,
+      otp: otp,
+    };
+
+    const response = await WalletAuthorization.verifyTransferOtp(
+      transferIntentWithCode
+    );
+
+    console.log("Transfer verification response=====> ", response);
+
+    if (!response.status) {
+      throw new Error("Unauthorized transfer attempt");
+    }
 
     console.log(senderWalletAccountNo, currency, amount, senderWallet);
 
@@ -241,7 +267,12 @@ export class WalletService {
   private static async walletTransfer(
     type: string,
     amount: number,
-    debitDetails: { walletAccountNo: string; currency: string; amount: number },
+    debitDetails: {
+      walletAccountNo: string;
+      currency: string;
+      amount: number;
+      otp?: string;
+    },
     creditDetails: {
       walletAccountNo: string;
       currency: string;
@@ -258,7 +289,6 @@ export class WalletService {
     const receiverWalletAccountNo: string = creditDetails.walletAccountNo;
 
     try {
-      
       const senderWalletCurrency: string = debitDetails.currency;
       const reference = generateReferenceCode("CWT-");
 
@@ -266,7 +296,8 @@ export class WalletService {
         senderWalletAccountNo,
         receiverWalletAccountNo,
         senderWalletCurrency,
-        debitDetails.amount
+        debitDetails.amount,
+        debitDetails.otp!
       );
 
       if (!validatedSenderWallet) {
@@ -279,13 +310,20 @@ export class WalletService {
         { $inc: { balance: -1 * debitDetails.amount } },
         { new: true } // Return the updated document
       );
+      if (senderWallet) {
+        senderWallet.updatedAt = new Date();
+        await senderWallet.save();
+      }
 
       // Add rollback for debit (re-add the amount if something goes wrong later)
-      rollbackActions.push(() =>
-        Wallet.updateOne(
-          { walletAccountNo: senderWalletAccountNo },
-          { $inc: { balance: debitDetails.amount } }
-        )
+
+      let rollBackId: string = randomUUID();
+      registerRollback(
+        rollBackId,
+        "UPDATE-ONE",
+        "Wallet",
+        { walletAccountNo: senderWalletAccountNo },
+        { $inc: { balance: debitDetails.amount } }
       );
 
       if (!senderWallet) {
@@ -305,11 +343,13 @@ export class WalletService {
           reference: reference,
         });
 
-        rollbackActions.push(() =>
-          WalletTransaction.deleteOne({
-            _id: senderWalletTransaction!._id,
-          })
-        );
+        // rollBackId = randomUUID();
+        // registerRollback(
+        //   rollBackId,
+        //   "DELETE",
+        //   "WalletTransaction",
+        //   { _id: senderWalletTransaction!._id}
+        // );
 
         await senderWalletTransaction.populate(
           "user",
@@ -321,20 +361,25 @@ export class WalletService {
             senderWallet,
             senderWalletTransaction
           );
-
-        rollbackActions.push(() => {
-          senderWalletTransaction!.operationType = "credit";
-          WalletNotificationService.createCreditNotification(
-            senderWallet,
-            senderWalletTransaction!,
-            true
-          );
+        //Redis Roll back...
+        rollBackId = randomUUID();
+        senderWalletTransaction!.operationType = "credit";
+        registerRollback(rollBackId, "NOTIFICATION", "Notification", {
+          wallet: senderWallet,
+          walletTransaction: senderWalletTransaction,
+          isRollBack: true,
         });
       }
 
-      // if (20 > 10) {
-      //   throw new Error("Error to test rollback mechanism");
-      // }
+      //Testing
+      logger.info("TEST_ERROR " + getTestConfig().TEST_ERROR);
+      console.log("TEST_ERROR " + getTestConfig().TEST_ERROR);
+      if (getTestConfig().TEST_ERROR === "true") {
+        throw new Error("Error to test rollback mechanism");
+      }
+      if (getTestConfig().DISCONNECT_DATABASE === "true") {
+        await disconnectDatabase();
+      }
 
       // Credit operation: Increase balance for receiver
       const receiverWallet = await Wallet.findOneAndUpdate(
@@ -344,11 +389,13 @@ export class WalletService {
       );
 
       // Add rollback for credit (subtract the amount if something goes wrong later)
-      rollbackActions.push(() =>
-        Wallet.updateOne(
-          { walletAccountNo: receiverWalletAccountNo },
-          { $inc: { balance: -1 * creditDetails.amount } }
-        )
+      rollBackId = randomUUID();
+      registerRollback(
+        rollBackId,
+        "UPDATE-ONE",
+        "Wallet",
+        { walletAccountNo: receiverWalletAccountNo },
+        { $inc: { balance: -1 * creditDetails.amount } }
       );
 
       if (!receiverWallet) {
@@ -364,11 +411,13 @@ export class WalletService {
           reference: reference,
         });
 
-        rollbackActions.push(() =>
-          WalletTransaction.deleteOne({
-            _id: receiverWalletTransaction!._id,
-          })
-        );
+        // rollBackId = randomUUID();
+        // registerRollback(
+        //   rollBackId,
+        //   "DELETE",
+        //   "WalletTransaction",
+        //   { _id: receiverWalletTransaction!._id}
+        // );
 
         receiverWalletTransaction = await receiverWalletTransaction.populate(
           "user",
@@ -380,14 +429,13 @@ export class WalletService {
             receiverWallet,
             receiverWalletTransaction
           );
-
-        rollbackActions.push(() =>
-          WalletNotificationService.createDebitNotification(
-            receiverWallet,
-            receiverWalletTransaction!,
-            true
-          )
-        );
+        //Redis Roll back...
+        rollBackId = randomUUID();
+        registerRollback(rollBackId, "NOTIFICATION", "Notification", {
+          wallet: receiverWallet,
+          walletTransaction: receiverWalletTransaction,
+          isRollBack: true,
+        });
       }
 
       if (saveBeneficiary) {
@@ -410,23 +458,13 @@ export class WalletService {
       console.log("Wallet operations completed successfully.");
     } catch (error: any) {
       console.error("Error occurred:", error.message);
-
-      // Perform rollback actions
-      console.log("Rollbacks count ", rollbackActions.length);
-      for (const rollback of rollbackActions) {
-        try {
-          await rollback(); // Execute each rollback operation
-        } catch (rollbackError: any) {
-          console.error("Rollback failed:", rollbackError.message);
-        }
-      }
-
-      console.error("All operations were rolled back.");
+      // Perform rollback actions and save fail job in database or redis
+      await processRollbacks();
       await WalletFailedtasksHandler.registerfailedJob(type, amount, {
         operationType: "wallet-transfer",
-        senderWalletAccountNo:senderWalletAccountNo,
-        receiverWalletAccountNo:receiverWalletAccountNo,
-        verifiedTransactionId: randomUUID()
+        senderWalletAccountNo: senderWalletAccountNo,
+        receiverWalletAccountNo: receiverWalletAccountNo,
+        verifiedTransactionId: randomUUID(),
       });
     }
   }
@@ -442,11 +480,11 @@ export class WalletService {
     const reference = generateReferenceCode("CWP-");
 
     try {
-      const payout = await Payout.findOne({_id: meta.payoutId});
-      if(!payout){
-        throw new Error("No payout exists for meta.payoutId")
+      const payout = await Payout.findOne({ _id: meta.payoutId });
+      if (!payout) {
+        throw new Error("No payout exists for meta.payoutId");
       }
-      
+
       const positiveAmount = Math.abs(amount);
       let operation = { $inc: { balance: -1 * positiveAmount } }; // Debit Operation
       if (meta.operationType === "credit") {
@@ -461,6 +499,7 @@ export class WalletService {
       if (!wallet) {
         throw new Error("No wallet was fund for account number.");
       }
+      let rollBackId: string = randomUUID();
 
       if (wallet) {
         // Add rollback for debit (re-add the amount if something goes wrong later)
@@ -476,6 +515,14 @@ export class WalletService {
             { new: true }
           );
         });
+
+        registerRollback(
+          rollBackId,
+          "UPDATE-ONE",
+          "Wallet",
+          { walletAccountNo: meta.walletAccountNo },
+          inverseOperation
+        );
         walletTransaction = await WalletTransaction.create({
           user: wallet.user,
           payout: meta.payoutId,
@@ -524,23 +571,20 @@ export class WalletService {
             walletTransaction!
           );
       });
-      payout.status = "Completed"
+      rollBackId = randomUUID();
+      registerRollback(rollBackId, "NOTIFICATION", "Notification", {
+        wallet,
+        walletTransaction,
+      });
+      payout.status = "Completed";
       payout.payoutDate = new Date();
-      await payout.save()
+      await payout.save();
 
       console.log("Wallet operations completed successfully.");
     } catch (error: any) {
       console.error("Error occurred:", error.message);
-
       // Perform rollback actions
-      for (const rollback of rollbackActions) {
-        try {
-          await rollback(); // Execute each rollback operation
-        } catch (rollbackError: any) {
-          console.error("Rollback failed:", rollbackError.message);
-        }
-      }
-      console.error("All operations were rolled back.");
+      await processRollbacks();
     }
   }
 
@@ -784,8 +828,8 @@ export class WalletService {
         }
       }
       console.error("All operations were rolled back.");
-      console.log("Meta afer rolback ", meta)
-      meta.uuid = randomUUID()
+      console.log("Meta afer rolback ", meta);
+      meta.uuid = randomUUID();
       await WalletFailedtasksHandler.registerfailedJob(type, amount, meta);
     }
   }

@@ -7,7 +7,11 @@
     "dev": "nodemon src/bootstrap/server.ts",
     "start": "node dist/src/bootstrap/server.js",
     "prebuild": "tsc -p .",
-    "build": "copyfiles -u 1 ./src/templates/* dist/"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "copy-config": "copyfiles config.json dist/",
+    "build": "copyfiles -u 1 ./src/templates/* dist/ && npm run copy-config"
   },
   "keywords": [],
   "author": "",
@@ -46,19 +50,21 @@
     "nodemailer": "^6.9.6",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "socket.io": "^4.7.2",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
+    "@types/crypto-js": "^4.2.2",
     "@types/ejs": "^3.1.5",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.17.10",
     "@types/geoip-lite": "^1.4.4",
     "@types/hapi__joi": "^17.1.14",
     "@types/imap-simple": "^4.2.9",
+    "@types/jest": "^29.5.14",
     "@types/jsdom": "^21.1.6",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/lodash": "^4.14.201",
@@ -69,14 +75,18 @@
     "@types/nodemailer": "^6.4.15",
     "@types/redis": "^4.0.11",
     "@types/socket.io": "^3.0.2",
-    "@types/crypto-js": "^4.2.2",
+    "@types/supertest": "^6.0.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.3.0",
     "fs": "^0.0.1-security",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2",
     "winston": "^3.11.0"
   }
+
 }

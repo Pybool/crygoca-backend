@@ -1,3 +1,4 @@
+import { getTestConfig, updateTestConfig } from "../../../../config";
 import FailureRegistry from "../../../models/jobsFailureRegistry.model";
 import { redisClient } from "../../../redis/init.redis";
 import {
@@ -19,7 +20,8 @@ export class WalletFailedtasksHandler {
   ) {
     try {
       // Check the failure registry in MongoDB
-      console.log("Meta ", meta)
+      console.log("Meta ", meta);
+
       let registryEntry = await FailureRegistry.findOne({
         uuid: meta.verifiedTransactionId?.toString(),
       });
@@ -33,9 +35,10 @@ export class WalletFailedtasksHandler {
           amount,
           status: "manual-resolve",
           cycleCount: 1,
+          createdAt: new Date()
         });
-        return true
-      } 
+        return true;
+      }
     } catch (dbError: any) {
       console.error(
         `Database error occurred: ${dbError.message}. Falling back to Redis.`
@@ -59,11 +62,10 @@ export class WalletFailedtasksHandler {
           "EX",
           60 * 60 * 48 // Optional TTL: 2 days
         );
-        return true
-      } 
+        return true;
+      }
     }
   }
- 
 
   public static async syncRedisToDatabase() {
     const keys = await gRedisClient.keys("wallet_failure_registry:*");

@@ -12,6 +12,7 @@ import mailActions, { IEmailCheckoutData } from "../mail/mailservice";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import Accounts from "../../../models/accounts.model";
 import { formatTimestamp, generateReferenceCode } from "../helpers";
+import { paymentVerificationQueue } from "../jobs/payment-verification/paymentVerificationQueue";
 const memCache = new Cache();
 
 export const fetchCrypto = async (url: string, isTask = false) => {
@@ -211,6 +212,13 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
       };
     }
 
+    if(payload.units > cryptoListing.units){
+      return {
+        status: false,
+        message: "You are ordering more units than are avaialble at this time."
+      }
+    }
+
     if (!payload?.checkOutId) {
       payload.checkOutId = generateReferenceCode();
       payload.createdAt = new Date();
@@ -237,117 +245,17 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
   }
 };
 
-const createNewSellerPurchaseNotifications = async (listingPurchase: any) => {
-  //Notification for seller
-  const userId = listingPurchase.cryptoListing.account._id;
-  const verifiedTransaction = await VerifiedTransactions.findOne({
-    tx_ref: listingPurchase?.checkOutId,
-  });
-  await NotificationModel.create({
-    user: userId,
-    title: `You have a new order "${listingPurchase?.checkOutId}"`,
-    message: `${listingPurchase.account.username} purchased ${listingPurchase.units} of ${listingPurchase.cryptoListing.cryptoName} at ${verifiedTransaction!?.data?.currency}${verifiedTransaction!?.data?.amount || 'N/A'}`,
-    createdAt: new Date(),
-    status: "UNREAD",
-    class: "info",
-    meta: {
-      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
-        listingPurchase._id
-      }`,
-    },
-  });
-
-  
-
-  if (verifiedTransaction) {
-    const email: string = listingPurchase.cryptoListing.account.email;
-    const date = formatTimestamp(listingPurchase.createdAt);
-    const data: IEmailCheckoutData = {
-      checkOutId: listingPurchase?.checkOutId,
-      cryptoName: listingPurchase.cryptoListing.cryptoName,
-      cryptoCode: listingPurchase.cryptoListing.cryptoCode,
-      cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
-      units: listingPurchase.units,
-      currency: listingPurchase.cryptoListing?.currency?.toUpperCase(),
-      amount: verifiedTransaction.data.amount,
-      walletAddress: listingPurchase.walletAddress,
-      buyerUserName: listingPurchase.account.username,
-      sellerUserName: listingPurchase.cryptoListing.account.username,
-      paymentOption: listingPurchase.paymentOption,
-      date,
-    };
-    mailActions.orders.sendSellerOrderReceivedMail(email, data);
-  }
-};
-
-const createNewBuyerPurchaseNotifications = async (listingPurchase: any) => {
-  //Notification for buyer
-  const userId = listingPurchase.account._id;
-  await NotificationModel.create({
-    user: userId,
-    title: `Your order ${listingPurchase?.checkOutId} was successful`,
-    message: `You order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} was successful. The seller has been notified.`,
-    createdAt: new Date(),
-    status: "UNREAD",
-    class: "success",
-    meta: {
-      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
-        listingPurchase._id
-      }`,
-    },
-  });
-
-  const verifiedTransaction = await VerifiedTransactions.findOne({
-    tx_ref: listingPurchase?.checkOutId,
-  });
-  if (verifiedTransaction) {
-    const email: string = listingPurchase.account.email;
-    const date = listingPurchase.createdAt.toLocaleString("en-US", {
-      weekday: "long", // "Monday"
-      year: "numeric", // "2024"
-      month: "long", // "December"
-      day: "numeric", // "1"
-      hour: "2-digit", // "08"
-      minute: "2-digit", // "45"
-      second: "2-digit", // "32"
-      hour12: true, // 12-hour format with AM/PM
-    });
-    const data: IEmailCheckoutData = {
-      checkOutId: listingPurchase?.checkOutId,
-      cryptoName: listingPurchase.cryptoListing.cryptoName,
-      cryptoCode: listingPurchase.cryptoListing.cryptoCode,
-      cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
-      units: listingPurchase.units,
-      currency: listingPurchase.cryptoListing?.currency?.toUpperCase(),
-      amount: verifiedTransaction.data.amount,
-      walletAddress: listingPurchase.walletAddress,
-      buyerUserName: listingPurchase.account.username,
-      sellerUserName: listingPurchase.cryptoListing.account.username,
-      paymentOption: listingPurchase.paymentOption,
-      date,
-    };
-    mailActions.orders.sendBuyerOrderReceivedMail(email, data);
-  }
-};
-
 export const updatePaymentConfirmation = async (tx_ref: string) => {
-  let listingPurchase: any = await CryptoListingPurchase.findOne({
-    checkOutId: tx_ref,
-  })
-    .populate("account")
-    .populate("cryptoListing");
-
-  if (listingPurchase) {
-    listingPurchase.paymentConfirmed = true;
-    listingPurchase.fulfillmentStatus = "Pending";
-    await listingPurchase.save();
-    listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
-    listingPurchase.cryptoListing.account = await Accounts.findOne({
-      _id: listingPurchase.cryptoListing.account,
-    });
-    console.log("Notifcations cryptoListing ", listingPurchase.cryptoListing);
-    await createNewSellerPurchaseNotifications(listingPurchase);
-    await createNewBuyerPurchaseNotifications(listingPurchase);
+  console.log("Updating Payment confirmation ===> ", tx_ref)
+  await paymentVerificationQueue.add(
+    "process-payment",
+    { tx_ref },
+    { attempts: 2, backoff: 5000 }
+  );
+  console.log("Verification job added to the queue.");
+  return {
+    status: true,
+    message: "Your order's payment is being processed."
   }
 };
 

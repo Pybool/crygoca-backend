@@ -38,7 +38,8 @@ import { CustomSocket, socketAuth } from "../middlewares/socketAuth";
 import { setupSocketHandlers } from "../controllers/v1/sockets/socket.controller";
 import notificationRouter from "../routes/v1/notifications.routes";
 import { generateReferralCode } from "../services/v1/helpers";
-import { scheduleVerificationJob } from "../services/v1/jobs/payment-verification/processPaymentQueue";
+import  "../services/v1/jobs/payment-verification/paymentVerificationWorker";
+import { checkRedis } from "../middlewares/checkredis";
 // import { addJob } fro../dev/interprocessjobjob";
 
 dotenvConfig();
@@ -100,6 +101,8 @@ app.use(passport.session());
 
 app.set("trust proxy", true);
 app.use(express.json());
+app.use(checkRedis);
+
 app.get("/", async (req, res) => {
   res.send("Crygoca Backend says hello!");
 });

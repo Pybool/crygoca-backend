@@ -3,8 +3,8 @@ import { config as dotenvConfig } from 'dotenv';
 import logger from './logger';
 import { startCryptoLiveUpdatesWorker } from "../services/v1/tasks/scripts/cryptoLiveUpdates";
 import { startExchangeRatesUpdatesWorker } from '../services/v1/tasks/scripts/livecurrencies';
+import { processRollbacks } from '../services/v1/wallet/rollback.service';
 dotenvConfig()
-dotenvConfig({ path: `.env.${process.env.NODE_ENV}` });
 
 const mongouri:any = process.env.CRYGOCA_MONGODB_URI
 logger.info("MONGO_URI: "+mongouri)
@@ -20,8 +20,13 @@ mongoose
   } as mongoose.ConnectOptions)
   .then(async() => {
     logger.info('MongoDB connected Successfully.')
-    // startCryptoLiveUpdatesWorker();
-    startExchangeRatesUpdatesWorker();
+    
+    if(process.env.NODE_ENV=='dev' || process.env.NODE_ENV=='prod'){
+      // startCryptoLiveUpdatesWorker();
+      startExchangeRatesUpdatesWorker();
+      
+    }
+    processRollbacks()
   })
   .catch((err:any) => logger.info(err.message))
 

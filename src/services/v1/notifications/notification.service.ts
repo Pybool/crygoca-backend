@@ -6,6 +6,9 @@ import {
 import Xrequest from "../../../interfaces/extensions.interface";
 import { NotificationModel } from "../../../models/notifications.model";
 import { IWalletTransaction } from "../../../models/wallet-transaction.model";
+import mailActions, { IEmailCheckoutData } from "../mail/mailservice";
+import VerifiedTransactions from "../../../models/verifiedtransactions.model";
+import { formatTimestamp } from "../helpers";
 
 export class NotificationService {
   static async sendNotificationToAdmins(notification: any) {
@@ -129,6 +132,99 @@ export class NotificationService {
       };
     } catch (error: any) {
       throw error;
+    }
+  }
+
+  static async createNewSellerPurchaseNotifications(listingPurchase: any) {
+    //Notification for seller
+    const userId = listingPurchase.cryptoListing.account._id;
+    const verifiedTransaction = await VerifiedTransactions.findOne({
+      tx_ref: listingPurchase?.checkOutId,
+    });
+    await NotificationModel.create({
+      user: userId,
+      title: `You have a new order "${listingPurchase?.checkOutId}"`,
+      message: `${listingPurchase.account.username} purchased ${listingPurchase.units} of ${listingPurchase.cryptoListing.cryptoName} at ${verifiedTransaction!?.data?.currency}${verifiedTransaction!?.data?.amount || 'N/A'}`,
+      createdAt: new Date(),
+      status: "UNREAD",
+      class: "info",
+      meta: {
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+          listingPurchase._id
+        }`,
+      },
+    });
+  
+    
+  
+    if (verifiedTransaction) {
+      const email: string = listingPurchase.cryptoListing.account.email;
+      const date = formatTimestamp(listingPurchase.createdAt);
+      const data: IEmailCheckoutData = {
+        checkOutId: listingPurchase?.checkOutId,
+        cryptoName: listingPurchase.cryptoListing.cryptoName,
+        cryptoCode: listingPurchase.cryptoListing.cryptoCode,
+        cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
+        units: listingPurchase.units,
+        currency: listingPurchase.cryptoListing?.currency?.toUpperCase(),
+        amount: verifiedTransaction.data.amount,
+        walletAddress: listingPurchase.walletAddress,
+        buyerUserName: listingPurchase.account.username,
+        sellerUserName: listingPurchase.cryptoListing.account.username,
+        paymentOption: listingPurchase.paymentOption,
+        date,
+      };
+      mailActions.orders.sendSellerOrderReceivedMail(email, data);
+    }
+  }
+  
+  static async createNewBuyerPurchaseNotifications (listingPurchase: any){
+    //Notification for buyer
+    const userId = listingPurchase.account._id;
+    await NotificationModel.create({
+      user: userId,
+      title: `Your order ${listingPurchase?.checkOutId} was successful`,
+      message: `You order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} was successful. The seller has been notified.`,
+      createdAt: new Date(),
+      status: "UNREAD",
+      class: "success",
+      meta: {
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+          listingPurchase._id
+        }`,
+      },
+    });
+  
+    const verifiedTransaction = await VerifiedTransactions.findOne({
+      tx_ref: listingPurchase?.checkOutId,
+    });
+    if (verifiedTransaction) {
+      const email: string = listingPurchase.account.email;
+      const date = listingPurchase.createdAt.toLocaleString("en-US", {
+        weekday: "long", // "Monday"
+        year: "numeric", // "2024"
+        month: "long", // "December"
+        day: "numeric", // "1"
+        hour: "2-digit", // "08"
+        minute: "2-digit", // "45"
+        second: "2-digit", // "32"
+        hour12: true, // 12-hour format with AM/PM
+      });
+      const data: IEmailCheckoutData = {
+        checkOutId: listingPurchase?.checkOutId,
+        cryptoName: listingPurchase.cryptoListing.cryptoName,
+        cryptoCode: listingPurchase.cryptoListing.cryptoCode,
+        cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
+        units: listingPurchase.units,
+        currency: listingPurchase.cryptoListing?.currency?.toUpperCase(),
+        amount: verifiedTransaction.data.amount,
+        walletAddress: listingPurchase.walletAddress,
+        buyerUserName: listingPurchase.account.username,
+        sellerUserName: listingPurchase.cryptoListing.account.username,
+        paymentOption: listingPurchase.paymentOption,
+        date,
+      };
+      mailActions.orders.sendBuyerOrderReceivedMail(email, data);
     }
   }
 }
