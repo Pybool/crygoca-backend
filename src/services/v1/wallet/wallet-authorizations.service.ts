@@ -34,6 +34,8 @@ export class WalletAuthorization {
   public static async sendTransferOtp(transferIntent: {
     walletToDebit: string;
     walletToCredit: string;
+    amount:string;
+    user:any
   }) {
     try {
       if (transferIntent) {
@@ -72,9 +74,11 @@ export class WalletAuthorization {
         );
         /*Send otp to email */
         if (clonedWallet.user.useTransferOtpEmail) {
+          transferIntent.user = clonedWallet.user
           mailActions.wallet.sendTransferConfirmationOtp(
             clonedWallet.user.email,
-            Number(otp)
+            Number(otp),
+            transferIntent
           );
         }
         if (clonedWallet.user.useTransferOtpSms) {

@@ -7,6 +7,7 @@ import { NotificationModel } from "../../../models/notifications.model";
 import mailActions from "../mail/mailservice";
 import { NotificationService } from "../notifications/notification.service";
 import { IWallet } from "../../../models/wallet.model";
+import { formatTimestamp } from "../helpers";
 
 export class WalletNotificationService {
   public static async createCreditNotification(
@@ -36,8 +37,10 @@ export class WalletNotificationService {
         }`,
       },
     });
+
+    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt)
     
-    mailActions.wallet.sendCreditAlertMail(user.email, { walletTransaction });
+    mailActions.wallet.sendCreditAlertMail(user.email, { walletTransaction, wallet });
     WalletNotificationService.sendSocketNotification(user._id, {
       hasTransaction: true,
       walletTransaction,
@@ -74,7 +77,9 @@ export class WalletNotificationService {
       },
     });
 
-    mailActions.wallet.sendDebitAlertMail(user.email, { walletTransaction });
+    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt)
+
+    mailActions.wallet.sendDebitAlertMail(user.email, { walletTransaction, wallet });
     await WalletNotificationService.sendSocketNotification(user._id, {
       hasTransaction: true,
       walletTransaction,

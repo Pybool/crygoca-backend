@@ -28,11 +28,11 @@ export async function registerRollback(
   };
 
   try {
-    if (getTestConfig().DISCONNECT_DATABASE === "true") {
-        const ids:any = getTestConfig()?.failedTransactionIds || []
-        ids.push(id)
-        updateTestConfig("failedTransactionIds", ids);
-    }
+    // if (getTestConfig().DISCONNECT_DATABASE === "true") {
+    //     const ids:any = getTestConfig()?.failedTransactionIds || []
+    //     ids.push(id)
+    //     updateTestConfig("failedTransactionIds", ids);
+    // }
     await redis.hset("rollback_actions", id, JSON.stringify(rollbackAction));
     logger.info(`Rollback action registered: ${id}`);
   } catch (error: any) {

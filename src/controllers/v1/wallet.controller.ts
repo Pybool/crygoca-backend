@@ -207,6 +207,8 @@ export const sendTransferOtp = async (req: Xrequest, res: Response) => {
     const transferIntent: {
       walletToDebit: string;
       walletToCredit: string;
+      amount:string;
+      user:any
     } = req.body!;
 
     const response = await WalletAuthorization.sendTransferOtp(transferIntent);

@@ -372,14 +372,14 @@ export class WalletService {
       }
 
       //Testing
-      logger.info("TEST_ERROR " + getTestConfig().TEST_ERROR);
-      console.log("TEST_ERROR " + getTestConfig().TEST_ERROR);
-      if (getTestConfig().TEST_ERROR === "true") {
-        throw new Error("Error to test rollback mechanism");
-      }
-      if (getTestConfig().DISCONNECT_DATABASE === "true") {
-        await disconnectDatabase();
-      }
+      // logger.info("TEST_ERROR " + getTestConfig().TEST_ERROR);
+      // console.log("TEST_ERROR " + getTestConfig().TEST_ERROR);
+      // if (getTestConfig().TEST_ERROR === "true") {
+      //   throw new Error("Error to test rollback mechanism");
+      // }
+      // if (getTestConfig().DISCONNECT_DATABASE === "true") {
+      //   await disconnectDatabase();
+      // }
 
       // Credit operation: Increase balance for receiver
       const receiverWallet = await Wallet.findOneAndUpdate(

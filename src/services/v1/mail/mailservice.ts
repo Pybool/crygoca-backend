@@ -7,6 +7,8 @@ import jwthelper from "../../../helpers/jwt_helper";
 import utils from "../../../helpers/misc";
 import { config as dotenvConfig } from "dotenv";
 import { IWalletTransaction } from "../../../models/wallet-transaction.model";
+import juice from "juice";
+import { IWallet } from "../../../models/wallet.model";
 dotenvConfig();
 
 export interface IEmailCheckoutData {
@@ -153,20 +155,20 @@ const mailActions = {
   wallet: {
     sendCreditAlertMail: async (
       email: string,
-      data: { walletTransaction: IWalletTransaction }
+      data: { walletTransaction: IWalletTransaction; wallet: IWallet }
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
-          // const template = await ejs.renderFile(
-          //   "src/templates/orderStatusUpdateTemplate.ejs",
-          //   { email, otp }
-          // );
+          const template = await ejs.renderFile(
+            "src/templates/creditAlertTemplate.ejs",
+            { email, data }
+          );
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
             to: email,
             subject: "Credit Alert!",
-            text: `Credit alert ${data.walletTransaction.amount} on your wallet from ${data?.walletTransaction?.debitWalletAccountNo || data?.walletTransaction?.payout}`,
-            html: "",
+            text: `Credit Alert 🎉`,
+            html: juice(template),
           };
           await sendMail(mailOptions);
           resolve({ status: true });
@@ -181,20 +183,20 @@ const mailActions = {
 
     sendDebitAlertMail: async (
       email: string,
-      data: { walletTransaction: IWalletTransaction }
+      data: { walletTransaction: IWalletTransaction; wallet: IWallet }
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
-          // const template = await ejs.renderFile(
-          //   "src/templates/orderStatusUpdateTemplate.ejs",
-          //   { email, otp }
-          // );
+          const template = await ejs.renderFile(
+            "src/templates/debitAlertTemplate.ejs",
+            { email, data }
+          );
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
             to: email,
             subject: "Debit Alert!",
-            text: `Debit alert ${data.walletTransaction.amount} on your wallet`,
-            html: "",
+            text: `Debit alert`,
+            html: juice(template),
           };
           await sendMail(mailOptions);
           resolve({ status: true });
@@ -209,20 +211,21 @@ const mailActions = {
 
     sendTransferConfirmationOtp: async (
       email: string,
-      otp: number
+      otp: number,
+      data: { walletToCredit: string; walletToDebit: string; amount: string, user:any }
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
-          // const template = await ejs.renderFile(
-          //   "src/templates/orderStatusUpdateTemplate.ejs",
-          //   { email, otp }
-          // );
+          const template = await ejs.renderFile(
+            "src/templates/transferOtpTemplate.ejs",
+            { email, otp, data }
+          );
           const mailOptions = {
             from: process.env.EMAIL_HOST_USER,
             to: email,
             subject: "Transfer OTP Code",
-            text: `Your transfer otp code is ${otp}`,
-            html: "",
+            text: ``,
+            html: juice(template),
           };
           await sendMail(mailOptions);
           resolve({ status: true });
@@ -235,10 +238,7 @@ const mailActions = {
       });
     },
 
-    sendWithdrawalConfirmationOtp: async (
-      email: string,
-      otp: number
-    ) => {
+    sendWithdrawalConfirmationOtp: async (email: string, otp: number) => {
       return new Promise(async (resolve, reject) => {
         try {
           // const template = await ejs.renderFile(

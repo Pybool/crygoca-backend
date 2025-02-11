@@ -21,7 +21,7 @@ export interface IWalletTransaction extends Document {
   type: string;
   operationType: string;
   reference?:string;
-  createdAt: Date;
+  createdAt: any;
 }
 
 const WalletTransactionSchema = new Schema<IWalletTransaction>({
