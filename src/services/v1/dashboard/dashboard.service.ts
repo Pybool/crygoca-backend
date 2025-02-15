@@ -185,7 +185,7 @@ export class DashboardService {
     if (timePeriod === "today") {
       period = "Today";
     } else if (timePeriod === "thisWeek") {
-      period = "Since 7 Days";
+      period = "Last 7 Days";
     } else if (timePeriod === "thisMonth") {
       period = "Since 30 Days";
     }

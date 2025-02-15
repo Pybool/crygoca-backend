@@ -122,6 +122,29 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       });
     }
 
+    if (req.query.minPrice && req.query.maxPrice) {
+      const minPrice = Number(req.query.minPrice);
+      const maxPrice = Number(req.query.maxPrice);
+      const priceSearchSymbol = req.query.priceSearchSymbol || null;
+  
+      if (isNaN(minPrice) || isNaN(maxPrice)) {
+          return{status:false, message: "minPrice and maxPrice must be valid numbers" };
+      }
+  
+      if (minPrice > maxPrice) {
+          return{status:false, message: "minPrice cannot be greater than maxPrice" };
+      }
+
+      if(priceSearchSymbol){
+        filter.$and.push({ cryptoCode: priceSearchSymbol });
+      }
+
+      // Add price range filter
+      filter.$and.push({ unitPrice: { $gte: minPrice, $lte: maxPrice } });
+  
+    }
+  
+
     // Ensure units are greater than 0
     filter.$and.push({ units: { $gt: 0 } });
 
