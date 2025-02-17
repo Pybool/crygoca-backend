@@ -534,4 +534,24 @@ export class Authentication {
       return await getTokensAndLogin(cachedOtp);
     }
   }
+
+  public async getUser() {
+    try {
+      const accountId: string = this.req.query.accountId as string;
+      const account = await Accounts.findOne({ _id: accountId });
+      if (account) {
+        return {
+          status: true,
+          data: account,
+        };
+      } else {
+        return {
+          status: false,
+          data: null,
+        };
+      }
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

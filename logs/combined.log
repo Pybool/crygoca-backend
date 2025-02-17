@@ -13617,3 +13617,31 @@ info: Rollback action registered: 4dabed42-8d68-4c2f-8643-40b8a53f175a {"timesta
 info: Rollback action registered: 6e256f10-09a0-43d1-a040-8bcd670ddfe5 {"timestamp":"2025-02-15T17:49:43.715+01:00"}
 info: Rollback action registered: 3cf01de5-7b96-4bf5-a991-313ac388c7f2 {"timestamp":"2025-02-15T17:49:46.143+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-02-15T17:51:37.897+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-15T18:33:13.782+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-02-15T18:33:13.817+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-15T18:33:35.284+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-15T18:33:35.290+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-15T18:33:37.291+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-15T18:33:37.532+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-15T18:33:37.687+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-15T18:33:37.895+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-15T18:33:37.906+01:00"}
+info: Rollback action registered: 5dd917aa-9f3c-4001-8ea4-33762cb9ff69 {"timestamp":"2025-02-17T10:20:44.460+01:00"}
+info: Rollback action registered: f5c98141-ac33-474c-9cc3-78448c4b7d29 {"timestamp":"2025-02-17T10:20:46.360+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-17T10:48:50.369+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-02-17T10:48:50.393+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-17T10:50:22.980+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-17T10:50:22.994+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-17T10:50:25.830+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-17T10:50:42.241+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-17T10:50:42.356+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-17T11:44:29.361+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-02-17T11:44:29.382+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-17T11:44:43.959+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-17T11:44:43.969+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-17T11:44:44.033+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-17T11:53:24.583+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-17T11:55:51.873+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-17T11:55:52.898+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-17T11:56:33.944+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-17T12:13:39.456+01:00"}

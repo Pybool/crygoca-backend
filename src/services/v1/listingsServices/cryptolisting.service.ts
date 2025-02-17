@@ -44,13 +44,22 @@ export const fetchCrypto = async (url: string, isTask = false) => {
 export const getCryptos = async (req: Xrequest) => {
   try {
     const limit: number = Number(req.query.limit! as string);
-    const filter = {};
+    const searchQuery = req.query.q || ""; // Replace with user input
+
+    const filter = {
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { symbol: { $regex: searchQuery, $options: "i" } },
+        { slug: { $regex: searchQuery, $options: "i" } },
+        { tags: { $regex: searchQuery, $options: "i" } },
+      ],
+    };
     // Populate the 'account' field with data from the Account or User collection
     const cryptos = await Cryptocurrencies.find(filter).limit(limit);
 
     return {
       status: true,
-      message: "Top 500 cryptocurrencies fetched",
+      message: "Cryptocurrencies fetched",
       data: cryptos,
       code: 200,
     };
@@ -126,24 +135,28 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       const minPrice = Number(req.query.minPrice);
       const maxPrice = Number(req.query.maxPrice);
       const priceSearchSymbol = req.query.priceSearchSymbol || null;
-  
+
       if (isNaN(minPrice) || isNaN(maxPrice)) {
-          return{status:false, message: "minPrice and maxPrice must be valid numbers" };
-      }
-  
-      if (minPrice > maxPrice) {
-          return{status:false, message: "minPrice cannot be greater than maxPrice" };
+        return {
+          status: false,
+          message: "minPrice and maxPrice must be valid numbers",
+        };
       }
 
-      if(priceSearchSymbol){
+      if (minPrice > maxPrice) {
+        return {
+          status: false,
+          message: "minPrice cannot be greater than maxPrice",
+        };
+      }
+
+      if (priceSearchSymbol) {
         filter.$and.push({ cryptoCode: priceSearchSymbol });
       }
 
       // Add price range filter
       filter.$and.push({ unitPrice: { $gte: minPrice, $lte: maxPrice } });
-  
     }
-  
 
     // Ensure units are greater than 0
     filter.$and.push({ units: { $gt: 0 } });
@@ -235,11 +248,11 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
       };
     }
 
-    if(payload.units > cryptoListing.units){
+    if (payload.units > cryptoListing.units) {
       return {
         status: false,
-        message: "You are ordering more units than are avaialble at this time."
-      }
+        message: "You are ordering more units than are avaialble at this time.",
+      };
     }
 
     if (!payload?.checkOutId) {
@@ -269,7 +282,7 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
 };
 
 export const updatePaymentConfirmation = async (tx_ref: string) => {
-  console.log("Updating Payment confirmation ===> ", tx_ref)
+  console.log("Updating Payment confirmation ===> ", tx_ref);
   await paymentVerificationQueue.add(
     "process-payment",
     { tx_ref },
@@ -278,8 +291,8 @@ export const updatePaymentConfirmation = async (tx_ref: string) => {
   console.log("Verification job added to the queue.");
   return {
     status: true,
-    message: "Your order's payment is being processed."
-  }
+    message: "Your order's payment is being processed.",
+  };
 };
 
 export const getListingChanges = async (listing: any) => {

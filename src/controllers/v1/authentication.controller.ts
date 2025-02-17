@@ -208,6 +208,19 @@ const authController: IAuth = {
       next(error);
     }
   },
+
+  getUser: async (req: Xrequest, res: Response, next: NextFunction) => {
+    try {
+      let status = 400;
+      const authentication = new Authentication(req);
+      const result = await authentication.getUser();
+      if (result) status = 200;
+      res.status(status).json(result);
+    } catch (error: any) {
+      error.status = 422;
+      next(error);
+    }
+  },
   
 };
 

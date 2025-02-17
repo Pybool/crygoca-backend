@@ -14,5 +14,6 @@ export interface IAuth{
     saveUserProfile: RequestHandler;
     resendtwoFaLoginOtp: RequestHandler;
     twofaSignInVerification: RequestHandler;
+    getUser:RequestHandler;
   }
   

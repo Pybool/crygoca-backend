@@ -13,6 +13,9 @@ authRouter.post('/resend-email-verification-otp', authController.sendEmailConfir
 authRouter.post('/send-reset-password-otp', authController.sendPasswordResetOtp)
 authRouter.post('/verify-reset-password-otp', authController.verifyPasswordResetOtp)
 authRouter.post('/reset-password', authController.resetPassword)
+authRouter.get('/getUser', authController.getUser)
+
+
 
 authRouter.post('/login', authController.login)
 authRouter.post('/refresh-token', authController.getRefreshToken)
