@@ -147,16 +147,26 @@ const AccountsSchema = new Schema({
 });
 
 interface IAccountModel extends mongoose.Model<any> {
-  changePassword(accountId: string, oldPassword: string, newPassword: string, confirmPassword: string): Promise<{ status: boolean; message: string }>;
+  changePassword(
+    accountId: string,
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Promise<{ status: boolean; message: string }>;
+  addPassword(
+    accountId: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Promise<{ status: boolean; message: string }>;
 }
 
 AccountsSchema.pre("save", async function (next) {
   try {
-    if (this.isNew && this.googleId=="") {
+    if (this.isNew && this.googleId == "") {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(this.password!, salt);
       this.password = hashedPassword;
-      this.referralCode = await generateReferralCode(this.username)
+      this.referralCode = await generateReferralCode(this.username);
     }
     next();
   } catch (error: any) {
@@ -172,9 +182,8 @@ AccountsSchema.methods.isValidPassword = async function (password: string) {
   }
 };
 
-AccountsSchema.statics.changePassword = async function (
+AccountsSchema.statics.addPassword = async function (
   accountId: string,
-  oldPassword: string,
   newPassword: string,
   confirmPassword: string
 ): Promise<{ status: boolean; message: string }> {
@@ -182,18 +191,22 @@ AccountsSchema.statics.changePassword = async function (
     // Fetch the account by ID
     const account = await this.findById(accountId);
     if (!account) {
-      return { status: false, message: 'Account not found' };
+      return { status: false, message: "Account not found" };
     }
 
-    // Compare old password
-    const isMatch = await bcrypt.compare(oldPassword, account.password);
-    if (!isMatch) {
-      return { status: false, message: 'Incorrect old password' };
+    if(account?.password){
+      return {
+        status: false,
+        message: "You already have an existing password, you can only change this password.",
+      };
     }
 
     // Check if new password and confirm password match
     if (newPassword !== confirmPassword) {
-      return { status: false, message: 'New password and confirm password do not match' };
+      return {
+        status: false,
+        message: "New password and confirm password do not match",
+      };
     }
 
     // Hash the new password
@@ -204,11 +217,57 @@ AccountsSchema.statics.changePassword = async function (
     account.password = hashedPassword;
     await account.save();
 
-    return { status: true, message: 'Password updated successfully' };
+    return { status: true, message: "Password created successfully" };
   } catch (error) {
-    return { status: false, message: 'Error updating password' };
+    return { status: false, message: "Error updating password" };
   }
-}
+};
+
+AccountsSchema.statics.changePassword = async function (
+  accountId: string,
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string
+): Promise<{ status: boolean; message: string }> {
+  try {
+    // Fetch the account by ID
+    const account = await this.findById(accountId);
+    if (!account) {
+      return { status: false, message: "Account not found" };
+    }
+
+    // Compare old password
+    try{
+      const isMatch = await bcrypt.compare(oldPassword, account.password);
+      if (!isMatch) {
+        return { status: false, message: "Incorrect old password" };
+      }
+    }catch{
+      return { status: false, message: "Incorrect old password" };
+    }
+    
+
+    // Check if new password and confirm password match
+    if (newPassword !== confirmPassword) {
+      return {
+        status: false,
+        message: "New password and confirm password do not match",
+      };
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the account's password
+    account.password = hashedPassword;
+    await account.save();
+
+    return { status: true, message: "Password updated successfully" };
+  } catch (error) {
+    return { status: false, message: "Error updating password" };
+  }
+};
 
 AccountsSchema.methods.getProfile = async function () {
   try {

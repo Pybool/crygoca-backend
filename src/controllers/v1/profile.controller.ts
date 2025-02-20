@@ -80,4 +80,41 @@ export const profileController: any = {
       res.status(500).json({ status: false, message: error?.message });
     }
   },
+
+  _sendAddPasswordCode: async (req: Xrequest, res: Response) => {
+    try {
+      const accountId = req.accountId!; 
+      const result = await ProfileService.sendAddPasswordCode(accountId);
+
+      if (result.status) {
+        res.status(200).json(result);
+      } else {
+        res.status(400).json(result);
+      }
+    } catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  _addPassword: async (req: Xrequest, res: Response) => {
+    try {
+      const { otp, newPassword, confirmPassword } = req.body;
+      const accountId = req.accountId!; 
+
+      const result = await ProfileService.addPassword(
+        accountId,
+        newPassword,
+        confirmPassword,
+        otp
+      );
+
+      if (result.status) {
+        res.status(200).json(result);
+      } else {
+        res.status(400).json(result);
+      }
+    } catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
 };

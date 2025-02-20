@@ -2,6 +2,8 @@ import { handleErrors } from "../../../bootstrap/global.error.handler";
 import Xrequest from "../../../interfaces/extensions.interface";
 import Accounts from "../../../models/accounts.model";
 import Devices from "../../../models/devices.model";
+import mailActions from "../mail/mailservice";
+import { generateOtp, getExpirableCode, setExpirableCode } from "./helper";
 
 export class ProfileService {
   public static async getUserProfile(req: Xrequest) {
@@ -166,6 +168,54 @@ export class ProfileService {
     const result = await Accounts.changePassword(
       accountId,
       oldPassword,
+      newPassword,
+      confirmPassword
+    );
+    return result;
+  }
+
+  public static async sendAddPasswordCode(accountId: string ){
+    const otp:string = generateOtp();
+    const user =  await Accounts.findOne({_id:accountId})
+    if(!user){
+      return {
+        status: false,
+        message: "No user was found for this session"
+      }
+    }
+    if(user?.password){
+      return {
+        status: false,
+        message: "You already have an existing password, you can only change this password.",
+      };
+    }
+    await setExpirableCode(accountId, "add-password", otp);
+    mailActions.auth.sendAddPasswordMail(user.email, otp);
+    return {
+      status: true,
+      message: "Add Password Otp Sent Successfully."
+    }
+  }
+
+  public static async addPassword(
+    accountId: string,
+    newPassword: string,
+    confirmPassword: string,
+    otp?:string
+  ) {
+    const cachedOtp = await getExpirableCode(
+      "add-password",
+      accountId
+    );
+    if (!cachedOtp || cachedOtp?.code.toString() !== otp) {
+      return {
+        status: false,
+        data: null,
+        message: "Invalid or expired otp, please request for a new otp",
+      };
+    }
+    const result = await Accounts.addPassword(
+      accountId,
       newPassword,
       confirmPassword
     );

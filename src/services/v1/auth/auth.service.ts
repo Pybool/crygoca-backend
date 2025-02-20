@@ -131,10 +131,10 @@ export class Authentication {
       const otp: string = generateOtp();
       await setExpirableCode(user._id.toString(), "password-reset", otp);
       console.log("Password reset otp: ", otp);
-      return mailActions.auth.sendPasswordResetMail(result, user);
+      return mailActions.auth.sendPasswordResetMail(result.email, otp);
     } catch (error: any) {
       console.log(error);
-      throw error.message;
+      throw error;
     }
   }
 
@@ -185,6 +185,8 @@ export class Authentication {
         "password-reset-token",
         result.uid! as string
       );
+
+      console.log(result, cachedToken?.code.toString() , result.token)
 
       if (!cachedToken || cachedToken?.code.toString() !== result.token) {
         throw createError.BadRequest(message.auth.invalidTokenSupplied);
@@ -479,6 +481,7 @@ export class Authentication {
   public async twofaSignInVerification() {
     const { code, accountId, otpChannel, deviceInformation } = this.req
       .body! as any;
+    const isRegister = this.req.query.isRegister as string;
     const getTokensAndLogin = async (cachedOtp: any) => {
       if (cachedOtp?.code === code) {
         const accessToken = await jwthelper.signAccessToken(account.id);
@@ -486,6 +489,9 @@ export class Authentication {
         const userIpData = await getUserCountry(this.req);
         const reqIp = userIpData?.reqIp;
         account.lastLogin = new Date();
+        if(isRegister=='1'){
+          account.email_confirmed = true
+        }
         await account.save();
         await Authentication.addDevice(account, deviceInformation, reqIp);
         return { status: true, data: account, accessToken, refreshToken };

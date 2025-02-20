@@ -56,8 +56,54 @@ const mailActions = {
       });
     },
 
-    sendPasswordResetMail: async (email: string, user: any) => {
-      return { status: true, message: "" };
+    sendAddPasswordMail:async (email: string, otp:any) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/addPasswordTemplate.ejs",
+            { otp }
+          );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Add Password",
+            text: `You have requested a password for your account.`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendPasswordResetMail: async (email: string, otp:any) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/resetPasswordTemplate.ejs",
+            { otp }
+          );
+          const mailOptions = {
+            from: process.env.EMAIL_HOST_USER,
+            to: email,
+            subject: "Password Reset",
+            text: `You have requested a password reset.`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
     },
   },
   orders: {

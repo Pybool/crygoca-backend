@@ -33,13 +33,16 @@ profileRouter.put(
   profileController._changePassword
 );
 
+profileRouter.get(
+  "/get-add-password-otp",
+  decode,
+  profileController._sendAddPasswordCode
+);
 
-
-
-
-
-
-
-
+profileRouter.put(
+  "/add-password",
+  decode,
+  profileController._addPassword
+);
 
 export default profileRouter;

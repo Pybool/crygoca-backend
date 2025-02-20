@@ -2,6 +2,7 @@ import jwthelper from "../../../helpers/jwt_helper";
 import Accounts from "../../../models/accounts.model";
 import { generateReferralCode } from "../helpers";
 import { WalletService } from "../wallet/wallet.service";
+import { Authentication } from "./auth.service";
 
 interface IGoogleUser {
   email: string;
@@ -17,6 +18,7 @@ interface IGoogleUser {
 export class SocialAuthentication {
   public static async googleAuthentication(req:any) {
     try {
+      let firstTimeSignup = false
       const googleUser = req.gAccount;
       const referralCode = req.referralCode;
       console.log("googleUser ", googleUser,referralCode)
@@ -39,6 +41,7 @@ export class SocialAuthentication {
       }
 
       if (!user) {
+        firstTimeSignup = true
         if (referralCode) {
           const referrer = await Accounts.findOne({
             referralCode: referralCode,
@@ -56,9 +59,20 @@ export class SocialAuthentication {
         googleUser.provider = "GOOGLE";
         const newUser: any = await Accounts.create(googleUser);
         user = newUser;
-        newUser.email_confirmed = true;
+        // newUser.email_confirmed = true;
         await newUser.save();
         
+      }
+      if(firstTimeSignup){
+        req.body = {accountId: user._id.toString()}
+        const auth = new Authentication(req);
+        await auth.sendEmailConfirmationOtp()
+        const authResult = {
+          status: true,
+          message: "Complete Email 2fa Otp step",
+          data: {accountId: user._id.toString()}
+        };
+        return authResult;
       }
       const accessToken = await jwthelper.signAccessToken(user._id!.toString());
       const refreshToken = await jwthelper.signRefreshToken(
@@ -66,7 +80,7 @@ export class SocialAuthentication {
       );
       const authResult = {
         status: true,
-        message: "google authentication was successful",
+        message: "Google authentication was successful",
         data: user,
         accessToken,
         refreshToken,
@@ -77,10 +91,11 @@ export class SocialAuthentication {
       console.log(error);
       return {
         status: false,
-        message: "google authentication was not successfull",
+        message: "Google authentication was not successfull",
       };
     }
   }
 
 
 }
+

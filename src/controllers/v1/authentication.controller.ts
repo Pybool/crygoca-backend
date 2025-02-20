@@ -33,8 +33,8 @@ const authController: IAuth = {
       let status = 400;
       const authentication = new Authentication(req);
       const result = await authentication.sendPasswordResetOtp();
-      if (result.status) status = 200;
-      res.status(status).json(result);
+      status = 200;
+      res.status(status).json({status: true});
     } catch (error: any) {
       if (error.isJoi === true) error.status = 422;
       next(error);
