@@ -78,7 +78,9 @@ app.use(
       "https://b1d7-105-119-6-63.ngrok-free.app",
       "https://www.crygoca.com",
       "https://crygoca.com",
-      "https://marketplace.crygoca.com"
+      "https://marketplace.crygoca.com",
+      "https://crygoca.co.uk",
+      "https://www.crygoca.co.uk",
     ], // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
   })

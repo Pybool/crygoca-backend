@@ -26,7 +26,7 @@ interface Provider {
 export async function getUserCountry(req: any): Promise<any> {
   try {
     let geoData = geoip.lookup(req.ip) as any;
-    const countryCode = geoData.country;
+    const countryCode = geoData?.country;
     geoData.country = getCountryNameByCode(countryCode);
     geoData.currency = getCountryCurrencyByCountryCode(countryCode);
     geoData.countryCode = countryCode;
