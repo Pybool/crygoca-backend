@@ -4,6 +4,8 @@ import logger from './logger';
 import { startCryptoLiveUpdatesWorker } from "../services/v1/tasks/scripts/cryptoLiveUpdates";
 import { startExchangeRatesUpdatesWorker } from '../services/v1/tasks/scripts/livecurrencies';
 import { processRollbacks } from '../services/v1/wallet/rollback.service';
+import { startAutoConfirmationTask } from '../services/v1/jobs/payment-verification/timeoutAutoComplete';
+import { startTimeoutAutoCompleteWorker } from '../services/v1/jobs/payment-verification/timeoutAutoCompleteWorker';
 dotenvConfig()
 
 const mongouri:any = process.env.CRYGOCA_MONGODB_URI
@@ -24,6 +26,8 @@ mongoose
     if(process.env.NODE_ENV=='dev' || process.env.NODE_ENV=='prod'){
       // startCryptoLiveUpdatesWorker();
       startExchangeRatesUpdatesWorker();
+      startAutoConfirmationTask();
+      startTimeoutAutoCompleteWorker();
       
     }
     processRollbacks()

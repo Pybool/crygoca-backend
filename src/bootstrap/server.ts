@@ -40,6 +40,7 @@ import notificationRouter from "../routes/v1/notifications.routes";
 import { generateReferralCode } from "../services/v1/helpers";
 import  "../services/v1/jobs/payment-verification/paymentVerificationWorker";
 import { checkRedis } from "../middlewares/checkredis";
+import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
 // import { addJob } fro../dev/interprocessjobjob";
 
 dotenvConfig();
@@ -108,6 +109,7 @@ app.use(express.json());
 app.use(checkRedis);
 
 app.get("/", async (req, res) => {
+  timeoutAutoConfirmation()
   res.send("Crygoca Backend says hello!");
 });
 

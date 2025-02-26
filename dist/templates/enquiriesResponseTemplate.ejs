@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .flexx-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            gap: 30px
+        }
+
+        .flexx-row-5x {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            gap: 54px
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        @media (min-width:576px) {
+            .container {
+                max-width: 540px
+            }
+        }
+
+        @media (min-width:768px) {
+            .container {
+                max-width: 720px
+            }
+        }
+
+        @media (min-width:992px) {
+            .container {
+                max-width: 960px
+            }
+        }
+
+        @media (min-width:1200px) {
+            .container {
+                max-width: 1140px
+            }
+        }
+
+        .flex-row {
+            display: flex;
+            flex-direction: column;
+            /* On smaller screens, switch to column layout */
+            gap: 20px;
+        }
+
+        header {
+            background: linear-gradient(90deg, rgba(110, 109, 122, 1) 0%, rgba(165, 165, 207, 1) 31%, #282828 85%)!important;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px 8px 0 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        h1 {
+            color: white;
+            margin: 0;
+            /* Remove default margin */
+        }
+
+        p {
+            color: black;
+            line-height: 1.6;
+            margin: 0;
+            /* Remove default margin */
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(255, 165, 0);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            padding: 30px;
+            background: linear-gradient(90deg, rgba(110, 109, 122, 1) 0%, rgba(165, 165, 207, 1) 31%, #282828 85%)!important;
+            color: #fff;
+            border-radius: 0 0 8px 8px;
+            text-align: center !important;
+        }
+
+        /* Media query for smaller screens */
+        @media screen and (max-width: 600px) {
+            .container {
+                max-width: 90vw !important;
+                /* Adjust container width for smaller screens */
+            }
+
+            .flex-row {
+                gap: 10px;
+                /* Reduce gap between elements */
+            }
+
+            main {
+                padding: 15px;
+                /* Adjust main padding */
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                /* Decrease heading font size */
+            }
+
+            p {
+                font-size: 0.9rem;
+                /* Decrease paragraph font size */
+            }
+        }
+
+        .booking-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .label {
+            width: 150px;
+            font-weight: bold;
+        }
+
+        .value {
+            flex-grow: 1;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div style="padding:0px!important;margin: 0px!important" class="pls&nbsp;container container">
+        <div>
+            <header>
+                <img loading="lazy" src="<%=logo%>" srcSet="<%=logo%>"
+                    style="margin-left: 30px; width: 80px; height: 80px; object-fit: contain;border-radius:50%" class="img" alt="" />
+            </header>
+
+            <div style="text-align:left!important;margin-left:30px!important;margin-right: 30px!important;">
+                <h2>We received your enquiry</h2>
+                <h4 style="padding-top: 10px;">Dear <%=name%>,<h4><br>
+                            <div>
+                                <p>
+                                    Thank you for contacting us! We have received your enquiry and are currently processing
+                                    it. Our team will be in touch with you within 48hrs to provide any information you may need.
+                                </p>
+                                <br>
+                                
+                                <p>Kind regards,</p>
+                                <p>Crygoca</p>
+                                <br>
+                                <p>Mobile: +44 (0) 789 977 2087</p>
+                                <br>
+                                <p>If you haven't recently contacted us you can disregard this email.
+                                    However, if this information is relevant to your previous inquiry, please review it
+                                    at your convenience.
+                                </p>
+
+                            </div>
+
+            </div>
+        </div>
+        <footer style="text-align:center!important;">© 2021-2024 Crygoca. All rights reserved.</footer>
+    </div>
+</body>
+
+</html>

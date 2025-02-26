@@ -92,8 +92,8 @@ const CryptoListingPurchaseSchema = new Schema({
   },
   buyerFulfillmentClaim: {
     type: Schema.Types.Mixed,
-    enum: ["Closed", "Disputed"],
-    default: null,
+    enum: ["Pending", "Closed", "Disputed"],
+    default: "Pending",
   },
   createdAt: {
     type: Date,

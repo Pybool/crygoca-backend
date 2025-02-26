@@ -518,6 +518,9 @@ export const updateStatus = async (req: Xrequest) => {
         };
       }
       listingPurchase.fulfillmentStatus = data.status;
+      if(listingPurchase.fulfillmentStatus === "Completed"){
+        listingPurchase.updatedAt = new Date();
+      }
       listingPurchase = await listingPurchase.save();
       listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
       listingPurchase.cryptoListing.account = await Accounts.findOne({

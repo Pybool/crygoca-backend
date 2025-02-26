@@ -144,6 +144,11 @@ const AccountsSchema = new Schema({
     default: null,
     required: false,
   },
+  lastSeen: {
+    type: Date,
+    default: null,
+    required: false,
+  },
 });
 
 interface IAccountModel extends mongoose.Model<any> {

@@ -18,6 +18,7 @@ export const decode = (req: Xrequest, res: Response, next: any) => {
   try {
     const decoded: any = jwt.verify(accessToken, SECRET_KEY);
     req.accountId = decoded.aud;
+    updateLastSeen(req.accountId!);
     return next();
   } catch (error: any) {
     return res.status(401).json({ success: false, message: error.message });
@@ -34,6 +35,7 @@ export const decodeExt = (req: Xrequest, res: Response, next: any) => {
   try {
     const decoded: any = jwt.verify(accessToken, SECRET_KEY);
     req.accountId = decoded.aud;
+    updateLastSeen(req.accountId!);
     return next();
   } catch (error: any) {
     return next();
@@ -47,6 +49,10 @@ export function ensureAdmin(req: Xrequest, res: Response, next: NextFunction) {
   } else {
     res.status(403).json({ message: "Forbidden: Account is not an admin" });
   }
+}
+
+async function updateLastSeen(accountId:string){
+  await Accounts.findByIdAndUpdate(accountId, {lastSeen: new Date()})
 }
 
 // Middleware to verify the Google ID token

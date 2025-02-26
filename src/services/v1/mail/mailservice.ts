@@ -39,7 +39,7 @@ const mailActions = {
           console.log("OTP==> ", otp);
 
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Confirm your registration",
             text: `Use the otp in this mail to complete your account onboarding`,
@@ -56,7 +56,7 @@ const mailActions = {
       });
     },
 
-    sendAddPasswordMail:async (email: string, otp:any) => {
+    sendAddPasswordMail: async (email: string, otp: any) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
@@ -64,7 +64,7 @@ const mailActions = {
             { otp }
           );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Add Password",
             text: `You have requested a password for your account.`,
@@ -81,7 +81,7 @@ const mailActions = {
       });
     },
 
-    sendPasswordResetMail: async (email: string, otp:any) => {
+    sendPasswordResetMail: async (email: string, otp: any) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
@@ -89,7 +89,7 @@ const mailActions = {
             { otp }
           );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Password Reset",
             text: `You have requested a password reset.`,
@@ -120,7 +120,7 @@ const mailActions = {
           console.log("Mail data ==> ", data);
 
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Order received",
             text: `Your payment was successful and your order received.`,
@@ -150,7 +150,7 @@ const mailActions = {
           console.log("Mail data ==> ", data);
 
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "New Order Placed",
             text: `Your listing has a new order.`,
@@ -180,10 +180,73 @@ const mailActions = {
           console.log("Mail data ==> ", data);
 
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Order Status Update",
             text: `Your order status has been updated`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendOrderAutoConfirmationWarningMail: async (
+      email: string,
+      data: IEmailCheckoutData,
+      accountId: string,
+      timeout:string
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}/marketplace/dispute-order/${data.checkOutId}/${accountId}`;
+          const template = await ejs.renderFile(
+            "src/templates/orderAutoConfirmWarnTemplate.ejs",
+            { data, disputeUrl, timeout }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Auto-Confirmation",
+            text: `Imminent System Auto Confirmation!`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendOrderAutoCompletionMail: async (
+      email: string,
+      data: IEmailCheckoutData
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/orderAutoConfirmedTemplate.ejs",
+            { data }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Order Auto-Confirmed",
+            text: `Your order was auto Completed!`,
             html: template,
           };
           await sendMail(mailOptions);
@@ -210,7 +273,7 @@ const mailActions = {
             { email, data }
           );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Credit Alert!",
             text: `Credit Alert 🎉`,
@@ -238,7 +301,7 @@ const mailActions = {
             { email, data }
           );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Debit Alert!",
             text: `Debit alert`,
@@ -258,7 +321,12 @@ const mailActions = {
     sendTransferConfirmationOtp: async (
       email: string,
       otp: number,
-      data: { walletToCredit: string; walletToDebit: string; amount: string, user:any }
+      data: {
+        walletToCredit: string;
+        walletToDebit: string;
+        amount: string;
+        user: any;
+      }
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
@@ -267,7 +335,7 @@ const mailActions = {
             { email, otp, data }
           );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Transfer OTP Code",
             text: ``,
@@ -292,7 +360,7 @@ const mailActions = {
           //   { email, otp }
           // );
           const mailOptions = {
-            from: process.env.EMAIL_HOST_USER,
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
             subject: "Withdrawal OTP Code",
             text: `Your withdrawal otp code is ${otp}`,
