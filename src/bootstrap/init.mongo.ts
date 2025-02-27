@@ -30,7 +30,7 @@ mongoose
       startTimeoutAutoCompleteWorker();
       
     }
-    processRollbacks()
+    // processRollbacks();
   })
   .catch((err:any) => logger.info(err.message))
 

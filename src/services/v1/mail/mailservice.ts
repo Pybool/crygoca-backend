@@ -27,6 +27,8 @@ export interface IEmailCheckoutData {
   status?: string;
 }
 
+const marketplaceUrl:string = process.env.marketplaceUrl!;
+
 const mailActions = {
   auth: {
     sendEmailConfirmationOtp: async (email: string, otp: string) => {
@@ -34,7 +36,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/emailConfirmation.ejs",
-            { email, otp }
+            { email, otp, marketplaceUrl }
           );
           console.log("OTP==> ", otp);
 
@@ -61,7 +63,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/addPasswordTemplate.ejs",
-            { otp }
+            { otp, marketplaceUrl }
           );
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -86,7 +88,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/resetPasswordTemplate.ejs",
-            { otp }
+            { otp, marketplaceUrl }
           );
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -115,7 +117,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/buyerPaymentSuccessTemplate.ejs",
-            { data }
+            { data, marketplaceUrl }
           );
           console.log("Mail data ==> ", data);
 
@@ -145,7 +147,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/sellerPaymentSuccessTemplate.ejs",
-            { data }
+            { data, marketplaceUrl }
           );
           console.log("Mail data ==> ", data);
 
@@ -175,7 +177,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/orderStatusUpdateTemplate.ejs",
-            { data }
+            { data, marketplaceUrl }
           );
           console.log("Mail data ==> ", data);
 
@@ -208,7 +210,7 @@ const mailActions = {
           const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}/marketplace/dispute-order/${data.checkOutId}/${accountId}`;
           const template = await ejs.renderFile(
             "src/templates/orderAutoConfirmWarnTemplate.ejs",
-            { data, disputeUrl, timeout }
+            { data, disputeUrl, timeout, marketplaceUrl }
           );
           console.log("Mail data ==> ", data);
 
@@ -238,7 +240,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/orderAutoConfirmedTemplate.ejs",
-            { data }
+            { data, marketplaceUrl }
           );
           console.log("Mail data ==> ", data);
 
@@ -270,7 +272,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/creditAlertTemplate.ejs",
-            { email, data }
+            { email, data, marketplaceUrl }
           );
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -298,7 +300,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/debitAlertTemplate.ejs",
-            { email, data }
+            { email, data, marketplaceUrl }
           );
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -332,7 +334,7 @@ const mailActions = {
         try {
           const template = await ejs.renderFile(
             "src/templates/transferOtpTemplate.ejs",
-            { email, otp, data }
+            { email, otp, data, marketplaceUrl }
           );
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,

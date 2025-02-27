@@ -76,12 +76,15 @@ app.use(
     origin: [
       "http://localhost:4200",
       "http://localhost:4201",
-      "https://b1d7-105-119-6-63.ngrok-free.app",
       "https://www.crygoca.com",
       "https://crygoca.com",
       "https://marketplace.crygoca.com",
       "https://crygoca.co.uk",
       "https://www.crygoca.co.uk",
+      "https://test.crygoca.com",
+      "https://uatmarketplace.crygoca.com",
+      "https://test.crygoca.co.uk",
+      "https://uatmarketplace.crygoca.com"
     ], // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
   })

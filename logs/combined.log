@@ -14153,3 +14153,19 @@ info: Wallet operations completed successfully. {"timestamp":"2025-02-27T09:49:2
 info: Mongoose connection is disconnected {"timestamp":"2025-02-27T10:56:18.514+01:00"}
 info: Mongoose connected to db {"timestamp":"2025-02-27T11:15:47.037+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-02-27T12:17:13.704+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-27T13:43:33.731+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-27T13:43:33.737+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T13:43:43.287+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-27T13:43:43.294+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-27T13:43:47.384+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-27T13:43:47.605+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-27T13:43:47.805+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-27T13:43:47.988+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-27T13:43:48.132+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-27T13:43:48.289+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-27T13:43:48.290+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-27T13:45:11.698+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-27T13:47:52.616+01:00"}
+info: DATABASE NAME CRYGOCA {"timestamp":"2025-02-27T13:47:52.626+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T13:48:04.293+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-27T13:48:04.298+01:00"}
