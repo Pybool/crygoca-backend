@@ -14000,3 +14000,156 @@ info: DATABASE NAME CRYGOCA {"timestamp":"2025-02-26T16:28:30.897+01:00"}
 info: Mongoose connected to db {"timestamp":"2025-02-26T16:28:39.572+01:00"}
 info: MongoDB connected Successfully. {"timestamp":"2025-02-26T16:28:39.589+01:00"}
 info: All operations were rolled back. {"timestamp":"2025-02-26T16:28:39.680+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:08:07.503+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:08:07.509+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:08:18.119+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:08:18.129+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:08:18.198+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:13:16.352+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:13:16.353+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:16:16.302+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:16:16.306+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:16:23.381+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:16:23.393+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:16:23.440+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:17:28.655+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:17:28.677+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:18:13.161+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:18:13.164+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:18:14.192+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:18:14.192+01:00"}
+info: Error occurred:Insufficient balance in sender's wallet {"timestamp":"2025-02-26T21:18:14.572+01:00"}
+info: Rollback action registered: e4102a7c-6490-4336-a739-61a2f48a72cc {"timestamp":"2025-02-26T21:18:14.578+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:18:14.738+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:18:14.740+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:20:46.078+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:20:46.083+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:20:57.961+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:20:57.967+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:20:58.013+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:22:57.983+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:22:58.135+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:22:59.352+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:22:59.353+01:00"}
+info: Error occurred:Insufficient balance in sender's wallet {"timestamp":"2025-02-26T21:22:59.702+01:00"}
+info: Rollback action registered: 236747ea-1c0e-4dfc-b749-583cbbfa4a15 {"timestamp":"2025-02-26T21:22:59.703+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:22:59.858+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:22:59.866+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:25:07.286+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:25:07.291+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:25:13.881+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:25:13.884+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:25:13.904+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:26:33.814+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:26:33.817+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:26:41.382+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:26:41.395+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:26:41.475+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:27:22.997+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:27:22.999+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:27:24.031+01:00"}
+info: CW-7241053472 {"timestamp":"2025-02-26T21:27:24.032+01:00"}
+info: Rollback action registered: d03bd4da-ff83-411a-9bbf-9ab1cf30bf51 {"timestamp":"2025-02-26T21:27:24.516+01:00"}
+info: Rollback action registered: 63a09815-1430-4d65-9724-c009a22c49c8 {"timestamp":"2025-02-26T21:27:25.217+01:00"}
+info: Rollback action registered: ef994e38-ba0a-4f46-a0a3-68d865763ccb {"timestamp":"2025-02-26T21:27:25.363+01:00"}
+info: Rollback action registered: e439b02f-5159-44d4-8839-cc3f245d5988 {"timestamp":"2025-02-26T21:27:25.930+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-26T21:27:26.266+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:28:18.429+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-26T21:28:18.431+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-26T21:28:19.501+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-26T21:28:19.502+01:00"}
+info: Rollback action registered: c0f4861e-5a43-4569-8fa4-58f5044e7e11 {"timestamp":"2025-02-26T21:28:19.899+01:00"}
+info: Rollback action registered: 701d936d-356c-44c5-b077-a5f4cf4b66f7 {"timestamp":"2025-02-26T21:28:20.610+01:00"}
+info: Rollback action registered: 185d5f94-50e5-47e0-ad04-37f7a77d56aa {"timestamp":"2025-02-26T21:28:20.788+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-26T21:28:21.775+01:00"}
+info: Rollback action registered: 8c5bde78-ef95-454e-a05e-a7dc7e8c5b77 {"timestamp":"2025-02-26T21:28:21.806+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"070","account_number":"6553942694","amount":"1380","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-W1O0M1D5G2QQ","timestamp":"2025-02-26T21:32:07.395+01:00"}
+info: Withdrawal error  {"timestamp":"2025-02-26T21:32:08.695+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-26T21:36:51.335+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:37:01.945+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-26T21:45:33.043+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:48:17.114+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-26T21:51:08.134+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T21:51:42.029+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T21:51:42.036+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T21:51:51.063+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T21:51:51.087+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:51:53.009+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-26T21:51:53.672+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:51:53.915+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-26T21:51:54.095+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-26T21:51:54.337+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:51:56.000+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-26T21:51:56.295+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-26T21:51:56.478+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T21:51:56.481+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"070","account_number":"6553942694","amount":"1380","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-2BVV5AA46UGA","timestamp":"2025-02-26T21:52:56.363+01:00"}
+info: Withdrawal error  {"timestamp":"2025-02-26T21:52:57.594+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"070","account_number":"6553942694","amount":"1390","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-A2D1ZGBRQC2K","timestamp":"2025-02-26T22:08:05.660+01:00"}
+info: WithdrawalResponse ==>  Transfer Queued Successfully {"data":{"account_number":"6553942694","amount":1390,"bank_code":"070","bank_name":"FIDELITY BANK PLC","complete_message":"","created_at":"2025-02-26T21:08:07.000Z","currency":"NGN","fee":10,"full_name":"EMMANUEL UPO EKO","id":93870495,"is_approved":1,"meta":null,"narration":"Crygoca Wallet Withdrawal","reference":"BW-A2D1ZGBRQC2K","requires_approval":0,"status":"NEW"},"status":"success","timestamp":"2025-02-26T22:08:07.584+01:00"}
+error: Error occurred: {"timestamp":"2025-02-26T22:08:07.923+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-26T22:08:08.089+01:00"}
+info: Meta afer rolback  {"operationType":"debit","timestamp":"2025-02-26T22:08:08.091+01:00","walletAccountNo":"CW-7241053472"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-26T22:28:46.060+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T22:28:56.888+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"070","account_number":"6553942694","amount":"1380","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-K51PG96E4T59","timestamp":"2025-02-26T22:47:20.589+01:00"}
+info: WithdrawalResponse ==>  Transfer Queued Successfully {"data":{"account_number":"6553942694","amount":1380,"bank_code":"070","bank_name":"FIDELITY BANK PLC","complete_message":"","created_at":"2025-02-26T21:47:21.000Z","currency":"NGN","fee":10,"full_name":"EMMANUEL UPO EKO","id":93872063,"is_approved":1,"meta":null,"narration":"Crygoca Wallet Withdrawal","reference":"BW-K51PG96E4T59","requires_approval":0,"status":"NEW"},"status":"success","timestamp":"2025-02-26T22:47:21.711+01:00"}
+error: Error occurred: {"timestamp":"2025-02-26T22:47:22.073+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-26T22:47:22.264+01:00"}
+info: Meta afer rolback  {"operationType":"debit","timestamp":"2025-02-26T22:47:22.274+01:00","walletAccountNo":"CW-7241053472"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-26T22:53:28.011+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-26T22:53:28.015+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-26T22:53:36.788+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-26T22:53:36.791+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-26T22:53:36.816+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-27T01:03:45.823+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T01:03:56.636+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-27T08:45:54.818+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-27T08:45:54.820+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-27T08:45:55.744+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-27T08:45:55.745+01:00"}
+info: Rollback action registered: 01812c12-5fa9-4ac4-98f2-a4452f440455 {"timestamp":"2025-02-27T08:45:56.085+01:00"}
+info: Rollback action registered: 09c1a2d1-f4a4-4ab4-91d4-70faec873a9c {"timestamp":"2025-02-27T08:45:57.584+01:00"}
+info: Rollback action registered: 642ac8c1-d218-4361-ab04-27b5f73aecec {"timestamp":"2025-02-27T08:45:58.002+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-27T08:46:00.394+01:00"}
+info: Rollback action registered: 0d389653-9458-44fa-a9cc-fd3c768e259e {"timestamp":"2025-02-27T08:46:00.400+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"101","account_number":"6506168932","amount":"1396","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-V3O3097PTMWH","timestamp":"2025-02-27T08:54:30.833+01:00"}
+info: WithdrawalResponse ==>  Transfer Queued Successfully {"data":{"account_number":"6506168932","amount":1396,"bank_code":"101","bank_name":"Providus Bank","complete_message":"","created_at":"2025-02-27T07:54:31.000Z","currency":"NGN","fee":10,"full_name":"EKO EMMANUEL UPO","id":93887986,"is_approved":1,"meta":null,"narration":"Crygoca Wallet Withdrawal","reference":"BW-V3O3097PTMWH","requires_approval":0,"status":"NEW"},"status":"success","timestamp":"2025-02-27T08:54:32.343+01:00"}
+info: Error: Insufficient balance in wallet {"timestamp":"2025-02-27T08:54:32.754+01:00"}
+error: Error occurred:Insufficient balance in wallet {"timestamp":"2025-02-27T08:54:32.772+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-27T08:54:32.941+01:00"}
+info: Meta afer rolback  {"operationType":"debit","timestamp":"2025-02-27T08:54:32.944+01:00","walletAccountNo":"CW-7241053472"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-27T09:01:21.405+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-27T09:01:21.417+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T09:01:32.190+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-27T09:01:32.195+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-27T09:01:34.014+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-27T09:01:34.260+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-02-27T09:01:34.426+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-02-27T09:01:34.618+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-27T09:01:34.622+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-02-27T09:34:04.865+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-02-27T09:34:04.870+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T09:34:11.618+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-02-27T09:34:11.622+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-02-27T09:34:11.641+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-27T09:34:51.099+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T09:37:04.036+01:00"}
+info: Rollback action registered: 436b64c8-c15b-4eac-995b-85f7f97bfa31 {"timestamp":"2025-02-27T09:47:11.293+01:00"}
+info: Rollback action registered: d58011c3-89cc-4039-bddc-e115f940074e {"timestamp":"2025-02-27T09:47:15.112+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-27T09:47:15.274+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-27T09:48:18.417+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-27T09:48:18.418+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-02-27T09:48:19.462+01:00"}
+info: CW-8436045072 {"timestamp":"2025-02-27T09:48:19.463+01:00"}
+info: Rollback action registered: 9dafa6bf-08ed-495b-856e-00f01e699276 {"timestamp":"2025-02-27T09:48:19.851+01:00"}
+info: Rollback action registered: 3c9dd8cc-76f7-4630-ae2e-260d57bd6729 {"timestamp":"2025-02-27T09:48:20.396+01:00"}
+info: Rollback action registered: a542abd5-f8d2-45f4-9df6-72ebad21342e {"timestamp":"2025-02-27T09:48:20.556+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-27T09:48:21.100+01:00"}
+info: Rollback action registered: d010eb7d-85e5-4973-8e4a-0cf6d33cc78c {"timestamp":"2025-02-27T09:48:21.109+01:00"}
+info: Complete Withdrawal data =-==>  {"account_bank":"101","account_number":"6506168932","amount":"1390","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-W8PXO8CLS3I7","timestamp":"2025-02-27T09:49:18.271+01:00"}
+info: WithdrawalResponse ==>  Transfer Queued Successfully {"data":{"account_number":"6506168932","amount":1390,"bank_code":"101","bank_name":"Providus Bank","complete_message":"","created_at":"2025-02-27T08:49:19.000Z","currency":"NGN","fee":10,"full_name":"EKO EMMANUEL UPO","id":93890603,"is_approved":1,"meta":null,"narration":"Crygoca Wallet Withdrawal","reference":"BW-W8PXO8CLS3I7","requires_approval":0,"status":"NEW"},"status":"success","timestamp":"2025-02-27T09:49:19.403+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-02-27T09:49:20.707+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-27T10:56:18.514+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-02-27T11:15:47.037+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-02-27T12:17:13.704+01:00"}

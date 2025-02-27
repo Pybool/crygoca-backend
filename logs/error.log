@@ -20,3 +20,9 @@ error: Otp send failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:55:02
 error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:55:04.193+01:00"}
 error: Otp send failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:56:25.442+01:00"}
 error: Transfer failed:TypeError: fetch failed {"timestamp":"2025-01-31T13:56:27.465+01:00"}
+error: Error occurred: {"timestamp":"2025-02-26T22:08:07.923+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-26T22:08:08.089+01:00"}
+error: Error occurred: {"timestamp":"2025-02-26T22:47:22.073+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-26T22:47:22.264+01:00"}
+error: Error occurred:Insufficient balance in wallet {"timestamp":"2025-02-27T08:54:32.772+01:00"}
+error: All operations were rolled back. {"timestamp":"2025-02-27T08:54:32.941+01:00"}
