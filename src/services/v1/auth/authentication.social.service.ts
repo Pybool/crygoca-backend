@@ -15,6 +15,29 @@ interface IGoogleUser {
   lastLogin?: Date;
 }
 
+async function generateRandomUserName(googleUser: any): Promise<string | null> {
+  let username: string | null = null;
+  let isUnique = false;
+
+  while (!isUnique) {
+    const shortTimestamp = Date.now().toString().slice(-3); // Last 3 digits of timestamp
+    let baseName = `${googleUser.firstname}${googleUser.lastname}`.toLowerCase();
+
+    // Trim baseName to ensure total length does not exceed 10 characters
+    baseName = baseName.slice(0, 10 - shortTimestamp.length);
+    username = `${baseName}${shortTimestamp}`;
+
+    // Check if username exists in MongoDB
+    const existingUser = await Accounts.findOne({ username });
+
+    if (!existingUser) {
+      isUnique = true;
+    }
+  }
+
+  return username;
+}
+
 export class SocialAuthentication {
   public static async googleAuthentication(req:any) {
     try {
@@ -52,6 +75,12 @@ export class SocialAuthentication {
             await referrer.save(); // Save the updated referrer
           }
         }
+        let username:any = await generateRandomUserName(googleUser);
+        if(!username){
+          const randomNum = Math.floor(1000 + Math.random() * 9000);
+          username = `${googleUser.firstname}_${googleUser.lastname}_${randomNum}`
+        }
+        googleUser.username = username;
         googleUser.referralCode = await generateReferralCode(`${googleUser.firstname}${googleUser.lastname}`)
         googleUser.avatar = googleUser.avatar;
         googleUser.createdAt = new Date();

@@ -27,7 +27,7 @@ export interface IEmailCheckoutData {
   status?: string;
 }
 
-const marketplaceUrl:string = process.env.marketplaceUrl!;
+const marketplaceUrl:string = process.env.marketplaceUrl! || process.env.CRYGOCA_FRONTEND_BASE_URL!;
 
 const mailActions = {
   auth: {
