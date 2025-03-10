@@ -8,12 +8,14 @@ import mailActions from "../mail/mailservice";
 import { NotificationService } from "../notifications/notification.service";
 import { IWallet } from "../../../models/wallet.model";
 import { formatTimestamp } from "../helpers";
+import { IWalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
 
 export class WalletNotificationService {
   public static async createCreditNotification(
-    wallet:IWallet,
+    wallet: IWallet,
     walletTransaction: IWalletTransaction,
     isReversal: boolean = false
+    
   ) {
     //Notification for credit alert
     if (typeof walletTransaction.user !== "object") {
@@ -38,22 +40,29 @@ export class WalletNotificationService {
       },
     });
 
-    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt)
+    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt);
+
     
-    mailActions.wallet.sendCreditAlertMail(user.email, { walletTransaction, wallet });
+    mailActions.wallet.sendCreditAlertMail(user.email, {
+        walletTransaction,
+        wallet,
+    });
+    
+    
     WalletNotificationService.sendSocketNotification(user._id, {
       hasTransaction: true,
       walletTransaction,
       notification,
-      wallet
+      wallet,
     });
     return notification;
   }
 
   public static async createDebitNotification(
-    wallet:IWallet,
+    wallet: IWallet,
     walletTransaction: IWalletTransaction,
-    isReversal: boolean = false
+    isReversal: boolean = false,
+    pendingIncoming:boolean = false
   ) {
     //Notification for debit alert
     if (typeof walletTransaction.user !== "object") {
@@ -77,15 +86,62 @@ export class WalletNotificationService {
       },
     });
 
-    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt)
+    walletTransaction.createdAt = formatTimestamp(walletTransaction.createdAt);
 
-    mailActions.wallet.sendDebitAlertMail(user.email, { walletTransaction, wallet });
+    if(!pendingIncoming){
+      mailActions.wallet.sendDebitAlertMail(user.email, {
+        walletTransaction,
+        wallet,
+      });
+    }else{
+      mailActions.wallet.sendPaymentDebitAlertMail(user.email, {
+        walletTransaction,
+        wallet,
+      });
+    }
+    
     await WalletNotificationService.sendSocketNotification(user._id, {
       hasTransaction: true,
       walletTransaction,
       notification,
-      wallet
+      wallet,
     });
+    return notification;
+  }
+
+  public static async createIncomingPaymentNotification(
+    receiverWallet: IWallet,
+    walletIncomingPayment: IWalletIncomingPayments
+  ) {
+    const user:any = receiverWallet.user
+    const notification: any = await NotificationModel.create({
+      user: user._id,
+      title: `Pending Incoming Payment! ${
+        user.geoData.currency.symbol
+      }${walletIncomingPayment.amount.toFixed(2)} on your wallet`,
+      message: `Hi ${user.firstname}\n\nWe wish to inform you that you have a pending incoming payment for order ${walletIncomingPayment.checkOutId}`,
+      createdAt: new Date(),
+      status: "UNREAD",
+      class: "success",
+      meta: {
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+          walletIncomingPayment._id
+        }`,
+      },
+    });
+
+    walletIncomingPayment.createdAt = formatTimestamp(walletIncomingPayment.createdAt.toString());
+
+    mailActions.wallet.sendPendingIncomingPaymentMail(user.email, {
+      walletIncomingPayment,
+      receiverWallet,
+    });
+    // WalletNotificationService.sendSocketNotification(user._id, {
+    //   hasTransaction: true,
+    //   walletIncomingPayment,
+    //   notification,
+    //   receiverWallet,
+    // });
     return notification;
   }
 
@@ -95,7 +151,7 @@ export class WalletNotificationService {
       hasTransaction: boolean;
       walletTransaction: IWalletTransaction;
       notification: any;
-      wallet:IWallet
+      wallet: IWallet;
     }
   ) {
     await NotificationService.sendNotificationToUser(

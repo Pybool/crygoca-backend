@@ -3,6 +3,7 @@ import { decode, decodeExt } from "../../middlewares/jwt";
 import {
   createWallet,
   getReceipientWallet,
+  getReceipientWalletUid,
   processWalletTransfer,
   processWalletToBankWithdrawals,
   sendTransferOtp,
@@ -10,7 +11,9 @@ import {
   sendWithdrawalOtp,
   verifyWithdrawalOtp,
   walletGetBeneficiaries,
-  cardTopUpFundWallet
+  cardTopUpFundWallet,
+  sendWalletPaymentAuthorizationPin,
+  payWithWalletBalance
 } from "../../controllers/v1/wallet.controller";
 import { fetchTransactions } from "../../controllers/v1/waalet.transaction.controller";
 
@@ -27,17 +30,25 @@ walletRouter.get("/fetch-transactions", decode, fetchTransactions);
 
 walletRouter.get("/get-receipient-wallet-details", decode, getReceipientWallet);
 
+walletRouter.get("/get-receipient-wallet-details-uid", decode, getReceipientWalletUid);
+
 walletRouter.post("/send-transfer-otp", decode, sendTransferOtp);
 
 walletRouter.post("/verify-transfer-otp", decode, verifyTransferOtp);
 
 walletRouter.post("/send-withdrawal-otp", decode, sendWithdrawalOtp);
 
+walletRouter.post("/send-wallet-pay-authorization-pin", decode, sendWalletPaymentAuthorizationPin)
+
 walletRouter.post("/verify-withdrawal-otp", decode, verifyWithdrawalOtp);
 
 walletRouter.get("/fetch-beneficiaries", decode, walletGetBeneficiaries);
 
 walletRouter.post("/card-topup-fund-wallet", decode, cardTopUpFundWallet);
+
+walletRouter.post("/pay-with-wallet-balance", decode, payWithWalletBalance);
+
+
 
 
 

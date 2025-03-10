@@ -13,7 +13,7 @@ const VerifiedTransactionsSchema = new Schema({
   paymentProcessor:{
     type: String,
     required: false,
-    enum: ["FLUTTERWAVE", "STRIPE","ALCHEMY PAY", "GOOGLE PAY"],
+    enum: ["FLUTTERWAVE", "CRYGOCA"],
     default: "FLUTTERWAVE"
   },
   account: {

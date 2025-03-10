@@ -9,6 +9,7 @@ import { config as dotenvConfig } from "dotenv";
 import { IWalletTransaction } from "../../../models/wallet-transaction.model";
 import juice from "juice";
 import { IWallet } from "../../../models/wallet.model";
+import { IWalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
 dotenvConfig();
 
 export interface IEmailCheckoutData {
@@ -27,7 +28,8 @@ export interface IEmailCheckoutData {
   status?: string;
 }
 
-const marketplaceUrl:string = process.env.marketplaceUrl! || process.env.CRYGOCA_FRONTEND_BASE_URL!;
+const marketplaceUrl: string =
+  process.env.marketplaceUrl! || process.env.CRYGOCA_FRONTEND_BASE_URL!;
 
 const mailActions = {
   auth: {
@@ -108,6 +110,7 @@ const mailActions = {
       });
     },
   },
+
   orders: {
     sendBuyerOrderReceivedMail: async (
       email: string,
@@ -203,7 +206,7 @@ const mailActions = {
       email: string,
       data: IEmailCheckoutData,
       accountId: string,
-      timeout:string
+      timeout: string
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
@@ -378,6 +381,92 @@ const mailActions = {
         console.log(error);
       });
     },
+
+    sendWalletPaymentAuthorizationPin: async (
+      email: string,
+      otp: number,
+      checkOutId: string,
+      user: any
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/walletPayAuthPinTemplate.ejs",
+            { email, otp, user, checkOutId, marketplaceUrl }
+          );
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Wallet pay authorization Pin",
+            text: ``,
+            html: juice(template),
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendPaymentDebitAlertMail: async (
+      email: string,
+      data: { walletTransaction: IWalletTransaction; wallet: IWallet }
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/paymentDebitAlertTemplate.ejs",
+            { email, data, marketplaceUrl }
+          );
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Payment Debit Alert!",
+            text: `Payment Debit alert`,
+            html: juice(template),
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendPendingIncomingPaymentMail: async (email:string, data:{
+      walletIncomingPayment:IWalletIncomingPayments
+      receiverWallet: IWallet,
+    })=>{
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/pendingIncomingPaymentTemplate.ejs",
+            { email, data, marketplaceUrl }
+          );
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Pending Incoming Payment!",
+            text: `Pending Incoming Payment⏱`,
+            html: juice(template),
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    }
   },
 };
 

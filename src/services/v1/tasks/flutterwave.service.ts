@@ -5,7 +5,7 @@ import { FailedVerificationQueue } from "../payments/flutterwave.service";
 
 // Define the task that fetches rates
 const retryVerification = async () => {
-  console.log("Task running");
+  console.log("Card payment verification Task running");
   let extension = ".ts"
 
     if(process.env.NODE_ENV==="prod"){
@@ -28,8 +28,8 @@ const retryVerification = async () => {
 };
 
 // Schedule the task to run every minute using cron
-// cron.schedule("* * * * *", retryVerification);
-cron.schedule("0 * * * *", retryVerification);
+cron.schedule("* * * * *", retryVerification);
+// cron.schedule("0 * * * *", retryVerification);
 
 
 /* DO NOT FORGET TO QUEUE CHECKOUTIDS CRYPTOLISTINGPURCHASE WHOSE PAYMENT ARE NOT CONFIRMED AND ARE NOT IN QUEUE. */

@@ -84,7 +84,7 @@ flwRouter.get(
       const url = `${BASE_URL}`;
       const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer FLWSECK_TEST-SANDBOXDEMOKEY-X`,
+          Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
         },
       });
   
@@ -129,13 +129,14 @@ flwRouter.get("/flw/convert-currencies", async (req, res) => {
 
 flwRouter.post("/flw/payment/webhook", async (req, res) => {
   // Uncomment for production
-  // const secretHash = process.env.FLW_SECRET_HASH;
-  // const signature = req.headers["verif-hash"];
-  // if (!signature || (signature !== secretHash)) {
-  //     res.status(401).end();
-  // }
+  const secretHash = process.env.FLW_SECRET_HASH;
+  const signature = req.headers["verif-hash"];
+  if (!signature || (signature !== secretHash)) {
+      res.status(401).end();
+  }
 
   const event = req.body;
+  console.log("Payment Webhook Event ======> ", event)
   if (event.event === "payment.success") {
     res.status(200).send("Webhook received");
   } else if (event.event === "payment.failed") {

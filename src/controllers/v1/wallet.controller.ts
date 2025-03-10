@@ -14,6 +14,111 @@ import { IWallet, Wallet } from "../../models/wallet.model";
 import Accounts from "../../models/accounts.model";
 import { WalletAuthorization } from "../../services/v1/wallet/wallet-authorizations.service";
 import { WalletFundingService } from "../../services/v1/wallet/wallet-funding.service";
+import mongoose from "mongoose";
+
+const makeTransfer = async (payload: any) => {
+  const {
+    debitDetails,
+    creditDetails,
+    sourceAmount,
+    sourceCurrency,
+    targetCurrency,
+    saveBeneficiary,
+    otp,
+    jobType,
+    orderId
+  } = payload;
+
+  let amount: number = 0.0;
+
+  try {
+    console.log("Transfer otp from test ", otp);
+    if(jobType === "wallet-transfer"){
+      const validatedSenderWallet = await WalletService.validateTransfer(
+        debitDetails.walletAccountNo,
+        creditDetails.walletAccountNo,
+        sourceCurrency,
+        sourceAmount,
+        otp
+      );
+  
+      if (!validatedSenderWallet) {
+        return {
+          status: false,
+          message: "Failed to validate transaction",
+          code: 400
+        };
+      }
+    }
+    
+  } catch (error: any) {
+    return {
+      status: false,
+      message: error.message,
+      code: 500
+    };
+  }
+
+  if (sourceCurrency === targetCurrency) {
+    amount = sourceAmount;
+  } else {
+    /* Convert source currency to target currency */
+    const from = getCountryCodeByCurrencyCode(
+      sourceCurrency.toUpperCase()
+    )!.code;
+
+    const to = getCountryCodeByCurrencyCode(targetCurrency.toUpperCase())!.code;
+    const convertToDefaultCurrency = async (amount: number) => {
+      if (from && to && sourceCurrency && targetCurrency) {
+        return await convertCurrency(
+          from,
+          to,
+          sourceCurrency,
+          targetCurrency,
+          amount?.toString()
+        );
+      }
+      return null;
+    };
+
+    const exchangeRateData: any = await convertToDefaultCurrency(1);
+    const exchangeRate: any =
+      exchangeRateData?.data?.data[targetCurrency.toUpperCase()]?.value;
+    if (!exchangeRate) {
+      return {
+        status: false,
+        message: "Currency conversion failed, please try again later!",
+        code: 422
+      };
+    }
+    amount = sourceAmount * exchangeRate;
+    creditDetails.amount = amount; //Converted Amount
+    creditDetails.currency = targetCurrency;
+
+    debitDetails.amount = sourceAmount; // Source/Raw amount
+    debitDetails.currency = sourceCurrency;
+  }
+  debitDetails.otp = otp;
+  try {
+    let meta: ItopUps | null = null;
+    if (jobType === "wallet-balance-payment") {
+      meta = { checkOutId: orderId }
+    }
+    const transferId: string = `${debitDetails.accountNumber}-${creditDetails.accountNumber}`;
+    await addWalletBalanceUpdateJob(
+      jobType,
+      amount,
+      meta,
+      transferId,
+      debitDetails,
+      creditDetails,
+      saveBeneficiary
+    );
+    return { status: true, message: "Transaction queued successfully", code: 200 };
+  } catch (error: any) {
+    return { status: false, error: error.message, code: 500 };
+  }
+}
 
 export const createWallet = async (req: Xrequest, res: Response) => {
   try {
@@ -45,97 +150,10 @@ export const createWallet = async (req: Xrequest, res: Response) => {
 };
 
 export const processWalletTransfer = async (req: Xrequest, res: Response) => {
-  const {
-    debitDetails,
-    creditDetails,
-    sourceAmount,
-    sourceCurrency,
-    targetCurrency,
-    saveBeneficiary,
-    otp
-  } = req.body;
-  let amount: number = 0.0;
-
-  try {
-    console.log("Transfer otp from test ", otp)
-    const validatedSenderWallet = await WalletService.validateTransfer(
-      debitDetails.walletAccountNo,
-      creditDetails.walletAccountNo,
-      sourceCurrency,
-      sourceAmount,
-      otp
-    );
-
-    if (!validatedSenderWallet) {
-      return res.status(400).json({
-        status: false,
-        message: "Failed to validate transaction",
-      });
-    }
-  } catch (error: any) {
-    return res.status(400).json({
-      status: false,
-      message: error.message,
-    });
-  }
-
-  if (sourceCurrency === targetCurrency) {
-    amount = sourceAmount;
-  } else {
-    /* Convert source currency to target currency */
-    const from = getCountryCodeByCurrencyCode(
-      sourceCurrency.toUpperCase()
-    )!.code;
-
-    const to = getCountryCodeByCurrencyCode(targetCurrency.toUpperCase())!.code;
-    const convertToDefaultCurrency = async (amount: number) => {
-      if (from && to && sourceCurrency && targetCurrency) {
-        return await convertCurrency(
-          from,
-          to,
-          sourceCurrency,
-          targetCurrency,
-          amount?.toString()
-        );
-      }
-      return null;
-    };
-
-    const exchangeRateData: any = await convertToDefaultCurrency(1);
-    const exchangeRate: any =
-      exchangeRateData?.data?.data[targetCurrency.toUpperCase()]?.value;
-    if (!exchangeRate) {
-      return res.status(422).json({
-        status: false,
-        message: "Currency conversion failed, please try again later!",
-      });
-    }
-    amount = sourceAmount * exchangeRate;
-    creditDetails.amount = amount; //Converted Amount
-    creditDetails.currency = targetCurrency;
-
-    debitDetails.amount = sourceAmount; // Source/Raw amount
-    debitDetails.currency = sourceCurrency;
-  }
-  debitDetails.otp = otp;
-  try {
-    const meta: ItopUps | null = null;
-    const transferId: string = `${debitDetails.accountNumber}-${creditDetails.accountNumber}`;
-    await addWalletBalanceUpdateJob(
-      "wallet-transfer",
-      amount,
-      meta,
-      transferId,
-      debitDetails,
-      creditDetails,
-      saveBeneficiary
-    );
-    res
-    .status(200)
-    .json({ status: true, message: "Transaction queued successfully" });
-  } catch (error: any) {
-    res.status(500).json({ status: false, error: error.message });
-  }
+  const payload = req.body;
+  payload.jobType = "wallet-transfer";
+  const response = await makeTransfer(payload);
+  return res.status(response?.code || 200).json(response);
 };
 
 export const processWalletToBankWithdrawals = async (
@@ -202,13 +220,28 @@ export const getReceipientWallet = async (req: Xrequest, res: Response) => {
   }
 };
 
+export const getReceipientWalletUid = async (req: Xrequest, res: Response) => {
+  try {
+    const accountId: string = req.query.accountId! as string;
+
+    const walletResponse: {
+      status: boolean;
+      message: string;
+      wallet?: IWallet;
+    } = await WalletService.getWallet(new mongoose.Types.ObjectId(accountId));
+    return res.status(200).json(walletResponse);
+  } catch (error: any) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+};
+
 export const sendTransferOtp = async (req: Xrequest, res: Response) => {
   try {
     const transferIntent: {
       walletToDebit: string;
       walletToCredit: string;
-      amount:string;
-      user:any
+      amount: string;
+      user: any;
     } = req.body!;
 
     const response = await WalletAuthorization.sendTransferOtp(transferIntent);
@@ -292,7 +325,6 @@ export const walletGetBeneficiaries = async (req: Xrequest, res: Response) => {
 
 export const cardTopUpFundWallet = async (req: Xrequest, res: Response) => {
   try {
-
     const response = await WalletFundingService.cardTopUpFundWallet(req);
     if (response) {
       return res.status(200).json(response);
@@ -301,4 +333,56 @@ export const cardTopUpFundWallet = async (req: Xrequest, res: Response) => {
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
   }
-}
+};
+
+export const sendWalletPaymentAuthorizationPin = async (
+  req: Xrequest,
+  res: Response
+) => {
+  try {
+    const payloadHash: string = req.body.payloadHash!;
+    const checkOutId: string = req.body.checkOutId!;
+    const accountId: string = req.accountId! as string;
+    const response =
+      await WalletAuthorization.sendWalletPaymentAuthorizationPin(
+        accountId,
+        payloadHash,
+        checkOutId
+      );
+    return res.status(200).json(response);
+  } catch (error: any) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+};
+
+export const payWithWalletBalance = async (req: Xrequest, res: Response) => {
+  try {
+    const paymentHash: string = req.body.paymentHash!;
+    const checkOutId: string = req.body.orderId!;
+    const amount: string = req.body.amount!;
+    const authorizationPin: string = req.body.authorizationPin.toString()!;
+    const accountId: string = req.accountId! as string;
+    console.log("Pay with balance payload ===> ", JSON.stringify(req.body, null, 2))
+    let response =
+      await WalletAuthorization.validateWalletPaymentAuthorizationPin(
+        accountId,
+        paymentHash,
+        authorizationPin,
+        checkOutId
+      );
+    if (response.status) {
+      const wallet = await Wallet.findOne({ user: accountId });
+      if (!wallet) {
+        throw new Error("No wallet found to debit for request.")
+      }
+      const payload = req.body;
+      payload.otp = payload.authorizationPin;
+      payload.jobType = "wallet-balance-payment";
+      const response = await makeTransfer(payload);
+      return res.status(response?.code || 200).json(response);
+    }
+    return res.status(200).json(response);
+  } catch (error: any) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+};

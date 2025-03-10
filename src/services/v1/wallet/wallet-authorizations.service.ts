@@ -20,6 +20,8 @@ import {
 import Xrequest from "../../../interfaces/extensions.interface";
 import { WalletService } from "./wallet.service";
 import * as CryptoJS from "crypto-js";
+import CryptoListingPurchase from "../../../models/listingPurchase.model";
+import { WalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -34,8 +36,8 @@ export class WalletAuthorization {
   public static async sendTransferOtp(transferIntent: {
     walletToDebit: string;
     walletToCredit: string;
-    amount:string;
-    user:any
+    amount: string;
+    user: any;
   }) {
     try {
       if (transferIntent) {
@@ -60,8 +62,8 @@ export class WalletAuthorization {
           };
         }
         let otp: string = generateOtp();
-        if(process.env.MOCK_EXCHANGE_RATE==='true'){
-          otp = "1234"
+        if (process.env.MOCK_EXCHANGE_RATE === "true") {
+          otp = "1234";
         }
         console.log("Transfers OTP ", otp);
         let clonedWallet = JSON.parse(
@@ -74,7 +76,7 @@ export class WalletAuthorization {
         );
         /*Send otp to email */
         if (clonedWallet.user.useTransferOtpEmail) {
-          transferIntent.user = clonedWallet.user
+          transferIntent.user = clonedWallet.user;
           mailActions.wallet.sendTransferConfirmationOtp(
             clonedWallet.user.email,
             Number(otp),
@@ -131,7 +133,7 @@ export class WalletAuthorization {
           `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`
         );
         console.log("cachedCode", cachedCode);
-        console.log("OTPS ", cachedCode?.code, transferIntent.otp)
+        console.log("OTPS ", cachedCode?.code, transferIntent.otp);
         if (cachedCode) {
           if (cachedCode?.code === transferIntent.otp) {
             return {
@@ -231,6 +233,110 @@ export class WalletAuthorization {
       return {
         status: false,
         message: "Withdrawal request authorization failed",
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public static async sendWalletPaymentAuthorizationPin(
+    accountId: string,
+    payloadHash: string,
+    checkOutId: string
+  ) {
+    try {
+      const account: any = await Accounts.findOne({ _id: accountId });
+      if (!account) {
+        return {
+          status: false,
+          message: "No account was found for this request",
+        };
+      }
+      const previousPayment = await WalletIncomingPayments.findOne({checkOutId:checkOutId});
+      if(previousPayment){
+        return {
+          status: false,
+          message: "This transaction already has a payment."
+        }
+      }
+      if (payloadHash) {
+        const otp: string = generateOtp();
+        console.log("Wallet Balance Payment OTP ", otp);
+        const key: string = `${accountId}:${payloadHash}`;
+
+        await setExpirableCode(key, "crygoca-balance-pay", otp);
+        /*Send otp to email */
+        mailActions.wallet.sendWalletPaymentAuthorizationPin(
+          account.email,
+          Number(otp),
+          checkOutId,
+          account
+        );
+        return {
+          status: true,
+          message: "Wallet Payment Authorization pin sent sucessfully",
+        };
+      }
+      return {
+        status: false,
+        message: "Failed to send Wallet Payment Authorization pin!",
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public static async validateWalletPaymentAuthorizationPin(
+    accountId: string,
+    paymentHash: string,
+    authorizationPin: string,
+    checkOutId:string,
+  ) {
+    try {
+      const key: string = `${accountId}:${paymentHash}`;
+      const previousPayment = await WalletIncomingPayments.findOne({checkOutId:checkOutId});
+      if(previousPayment){
+        return {
+          status: false,
+          message: "This transaction already has a payment."
+        }
+      }
+      const purchaseIntent = await CryptoListingPurchase.findOne({checkOutId:checkOutId});
+      if(!purchaseIntent){
+        return {
+          status: false,
+          message: "No checkout intent was found for this action."
+        }
+      }
+      if (authorizationPin) {
+        const cachedCode: any = await getExpirableCode(
+          "crygoca-balance-pay",
+          key
+        );
+        console.log("cachedCodeAuthPin", cachedCode);
+        if (cachedCode) {
+          if (cachedCode?.code === authorizationPin) {
+            await setExpirableCode(
+              key,
+              "wallet-pay-authorization",
+              "authorized",
+              120
+            );
+            return {
+              status: true,
+              message: "Wallet payment request authorized",
+            };
+          }
+        }
+        return {
+          status: false,
+          message: "Wallet payment authorization failed, enter a valid authorization pin",
+        };
+      }
+
+      return {
+        status: false,
+        message: "No valid authorization pin was sent",
       };
     } catch (error: any) {
       throw error;

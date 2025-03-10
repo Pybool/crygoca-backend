@@ -31,15 +31,19 @@ import { WalletAuthorization } from "./wallet-authorizations.service";
 import logger from "../../../bootstrap/logger";
 import { getTestConfig } from "../../../../config";
 import { processRollbacks, registerRollback } from "./rollback.service";
+import { WalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
+import CryptoListingPurchase from "../../../models/listingPurchase.model";
+import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 
 //For Payout topup and direct topups
 export interface ItopUps {
-  walletAccountNo: string;
-  operationType: string;
+  walletAccountNo?: string;
+  operationType?: string;
   payoutId?: mongoose.Types.ObjectId;
   payoutConversionMetrics?: any;
   verifiedTransactionId?: mongoose.Types.ObjectId;
   uuid?: string;
+  checkOutId?: string;
 }
 
 export class WalletService {
@@ -190,6 +194,7 @@ export class WalletService {
     },
     saveBeneficiary?: boolean
   ) {
+    console.log("Payment TYpe ", type);
     if (type === "wallet-transfer") {
       return await WalletService.walletTransfer(
         type,
@@ -197,6 +202,15 @@ export class WalletService {
         debitDetails!,
         creditDetails!,
         saveBeneficiary
+      );
+    } else if (type === "wallet-balance-payment") {
+      return await WalletService.walletBalancePayment(
+        type,
+        amount,
+        debitDetails!,
+        creditDetails!,
+        saveBeneficiary,
+        meta
       );
     } else if (type === "payout-topup") {
       return await WalletService.walletPayoutTopUp(type, amount, meta!);
@@ -257,7 +271,12 @@ export class WalletService {
       throw new Error("Invalid currency for sender's wallet");
     }
 
-    console.log("Sender Wallet & balance ", senderWallet.balance, amount, senderWallet.balance < amount)
+    console.log(
+      "Sender Wallet & balance ",
+      senderWallet.balance,
+      amount,
+      senderWallet.balance < amount
+    );
 
     if (senderWallet.balance < amount) {
       throw new Error("Insufficient balance in sender's wallet");
@@ -332,7 +351,6 @@ export class WalletService {
         throw new Error("Sender has no wallet");
       }
 
-
       senderWalletTransaction = await WalletTransaction.create({
         user: senderWallet.user,
         creditWalletAccountNo: receiverWalletAccountNo,
@@ -369,7 +387,6 @@ export class WalletService {
         walletTransaction: senderWalletTransaction,
         isRollBack: true,
       });
-
 
       //Testing
       // logger.info("TEST_ERROR " + getTestConfig().TEST_ERROR);
@@ -449,7 +466,7 @@ export class WalletService {
 
       logger.info("Wallet operations completed successfully.");
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       // logger.info(error?.toString())
       logger.info("Error occurred:" + error?.message);
       // Perform rollback actions and save fail job in database or redis
@@ -460,6 +477,175 @@ export class WalletService {
         receiverWalletAccountNo: receiverWalletAccountNo,
         verifiedTransactionId: randomUUID(),
       });
+    }
+  }
+
+  private static async walletBalancePayment(
+    type: string,
+    amount: number,
+    debitDetails: {
+      walletAccountNo: string;
+      currency: string;
+      amount: number;
+      otp?: string;
+    },
+    creditDetails: {
+      walletAccountNo: string;
+      currency: string;
+      amount: number;
+    },
+    saveBeneficiary?: boolean,
+    meta?: ItopUps | null
+  ) {
+    let rollbackActions: any = []; // To store rollback operations
+    let senderWalletTransaction: IWalletTransaction | null = null;
+    let receiverWalletTransaction: IWalletTransaction | null = null;
+    let senderNotification: any = null;
+    let receiverNotification: any = null;
+    const senderWalletAccountNo: string = debitDetails.walletAccountNo;
+    const receiverWalletAccountNo: string = creditDetails.walletAccountNo;
+
+    if (!meta) {
+      throw new Error("No order reference for payment was detected...");
+    }
+
+    try {
+      const senderWalletCurrency: string = debitDetails.currency;
+      const reference = generateReferenceCode("CWP-");
+
+      // Debit operation: Decrease balance for sender
+      const senderWallet = await Wallet.findOneAndUpdate(
+        { walletAccountNo: senderWalletAccountNo },
+        { $inc: { balance: -1 * debitDetails.amount } },
+        { new: true } // Return the updated document
+      );
+      if (senderWallet) {
+        senderWallet.updatedAt = new Date();
+        await senderWallet.save();
+      }
+
+      // Add rollback for debit (re-add the amount if something goes wrong later)
+
+      let rollBackId: string = randomUUID();
+      registerRollback(
+        rollBackId,
+        "UPDATE-ONE",
+        "Wallet",
+        { walletAccountNo: senderWalletAccountNo },
+        { $inc: { balance: debitDetails.amount } }
+      );
+
+      if (!senderWallet) {
+        throw new Error("Sender has no wallet");
+      }
+
+      senderWalletTransaction = await WalletTransaction.create({
+        user: senderWallet.user,
+        creditWalletAccountNo: receiverWalletAccountNo,
+        debitWalletAccountNo: senderWalletAccountNo,
+        amount: debitDetails.amount,
+        type: type,
+        operationType: "debit",
+        reference: reference,
+      });
+
+      await senderWalletTransaction.populate(
+        "user",
+        "_id firstname lastname username email geoData"
+      );
+
+      senderNotification =
+        await WalletNotificationService.createDebitNotification(
+          senderWallet,
+          senderWalletTransaction,
+          false,
+          true
+        );
+      //Redis Roll back...
+      rollBackId = randomUUID();
+      senderWalletTransaction!.operationType = "credit";
+      registerRollback(rollBackId, "NOTIFICATION", "Notification", {
+        wallet: senderWallet,
+        walletTransaction: senderWalletTransaction,
+        isRollBack: true,
+      });
+
+      const receiverWallet = await Wallet.findOne({
+        walletAccountNo: receiverWalletAccountNo,
+      }).populate("user");
+      if (!receiverWallet) {
+        throw new Error("Receiver wallet not found");
+      }
+      // Credit operation: Increase balance for receiver
+      const incomingpaymentData = {
+        wallet: receiverWallet._id,
+        checkOutId: meta.checkOutId,
+        status: "PENDING",
+        amount: creditDetails.amount,
+        debitWalletAccountNo: senderWalletAccountNo,
+      };
+      const walletIncomingPayment = await WalletIncomingPayments.create(
+        incomingpaymentData
+      );
+
+      // Add rollback for credit (subtract the amount if something goes wrong later)
+      rollBackId = randomUUID();
+      registerRollback(rollBackId, "DELETE", "WalletIncomingPayments", {
+        wallet: walletIncomingPayment._id,
+      });
+
+      receiverNotification =
+        await WalletNotificationService.createIncomingPaymentNotification(
+          receiverWallet,
+          walletIncomingPayment
+        );
+      
+      //Redis Roll back...
+      rollBackId = randomUUID();
+      registerRollback(rollBackId, "NOTIFICATION", "Notification", {
+        wallet: receiverWallet,
+        walletTransaction: receiverWalletTransaction,
+        isRollBack: true,
+      });
+      const accountId = senderWallet.user;
+      const account = await Accounts.findOne({_id: accountId});
+
+      const paymentData = {
+        tx_ref:meta.checkOutId,
+        amount:creditDetails.amount,
+        currency: senderWallet.currency,
+        charged_amount:creditDetails.amount,
+        app_fee: 0.00,
+        status: "successful",
+        payment_type: "crygoca-wallet",
+      }
+
+      const verifiedTransaction = await VerifiedTransactions.create({
+        tx_ref:  meta.checkOutId,
+        data: paymentData,
+        account: account._id,
+        paymentProcessor:"CRYGOCA"
+      });
+      const cryptoPurchase = await CryptoListingPurchase.findOne({
+        checkOutId: verifiedTransaction.tx_ref,
+      });
+      if (cryptoPurchase) {
+        cryptoPurchase.verifiedTransaction = verifiedTransaction._id;
+        cryptoPurchase.paymentConfirmed = true
+        await cryptoPurchase.save();
+      }
+
+      logger.info("Wallet balance payment operations completed successfully.");
+    } catch (error: any) {
+      logger.info(error?.toString())
+      logger.info("Error occurred:" + error?.message);
+      await processRollbacks();
+      // await WalletFailedtasksHandler.registerfailedJob(type, amount, {
+      //   operationType: "wallet-transfer",
+      //   senderWalletAccountNo: senderWalletAccountNo,
+      //   receiverWalletAccountNo: receiverWalletAccountNo,
+      //   verifiedTransactionId: randomUUID(),
+      // });
     }
   }
 
@@ -608,10 +794,6 @@ export class WalletService {
         throw new Error("No wallet was fund for account number.");
       }
 
-      // if (1 < 2) {
-      //   throw new Error("Just a test error");
-      // }
-
       if (wallet) {
         // Add rollback for debit (re-add the amount if something goes wrong later)
         let inverseOperation = { $inc: { balance: positiveAmount } };
@@ -738,19 +920,25 @@ export class WalletService {
 
       // Add rollback for debit (re-add the amount if something goes wrong later)
       let inverseOperation = { $inc: { balance: -1 * positiveAmount } };
-      
+
       if (meta.operationType === "debit") {
         inverseOperation = { $inc: { balance: positiveAmount } }; // Credit Operation
       }
 
       //The two blocks below may be unneccessary as validation was done in controller.
-      const _wallet = await Wallet.findOne({ walletAccountNo: meta.walletAccountNo });
-      if(!_wallet){
-        throw new Error("No source wallet was found..")
+      const _wallet = await Wallet.findOne({
+        walletAccountNo: meta.walletAccountNo,
+      });
+      if (!_wallet) {
+        throw new Error("No source wallet was found..");
       }
 
       if (meta.operationType === "debit") {
-        console.log("Withdrawal Amount & Balance ", _wallet.balance , positiveAmount)
+        console.log(
+          "Withdrawal Amount & Balance ",
+          _wallet.balance,
+          positiveAmount
+        );
         if (_wallet.balance < positiveAmount) {
           throw new Error("Insufficient balance in wallet");
         }
@@ -763,7 +951,7 @@ export class WalletService {
       );
 
       rollbackActions.push(async () => {
-        console.log("Balance is being re-credited")
+        console.log("Balance is being re-credited");
         await Wallet.findOneAndUpdate(
           { walletAccountNo: meta.walletAccountNo },
           inverseOperation,
@@ -774,10 +962,6 @@ export class WalletService {
       if (!wallet) {
         throw new Error("No wallet was fund for account number.");
       }
-
-      // if (20 > 10) {
-      //   throw new Error("Error to test rollback mechanism");
-      // }
 
       if (wallet) {
         walletTransaction = await WalletTransaction.create({
@@ -802,23 +986,6 @@ export class WalletService {
             walletTransaction!
           );
       }
-      // rollbackActions.push(() =>
-      //   WalletTransaction.deleteOne({
-      //     _id: walletTransaction!._id,
-      //   })
-      // );
-
-      // rollbackActions.push(async () => {
-      //   NotificationModel.deleteOne({
-      //     _id: walletNotification!._id,
-      //   });
-      //   walletNotification =
-      //     await WalletNotificationService.createCreditNotification(
-      //       wallet,
-      //       walletTransaction!
-      //     );
-      // });
-      // throw new Error("Error for testing rollback");
 
       logger.info("Wallet operations completed successfully.");
     } catch (error: any) {
@@ -831,9 +998,8 @@ export class WalletService {
         operation,
         { new: true } // Return the updated document
       );
-      ///////////////////////////////////////////////
-      logger.info(error?.toString())
-      logger.error("Error occurred:"+ error.message);
+      logger.info(error?.toString());
+      logger.error("Error occurred:" + error.message);
 
       // Perform rollback actions
       for (const rollback of rollbackActions) {
@@ -871,9 +1037,9 @@ export class WalletService {
         throw new Error("Insufficient balance in wallet");
       }
       data.reference = generateReferenceCode("BW-");
-      logger.info("Complete Withdrawal data =-==> ", data);
+      logger.info("Complete Withdrawal data ===> ", data);
       const withdrawalResponse = await withdrawToLocalBankHandler(data);
-      logger.info("WithdrawalResponse ==> ", withdrawalResponse);
+      logger.info("WithdrawalResponse ===> ", withdrawalResponse);
       const withdrawal = await Withdrawals.create({
         wallet: senderWallet._id,
         account: new mongoose.Types.ObjectId(accountId),
@@ -886,7 +1052,7 @@ export class WalletService {
       if (withdrawal.status === "NEW") {
         const withdrawalStatusQueue = new WithdrawalStatusQueue<any>();
         await withdrawalStatusQueue.enqueue(withdrawal!);
-        //Debit customer's wallet 
+        //Debit customer's wallet
         await addWalletBalanceUpdateJob(
           "wallet-withdrawal",
           withdrawalResponse.data.amount,
@@ -894,7 +1060,7 @@ export class WalletService {
             operationType: "debit",
             walletAccountNo: senderWallet.walletAccountNo,
           }
-        );//loopback
+        ); //loopback
       }
     } catch (error: any) {
       logger.info("Withdrawal error ", error?.message);
@@ -914,7 +1080,7 @@ export class WalletService {
         withdrawal.verificationResponse = data.transferRespponse;
         await withdrawal.save();
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 }
 

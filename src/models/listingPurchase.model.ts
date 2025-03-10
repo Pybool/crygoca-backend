@@ -172,7 +172,7 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
 
       //Revisit
       const computePayout = (units: number, unitPrice: number) => {
-        let amount_settled = verifiedTransaction.data.amount_settled;
+        let amount_settled = verifiedTransaction.data?.amount_settled || verifiedTransaction.data?.amount;
         return amount_settled - amount_settled * ADMIN_SETTINGS.escrowFeefactor;
       };
 

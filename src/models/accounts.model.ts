@@ -29,6 +29,11 @@ const AccountsSchema = new Schema({
     required: false,
     default: "",
   },
+  othername: {
+    type: String,
+    required: false,
+    default: "",
+  },
   fullname: {
     type: String,
     required: false,
