@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import axios from "axios";
 import {
   IuserDetails,
   IWalletTransaction,
@@ -34,6 +35,8 @@ import { processRollbacks, registerRollback } from "./rollback.service";
 import { WalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
 import CryptoListingPurchase from "../../../models/listingPurchase.model";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
+import MerchantAccounts from "../../../models/accounts-merchant.model";
+import { updatePaymentConfirmation } from "../listingsServices/cryptolisting.service";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -47,19 +50,24 @@ export interface ItopUps {
 }
 
 export class WalletService {
-  private static generateRandomAccountNumber(account: any): string {
+  private static generateRandomAccountNumber(account: any, isMerchant: boolean = false): string {
+
+    let merchantPrefix: string = "CMR-"
     const areaCode: string = account.geoData.isoCode; // ISO Code (e.g., "180")
     const shortTimestamp: number = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-    const walletAccountNo: string = `${areaCode}${shortTimestamp}`;
+    const walletAccountNo: string = `${merchantPrefix}${areaCode}${shortTimestamp}`;
+    if (!isMerchant) {
+      merchantPrefix = ""
+    }
     return walletAccountNo;
   }
 
-  public static async generateUniqueAccountNumber(account: any) {
+  public static async generateUniqueAccountNumber(account: any, isMerchant: boolean = false) {
     let unique = false;
     let accountNumber;
 
     while (!unique) {
-      accountNumber = WalletService.generateRandomAccountNumber(account);
+      accountNumber = WalletService.generateRandomAccountNumber(account, isMerchant);
       const existingAccount = await Wallet.findOne({ accountNumber });
       if (!existingAccount) {
         unique = true; // Exit the loop if the account number is unique
@@ -68,8 +76,14 @@ export class WalletService {
     return accountNumber;
   }
 
-  public static async createWallet(userId: mongoose.Types.ObjectId) {
-    const account = await Accounts.findOne({ _id: userId });
+  public static async createWallet(userId: mongoose.Types.ObjectId, isMerchant: boolean = false) {
+    let userType: "accounts" | "merchantAccounts" = "accounts"
+    let account = await Accounts.findOne({ _id: userId });
+    if (isMerchant) {
+      userType = "merchantAccounts";
+      account = await MerchantAccounts.findOne({ _id: userId });
+    }
+
     if (!account) {
       return {
         status: false,
@@ -93,7 +107,7 @@ export class WalletService {
     }
 
     const walletAccountNo: string | undefined =
-      await WalletService.generateUniqueAccountNumber(account)!;
+      await WalletService.generateUniqueAccountNumber(account, isMerchant)!;
     if (!walletAccountNo) {
       return {
         status: false,
@@ -105,6 +119,8 @@ export class WalletService {
       walletAccountNo,
       currency: account.geoData.currency.code,
       currencySymbol: account.geoData.currency.symbol,
+      userType: userType,
+      isMerchant: isMerchant
     });
 
     if (wallet) {
@@ -139,7 +155,8 @@ export class WalletService {
 
   public static async getReceipientWallet(
     walletId: string,
-    accountId: string | null = null
+    accountId: string | null = null,
+    isTransfer: boolean = true
   ) {
     try {
       let myWallet: IWallet | null = null;
@@ -148,18 +165,22 @@ export class WalletService {
           user: accountId,
         });
       }
-
-      if (myWallet && myWallet?.walletAccountNo == walletId) {
-        return {
-          status: false,
-          message:
-            "You cannot make a transfer to your own wallet, you can only transfer to other crygoca wallets",
-        };
+      if (isTransfer) {
+        if (myWallet && myWallet?.walletAccountNo == walletId) {
+          return {
+            status: false,
+            message:
+              "You cannot make a transfer to your own wallet, you can only transfer to other crygoca wallets",
+          };
+        }
       }
 
       const wallet: IWallet | null = await Wallet.findOne({
         walletAccountNo: walletId,
-      }).populate("user");
+      }).populate({
+        path: "user",
+        model: "accounts", // Dynamically use the model name
+      });
 
       if (!wallet) {
         return {
@@ -572,7 +593,10 @@ export class WalletService {
 
       const receiverWallet = await Wallet.findOne({
         walletAccountNo: receiverWalletAccountNo,
-      }).populate("user");
+      }).populate({
+        path: "user",
+        model: "accounts",
+      });
       if (!receiverWallet) {
         throw new Error("Receiver wallet not found");
       }
@@ -599,7 +623,7 @@ export class WalletService {
           receiverWallet,
           walletIncomingPayment
         );
-      
+
       //Redis Roll back...
       rollBackId = randomUUID();
       registerRollback(rollBackId, "NOTIFICATION", "Notification", {
@@ -608,23 +632,23 @@ export class WalletService {
         isRollBack: true,
       });
       const accountId = senderWallet.user;
-      const account = await Accounts.findOne({_id: accountId});
+      const account = await Accounts.findOne({ _id: accountId });
 
       const paymentData = {
-        tx_ref:meta.checkOutId,
-        amount:creditDetails.amount,
+        tx_ref: meta.checkOutId,
+        amount: creditDetails.amount,
         currency: senderWallet.currency,
-        charged_amount:creditDetails.amount,
+        charged_amount: creditDetails.amount,
         app_fee: 0.00,
         status: "successful",
         payment_type: "crygoca-wallet",
       }
 
       const verifiedTransaction = await VerifiedTransactions.create({
-        tx_ref:  meta.checkOutId,
+        tx_ref: meta.checkOutId,
         data: paymentData,
         account: account._id,
-        paymentProcessor:"CRYGOCA"
+        paymentProcessor: "CRYGOCA"
       });
       const cryptoPurchase = await CryptoListingPurchase.findOne({
         checkOutId: verifiedTransaction.tx_ref,
@@ -634,6 +658,8 @@ export class WalletService {
         cryptoPurchase.paymentConfirmed = true
         await cryptoPurchase.save();
       }
+
+      await updatePaymentConfirmation(verifiedTransaction.tx_ref)
 
       logger.info("Wallet balance payment operations completed successfully.");
     } catch (error: any) {
@@ -1080,8 +1106,37 @@ export class WalletService {
         withdrawal.verificationResponse = data.transferRespponse;
         await withdrawal.save();
       }
-    } catch (error) {}
+    } catch (error) { }
   }
+
+
+
+  public static async makeExternalPayment(payload: {
+    amount: number;
+    authorizationPin: number | string;
+    orderId: string;
+    paymentHash: string;
+  }) {
+    const url = `${process.env.CRYGOCA_SERVER_URL}/api/v1/wallet/create-payment`;
+    console.log("process.env.CRYGOCA_SECRET_KEY ", process.env.CRYGOCA_SECRET_KEY)
+    try {
+      const response = await axios.post(url, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": `${process.env.CRYGOCA_SECRET_KEY!}`, // Add token if available
+        },
+      });
+
+      return { code: response.status, data: response.data };
+    } catch (error: any) {
+      console.error("Error processing wallet payment:", error.response?.data || error.message);
+      return {
+        message: "Error processing wallet payment",
+        error: error.response?.data || error.message,
+      };
+    }
+  }
+
 }
 
 // button.Button.Button_sm.APIRequest-example-button1DGMsfaOTVNW {

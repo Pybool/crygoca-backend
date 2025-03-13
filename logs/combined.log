@@ -14546,3 +14546,254 @@ info: MongoDB connected Successfully. {"timestamp":"2025-03-10T15:48:10.667+01:0
 info: Complete Withdrawal data ===>  {"account_bank":"100004","account_number":"8127148012","amount":"3074.88","callback_url":"","currency":"NGN","narration":"Crygoca Wallet Withdrawal","reference":"BW-X1UJ6HE5ONCN","timestamp":"2025-03-10T15:54:55.032+01:00"}
 info: Withdrawal error  {"timestamp":"2025-03-10T15:54:56.298+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-03-10T16:21:18.206+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T07:52:58.056+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T07:52:58.060+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T07:53:06.677+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T07:53:06.687+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T08:54:57.973+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T08:54:57.976+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T08:55:05.009+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T08:55:05.023+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T10:25:55.411+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T10:25:55.414+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T10:26:04.903+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T10:26:04.915+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T10:50:58.396+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T10:50:58.402+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T10:51:08.005+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T10:51:08.021+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T11:00:14.445+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T11:00:14.450+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T11:00:23.077+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T11:00:23.099+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T13:12:17.646+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T13:12:17.652+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T13:12:57.037+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T13:12:57.053+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T13:43:45.171+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T13:43:45.179+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T13:43:53.592+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T13:43:53.601+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T13:55:17.164+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T13:55:17.175+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T13:55:27.464+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T13:55:27.474+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:02:17.356+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:02:17.374+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:02:27.788+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:02:27.800+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:12:19.961+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:12:19.967+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:12:29.734+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:12:29.738+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:21:05.329+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:21:05.348+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:21:19.271+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:21:19.283+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:22:39.911+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:22:39.915+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:22:47.136+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:22:47.153+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:31:27.960+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:31:27.974+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:31:37.633+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:31:37.642+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:32:14.690+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:32:14.695+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:32:25.113+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:32:25.116+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T14:53:01.358+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T14:53:01.367+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T14:53:13.390+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T14:53:13.402+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T15:17:47.831+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T15:17:47.840+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T15:17:59.441+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T15:17:59.446+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T15:24:43.415+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T15:24:43.428+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T15:24:52.721+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T15:24:52.726+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T16:37:16.002+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T16:37:16.013+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T16:37:25.621+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T16:37:25.625+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T16:44:30.223+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T16:44:30.230+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T16:44:36.738+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T16:44:36.745+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T16:55:53.645+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T16:55:53.651+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T16:56:03.229+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T16:56:03.234+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:07:04.663+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:07:04.674+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:07:20.748+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:07:20.758+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:18:48.585+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:18:48.592+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:18:59.111+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:18:59.129+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:20:24.239+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:20:24.253+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:20:33.779+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:20:33.783+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:23:16.586+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:23:16.589+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:23:26.913+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:23:26.916+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:28:15.165+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:28:15.171+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:28:23.461+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:28:23.470+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:38:21.577+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:38:21.583+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:38:31.303+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:38:31.314+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T17:45:46.654+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T17:45:46.661+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T17:45:53.914+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T17:45:53.918+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T21:09:58.020+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T21:09:58.026+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T21:10:08.309+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T21:10:08.314+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T21:57:30.975+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T21:57:30.982+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T21:57:39.302+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T21:57:39.310+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T21:58:12.042+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T21:58:12.046+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T21:58:21.955+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T21:58:21.959+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T22:10:53.797+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T22:10:53.803+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T22:11:04.906+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T22:11:04.915+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T22:12:12.730+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T22:12:12.734+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T22:12:21.221+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T22:12:21.240+01:00"}
+info: MONGO_URI: mongodb+srv://10111011qweQWE:10111011qweQWE@all4one.fgxnfw3.mongodb.net/?retryWrites=true&w=majority&appName=All4One {"timestamp":"2025-03-11T22:18:38.843+01:00"}
+info: DATABASE NAME CRYGOCA-UAT {"timestamp":"2025-03-11T22:18:38.848+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T22:18:48.436+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T22:18:48.443+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T22:20:05.615+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T22:20:05.635+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-11T23:25:33.760+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-11T23:25:33.779+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-12T07:49:39.207+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T07:49:52.063+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T08:00:58.568+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T08:00:58.584+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-12T08:34:43.410+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:30:16.039+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-12T16:49:12.283+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:49:14.238+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:52:11.395+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T16:52:11.408+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:55:26.272+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T16:55:26.278+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:38:25.264+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T16:38:25.296+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T16:53:18.244+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T16:53:18.253+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T21:27:05.691+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T21:27:05.743+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-12T22:09:13.343+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T22:27:01.227+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-12T22:27:01.248+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-12T23:57:45.393+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-12T23:57:56.262+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T07:23:05.559+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T07:23:18.801+01:00"}
+info: Rollback action registered: ef9b0223-8f86-4cdd-81ea-0d2f06bdba3b {"timestamp":"2025-03-13T07:27:13.531+01:00"}
+info: Rollback action registered: ba7c9faa-085f-4357-ac00-9fa2071cf961 {"timestamp":"2025-03-13T07:27:14.162+01:00"}
+info: TypeError: Cannot read properties of undefined (reading 'currency') {"timestamp":"2025-03-13T07:27:14.517+01:00"}
+info: Error occurred:Cannot read properties of undefined (reading 'currency') {"timestamp":"2025-03-13T07:27:14.519+01:00"}
+info: Rollback action registered: 8a7879f5-58da-4f63-85ca-bc4cd1977fc5 {"timestamp":"2025-03-13T07:27:14.520+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:14.772+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:15.000+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:15.200+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:15.382+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:16.283+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:16.655+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:18.155+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:18.347+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:18.553+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:18.716+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:18.885+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:19.090+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:19.282+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:19.472+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:19.656+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:19.832+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:19.995+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:20.206+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:20.470+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:20.639+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:20.794+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:20.965+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:21.157+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:21.351+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:21.522+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:21.680+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:21.873+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:22.024+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:22.185+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:22.367+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:22.535+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:22.705+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:22.853+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:23.015+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:23.228+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:23.405+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:23.595+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:23.815+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:24.022+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:24.193+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:24.368+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:24.559+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:24.746+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:24.946+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:25.265+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:25.647+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-13T07:27:26.305+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-13T07:27:26.721+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:26.933+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-13T07:27:27.113+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-13T07:27:27.118+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T07:32:43.775+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T07:32:43.831+01:00"}
+info: Rollback action registered: 7c16d3db-2cfc-4314-8a19-6073dd0bafdd {"timestamp":"2025-03-13T07:33:36.779+01:00"}
+info: Rollback action registered: 9a385dc1-0151-4d8a-8bb7-e1c7e3f8a2bc {"timestamp":"2025-03-13T07:33:38.250+01:00"}
+info: Rollback action registered: aff14303-7a0f-44ff-9db0-8462fe6d5ba7 {"timestamp":"2025-03-13T07:33:39.106+01:00"}
+info: Rollback action registered: 256667ae-6c9a-482d-b438-bb172936bfc4 {"timestamp":"2025-03-13T07:33:39.328+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T07:33:40.258+01:00"}
+info: Rollback action registered: 5bdefbec-896a-4a47-bf77-6ce4320360ad {"timestamp":"2025-03-13T07:36:40.470+01:00"}
+info: Rollback action registered: c682424b-3fd7-4728-bb79-d07d4e5a1505 {"timestamp":"2025-03-13T07:36:41.045+01:00"}
+info: Rollback action registered: 6385b430-8287-4e05-bfb7-70993f74eb41 {"timestamp":"2025-03-13T07:36:41.592+01:00"}
+info: Rollback action registered: 1d43dd1f-e640-4529-b87f-5a5e60bb5dea {"timestamp":"2025-03-13T07:36:41.844+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T07:36:42.622+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T08:07:23.525+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T08:07:23.542+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T08:28:12.346+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T08:28:12.375+01:00"}
+info: Rollback action registered: b65da991-2d15-4bf3-ae03-51bb10bd6b3e {"timestamp":"2025-03-13T08:53:43.457+01:00"}
+info: Rollback action registered: 279b2fb0-e6dd-4963-a6c2-0d590a25fc32 {"timestamp":"2025-03-13T08:53:44.297+01:00"}
+info: Rollback action registered: eb697609-4776-4fdc-9dfd-66e854889dff {"timestamp":"2025-03-13T08:53:44.850+01:00"}
+info: Rollback action registered: 5a686210-a0a0-4153-bd79-6f36578a739b {"timestamp":"2025-03-13T08:53:45.058+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T08:53:45.798+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T12:56:27.785+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T12:56:40.970+01:00"}
+info: Rollback action registered: 901ea581-b90c-4607-a3ca-f6bf66a55f2c {"timestamp":"2025-03-13T13:00:02.738+01:00"}
+info: Rollback action registered: 1a70bb6a-d80c-4879-83d0-b7408f8b3c63 {"timestamp":"2025-03-13T13:00:03.336+01:00"}
+info: Rollback action registered: ae75801f-d7b8-4dce-a26c-0adf2e6813ca {"timestamp":"2025-03-13T13:00:03.836+01:00"}
+info: Rollback action registered: d1ebdb8f-eae2-4264-be7d-74a482d99d28 {"timestamp":"2025-03-13T13:00:04.039+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T13:00:04.716+01:00"}
+info: Rollback action registered: 6e00f408-ed81-48bb-bcc7-e70e91b10792 {"timestamp":"2025-03-13T13:16:07.004+01:00"}
+info: Rollback action registered: 9fd3a20c-bba2-49ab-b3c8-56d69173a546 {"timestamp":"2025-03-13T13:16:07.664+01:00"}
+info: Rollback action registered: 5d5869aa-22cf-4805-9fc4-a1443a4ea0ff {"timestamp":"2025-03-13T13:16:08.142+01:00"}
+info: Rollback action registered: 34702b2c-08b6-40d2-ad6a-a64cadbfd336 {"timestamp":"2025-03-13T13:16:08.319+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T13:16:09.277+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T13:22:00.570+01:00"}

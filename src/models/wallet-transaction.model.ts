@@ -53,7 +53,8 @@ const WalletTransactionSchema = new Schema<IWalletTransaction>({
       "direct-topup",
       "payout-topup",
       "wallet-withdrawal",
-      "wallet-balance-payment"
+      "wallet-balance-payment",
+      "external-wallet-balance-payment"
     ],
   },
   reference: { type: String, required: false },

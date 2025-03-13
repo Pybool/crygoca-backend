@@ -111,6 +111,13 @@ export class FlutterWaveService {
         const failedVerificationQueue =
           new FailedVerificationQueue<IverificationData>();
         await failedVerificationQueue.enqueue(data!);
+        const cryptoPurchase = await CryptoListingPurchase.findOne({
+          checkOutId: paymentReference,
+        });
+        if (cryptoPurchase) {
+          cryptoPurchase.verificationData = data;
+          await cryptoPurchase.save();
+        }
       }
 
       if (

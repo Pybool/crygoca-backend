@@ -20,6 +20,7 @@ export interface IPurchaseSalelisting {
   paymentOption: string;
   units: number;
   unitPriceAtPurchaseTime?: number;
+  verificationData?:any;
   notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -94,6 +95,10 @@ const CryptoListingPurchaseSchema = new Schema({
     type: Schema.Types.Mixed,
     enum: ["Pending", "Closed", "Disputed"],
     default: "Pending",
+  },
+  verificationData: {
+    type: Schema.Types.Mixed,
+    default: null,
   },
   createdAt: {
     type: Date,

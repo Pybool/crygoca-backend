@@ -95,7 +95,7 @@ export class SocialAuthentication {
       if(firstTimeSignup){
         req.body = {accountId: user._id.toString()}
         const auth = new Authentication(req);
-        await auth.sendEmailConfirmationOtp()
+        auth.sendEmailConfirmationOtp()
         const authResult = {
           status: true,
           message: "Complete Email 2fa Otp step",

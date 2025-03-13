@@ -64,7 +64,6 @@ export async function cryptoLiveUpdates(start: number = 1, limit: number = 2) {
       if (response.status == 200) {
         let responseData: any = response.data;
         if (responseData?.status?.error_code == 0) {
-          console.log("responseData ", responseData);
           const result = { status: true, data: responseData.data };
           await saveCryptoQuotes(responseData.data);
           await memCache.set(url, responseData.data, 3600);

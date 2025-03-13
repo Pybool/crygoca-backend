@@ -4,6 +4,7 @@ import { handleInvalidMethod } from '../../middlewares/invalidrequest'
 import authController from '../../controllers/v1/authentication.controller';
 import { decode, ensureAdmin } from '../../middlewares/jwt';
 import { SocialAuthentication } from '../../services/v1/auth/authentication.social.service';
+import { createMerchantAccount } from '../../controllers/v1/external-integration.controller';
 
 authRouter.post('/register', authController.register)
 authRouter.get('/verify-email-address', authController.verifyEmail)
@@ -24,6 +25,10 @@ authRouter.put('/user-profile', decode, authController.saveUserProfile)
 authRouter.put('/verify-account', authController.verifyEmail)
 authRouter.post('/resend-2fa-signin-otp', authController.resendtwoFaLoginOtp)
 authRouter.post('/2fa-signin-verify', authController.twofaSignInVerification)
+
+//Merchant accounts
+authRouter.post('/create-merchant', createMerchantAccount)
+
 
 authRouter.all('/register', handleInvalidMethod);
 authRouter.all('/verify-email-address', handleInvalidMethod);

@@ -2,22 +2,29 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface IWallet extends Document {
   user: mongoose.Types.ObjectId;
+  userType: string;
   balance: number;
-  priorBalance?:number;
-  walletAccountNo:string;
+  priorBalance?: number;
+  walletAccountNo: string;
   currency: string;
-  currencySymbol:string;
-  updatedAt?:Date;
+  currencySymbol: string;
+  updatedAt?: Date;
   createdAt: Date;
 }
 
 const WalletSchema = new Schema<IWallet>({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "accounts",
+    refPath: "accounts",
     required: true,
-    },
-  walletAccountNo:{ type: String, required: true, unique: true },
+  },
+  userType: {
+    type: String,
+    required: true,
+    enum: ["accounts", "merchantAccounts"], // Allowed models
+    default:"accounts"
+  },
+  walletAccountNo: { type: String, required: true, unique: true },
   balance: { type: Number, required: true, default: 0 },
   priorBalance: { type: Number, required: false, default: 0 },
   currency: { type: String, required: false },

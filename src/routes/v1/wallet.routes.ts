@@ -13,9 +13,12 @@ import {
   walletGetBeneficiaries,
   cardTopUpFundWallet,
   sendWalletPaymentAuthorizationPin,
-  payWithWalletBalance
+  payWithWalletBalance,
+  externalPaymentProcessing,
+  makeExternalPayment
 } from "../../controllers/v1/wallet.controller";
 import { fetchTransactions } from "../../controllers/v1/waalet.transaction.controller";
+import { validateSecretKey } from "../../middlewares/validateSecretKey";
 
 const walletRouter = express.Router();
 walletRouter.get("/get-wallet-balance", decode, processWalletTransfer);
@@ -28,7 +31,7 @@ walletRouter.post("/create-wallet", decode, createWallet);
 
 walletRouter.get("/fetch-transactions", decode, fetchTransactions);
 
-walletRouter.get("/get-receipient-wallet-details", decode, getReceipientWallet);
+walletRouter.get("/get-receipient-wallet-details", decodeExt, getReceipientWallet);
 
 walletRouter.get("/get-receipient-wallet-details-uid", decode, getReceipientWalletUid);
 
@@ -38,7 +41,7 @@ walletRouter.post("/verify-transfer-otp", decode, verifyTransferOtp);
 
 walletRouter.post("/send-withdrawal-otp", decode, sendWithdrawalOtp);
 
-walletRouter.post("/send-wallet-pay-authorization-pin", decode, sendWalletPaymentAuthorizationPin)
+walletRouter.post("/send-wallet-pay-authorization-pin", decodeExt, sendWalletPaymentAuthorizationPin)
 
 walletRouter.post("/verify-withdrawal-otp", decode, verifyWithdrawalOtp);
 
@@ -47,6 +50,12 @@ walletRouter.get("/fetch-beneficiaries", decode, walletGetBeneficiaries);
 walletRouter.post("/card-topup-fund-wallet", decode, cardTopUpFundWallet);
 
 walletRouter.post("/pay-with-wallet-balance", decode, payWithWalletBalance);
+
+walletRouter.post("/create-payment", validateSecretKey, externalPaymentProcessing);
+
+walletRouter.post("/send-payment-to-crygoca", makeExternalPayment);
+
+
 
 
 

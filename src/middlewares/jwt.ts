@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import Xrequest from "../interfaces/extensions.interface";
 import Accounts from "../models/accounts.model";
+import MerchantAccounts from "../models/accounts-merchant.model";
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client();
 const SECRET_KEY: string = process.env.ACCESS_TOKEN_SECRET || "";
@@ -39,6 +40,29 @@ export const decodeExt = (req: Xrequest, res: Response, next: any) => {
     return next();
   } catch (error: any) {
     return next();
+  }
+};
+
+export const decodeMerchant = async(req: Xrequest, res: Response, next: any) => {
+  const reqHeaders: any = req.headers;
+  if (!reqHeaders["authorization"]) {
+    return res
+      .status(400)
+      .json({ success: false, message: "No access token provided" });
+  }
+
+  const accessToken = reqHeaders.authorization.split(" ")[1];
+  try {
+    const decoded: any = jwt.verify(accessToken, SECRET_KEY);
+    req.merchantAccountId = decoded.aud;
+    const merchantAccount = await MerchantAccounts.findOne({_id: req.merchantAccountId})
+    if (merchantAccount && merchantAccount.isVerified) {
+      next();
+    } else {
+      res.status(403).json({ message: "Forbidden: Account is not a verified merchant account" });
+    }
+  } catch (error: any) {
+    return res.status(401).json({ success: false, message: error.message });
   }
 };
 

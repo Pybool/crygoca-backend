@@ -28,7 +28,8 @@ export async function addWalletBalanceUpdateJob(
     | "direct-topup"
     | "payout-topup"
     | "wallet-withdrawal"
-    | "wallet-balance-payment",
+    | "wallet-balance-payment"
+    | "external-wallet-balance-payment",
   amount: number,
   meta: ItopUps | null,
   transferId?: string, // Concantenation of wallets AccountNo

@@ -13,7 +13,6 @@ import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "../services/v1/conversions/comparison.service";
 import { sessionMiddleware } from "../middlewares/session";
 
-// import "../services/v1/tasks/flutterwave.service";
 import "../services/v1/tasks/scripts/cryptoLiveUpdates";
 import "../services/v1/tasks/scripts/livecurrencies";
 import "../services/v1/tasks/wallet/bankWithdrawals.worker";
@@ -41,7 +40,6 @@ import { generateReferralCode } from "../services/v1/helpers";
 import  "../services/v1/jobs/payment-verification/paymentVerificationWorker";
 import { checkRedis } from "../middlewares/checkredis";
 import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
-// import { addJob } fro../dev/interprocessjobjob";
 
 dotenvConfig();
 dotenvConfig({ path: `.env` });
@@ -253,7 +251,7 @@ app.get("/test-payment-verification-job", async(req:any, res:any)=>{
 })
 
 app.post("/api/v1/contact", enquiriesService);
-
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1", compareRoute);
 app.use("/api/v1", liveRates);
 app.use("/api/v1", liveCrypto);
@@ -283,7 +281,7 @@ app.use(
   })
 );
 
-app.use("/api/v1/auth", authRouter);
+
 app.set("view engine", "ejs");
 app.set("views", "src/templates");
 

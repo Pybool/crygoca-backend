@@ -79,7 +79,7 @@ export class Authentication {
       let msg: string = "Registration was unsuccessful!";
       if (error.message.includes("already exists!")) {
         error.status = 200;
-        msg = error.message || "User with email address already exists!";
+        msg = error?.message || "User with email address already exists!";
       }
       return { status: false, message: msg };
     }
@@ -106,7 +106,7 @@ export class Authentication {
       }
       const otp: string = generateOtp();
       await setExpirableCode(user.email, "account-verification", otp);
-      return await mailActions.auth.sendEmailConfirmationOtp(user.email, otp);
+      return mailActions.auth.sendEmailConfirmationOtp(user.email, otp);
     } catch (error) {
       console.log(error);
       throw error;

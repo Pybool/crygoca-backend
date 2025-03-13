@@ -11,7 +11,6 @@ import {
 const Flutterwave = require("flutterwave-node-v3");
 
 const flw = new Flutterwave(flutterwaveKeys.PUBLIC, flutterwaveKeys.SECRET);
-
 const failedVerificationQueue = new FailedVerificationQueue<IverificationData>();
 
 interface IverificationData {
@@ -19,6 +18,7 @@ interface IverificationData {
   expectedAmount: number;
   expectedCurrency: string;
   toRefund?: number;
+  retries?: number;
 }
 
 // Function to sleep for a specified time (in milliseconds)
@@ -30,6 +30,7 @@ function sleep(ms: number) {
 async function verifyCardPayment(data: IverificationData) {
   const { paymentReference, expectedAmount, expectedCurrency } = data;
   console.log("Verification data ", data);
+  
   try {
     // Verify the payment with Flutterwave
     const response = await flw.Transaction.verify({ id: paymentReference });
@@ -40,12 +41,10 @@ async function verifyCardPayment(data: IverificationData) {
       response.data.amount >= expectedAmount &&
       response.data.currency === expectedCurrency
     ) {
-      if (response.data.amount >= expectedAmount) {
-        data!.toRefund = response.data.amount - expectedAmount;
-      }
-      const failedVerificationQueue =
-        new FailedVerificationQueue<IverificationData>();
-      await failedVerificationQueue.removeFirst(); // Remove the first item from the queue after successful verification
+      data.toRefund = response.data.amount - expectedAmount;
+      
+      // Remove from queue after successful verification
+      await failedVerificationQueue.removeFirst();
 
       return {
         status: true,
@@ -62,70 +61,75 @@ async function verifyCardPayment(data: IverificationData) {
     }
   } catch (error) {
     console.error("Error verifying payment:", error);
+    return { status: false, message: "Error verifying payment", error };
   }
 }
 
 // Function to loop through the queue and process each verification with a delay
 async function processQueue() {
-  try{
-    
-
-    // Get the size of the queue
+  try {
     let queueSize = await failedVerificationQueue.size();
     console.log(`Queue size: ${queueSize}`);
 
-    if(queueSize == 0){
-      // const unconfirmedPayments = await CryptoListingPurchase.find({paymentConfirmed: false});
-      // for(let unconfirmedPayment of unconfirmedPayments){
-      //   const verificationResponse = await verifyCardPayment(JSON.parse(item));
-      //   await processListingPayment(item, verificationResponse)
-      // }
+    if (queueSize === 0) {
+      console.log("Queue is empty. Checking for unconfirmed payments...");
 
+      const unconfirmedPayments = await CryptoListingPurchase.find({
+        paymentConfirmed: false,
+      });
+
+      for (let unconfirmedPayment of unconfirmedPayments) {
+        if (unconfirmedPayment?.verificationData) {
+          const verificationData: IverificationData = JSON.parse(
+            unconfirmedPayment.verificationData
+          );
+          const verificationResponse = await verifyCardPayment(verificationData);
+          await processListingPayment(verificationData, verificationResponse);
+        }
+      }
+      return;
     }
-  
+
     while (queueSize > 0) {
       const item = await failedVerificationQueue.dequeue();
-  
       if (item) {
-        console.log(
-          `Verifying payment for reference: ${JSON.parse(item).paymentReference}`
-        );
-  
-        // Verify the payment and wait for the result
-        const verificationResponse = await verifyCardPayment(JSON.parse(item));
-        await processListingPayment(item, verificationResponse)
+        const verificationData: IverificationData = JSON.parse(item);
+        console.log(`Verifying payment for reference: ${verificationData.paymentReference}`);
+
+        const verificationResponse = await verifyCardPayment(verificationData);
+        await processListingPayment(verificationData, verificationResponse);
       }
-  
+
       // Update the queue size after each operation
       queueSize = await failedVerificationQueue.size();
-      if (queueSize === 0) {
-        break; // Exit the loop if no more items are left in the queue
-      }
     }
-  
-    console.log("Finished processing the queue.");
-    
-  }catch(error:any){
 
+    console.log("Finished processing the queue.");
+  } catch (error) {
+    console.error("Error processing queue:", error);
   }
 }
 
-async function processListingPayment(item:any, verificationResponse:any){
-  if(verificationResponse){
+// Function to process payments based on verification result
+async function processListingPayment(
+  verificationData: IverificationData,
+  verificationResponse: any
+) {
+  if (verificationResponse) {
     console.log("verificationResponse ", verificationResponse);
-    // Only dequeue if verification is successful
+
     if (verificationResponse.status === true) {
       console.log(
-        `Payment verified successfully for reference: ${
-          JSON.parse(item).paymentReference
-        }`
+        `Payment verified successfully for reference: ${verificationData.paymentReference}`
       );
+
       const account = await Accounts.findOne({
         $or: [
           { email: verificationResponse.data.customer.email },
           { phone: verificationResponse.data.customer.phone_number },
         ],
       });
+
       if (account) {
         await VerifiedTransactions.create({
           tx_ref: verificationResponse.data.tx_ref,
@@ -140,16 +144,34 @@ async function processListingPayment(item:any, verificationResponse:any){
         });
       }
     } else {
-      // If verification fails, put the item back to the queue to retry later or handle the failure
       console.log(
-        `Payment verification failed for reference: ${
-          JSON.parse(item).paymentReference
-        }`
+        `Payment verification failed for reference: ${verificationData.paymentReference}`
       );
-      await failedVerificationQueue.enqueue(JSON.parse(item)); // Optionally re-enqueue the failed item
+
+      // Implement retry logic before re-enqueuing
+      if (!verificationData.retries) {
+        verificationData.retries = 1;
+      } else {
+        verificationData.retries += 1;
+      }
+
+      if (verificationData.retries <= 3) {
+        console.log(
+          `Retrying verification for reference: ${verificationData.paymentReference} (Attempt ${verificationData.retries}/3)`
+        );
+        await sleep(5000); // Add a delay before retrying
+        await failedVerificationQueue.enqueue(verificationData);
+      } else {
+        console.log(
+          `Payment verification failed permanently for reference: ${verificationData.paymentReference}. Max retries reached.`
+        );
+      }
     }
   }
 }
 
-const periodicScheduler = new PeriodicTaskScheduler();
-periodicScheduler.addTask("card-payment-verification", processQueue, 30000)
+export const startFlutterwavePaymentsVerification = ()=>{
+  // Schedule the periodic task
+  const periodicScheduler = new PeriodicTaskScheduler();
+  periodicScheduler.addTask("card-payment-verification", processQueue, 30000);
+}
