@@ -37,7 +37,7 @@ import { CustomSocket, socketAuth } from "../middlewares/socketAuth";
 import { setupSocketHandlers } from "../controllers/v1/sockets/socket.controller";
 import notificationRouter from "../routes/v1/notifications.routes";
 import { generateReferralCode } from "../services/v1/helpers";
-import  "../services/v1/jobs/payment-verification/paymentVerificationWorker";
+import "../services/v1/jobs/payment-verification/paymentVerificationWorker";
 import { checkRedis } from "../middlewares/checkredis";
 import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
 
@@ -69,31 +69,37 @@ setupSocketHandlers(io);
 
 // app.use(cors(corsOptions));
 
-app.use(
-  cors({
-    origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
-    credentials: true, // Allow cookies and credentials to be sent
-  })
-);
+if (process.env.NODE_ENV === "dev") {
+  app.use(
+    cors({
+      origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
+      credentials: true, // Allow cookies and credentials to be sent
+    })
+  );
+}
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:4200",
-//       "http://localhost:4201",
-//       "https://www.crygoca.com",
-//       "https://crygoca.com",
-//       "https://marketplace.crygoca.com",
-//       "https://crygoca.co.uk",
-//       "https://www.crygoca.co.uk",
-//       "https://test.crygoca.com",
-//       "https://uatmarketplace.crygoca.com",
-//       "https://test.crygoca.co.uk",
-//       "https://uatmarketplace.crygoca.com"
-//     ], // Array of allowed origins // Explicitly specify the allowed origin
-//     credentials: true, // Allow cookies and credentials to be sent
-//   })
-// );
+if (process.env.NODE_ENV === "prod") {
+  app.use(
+    cors({
+      origin: [
+        "http://localhost:4200",
+        "http://localhost:4201",
+        "https://www.crygoca.com",
+        "https://crygoca.com",
+        "https://marketplace.crygoca.com",
+        "https://crygoca.co.uk",
+        "https://www.crygoca.co.uk",
+        "https://test.crygoca.com",
+        "https://uatmarketplace.crygoca.com",
+        "https://test.crygoca.co.uk",
+        "https://uatmarketplace.crygoca.com"
+      ], // Array of allowed origins // Explicitly specify the allowed origin
+      credentials: true, // Allow cookies and credentials to be sent
+    })
+  );
+}
+
+
 
 // Configure body-parser or express.json() with a higher limit
 app.use(express.json({ limit: "10mb" })); // Increase to 10MB or adjust as needed
@@ -160,8 +166,8 @@ app.get(
     res.redirect(
       `${process.env
         .CRYGOCA_SERVER_URL!}/auth/success?user=${encodeURIComponent(
-        JSON.stringify(req.g_user)
-      )}`
+          JSON.stringify(req.g_user)
+        )}`
     );
   }
 );
@@ -171,59 +177,6 @@ app.get("/auth/logout", (req: any, res: any) => {
   res.redirect("/");
 });
 
-// app.get("/auth/success", (req: any, res: any) => {
-//   const userParam = req.query.user;
-
-//   // Parse the user parameter if it exists
-//   let userData;
-//   let googleId = null;
-//   if (userParam) {
-//     try {
-//       userData = JSON.parse(userParam);
-//       console.log("Google userData ===> ", userData);
-//       googleId = userData?.data?.googleId;
-//       if (googleId) {
-//         setAccountData(
-//           userData?.data?.googleId,
-//           "google-account-",
-//           userData,
-//           6000
-//         );
-//       }
-//     } catch (error) {
-//       console.error("Error parsing user data:", error);
-//       return res.status(400).send("Invalid user data format.");
-//     }
-//   }
-
-//   return res.send(`
-//     <html>
-//       <body>
-//         <div>Authentication successful, redirecting...</div>
-//         <script>
-//           // Redirect to frontend
-//           window.location.href = "${
-//             process.env.CRYGOCA_FRONTEND_BASE_URL
-//           }/dashboard?googleId=${googleId || ""}";
-//         </script>
-//       </body>
-//     </html>
-//   `);
-// });
-
-// app.get("/auth/get-google-account-info", async (req: any, res: any) => {
-//   const googleId = req.query.googleId! as string;
-//   const account = await getAccountData("google-account-", googleId);
-//   console.log("Account ====> ", account);
-//   return res.status(200).json(
-//     account || {
-//       status: false,
-//       message: "Failed to get account info",
-//     }
-//   );
-// });
-
-// Protected route
 
 app.get("/profile", (req, res) => {
   if (!req.isAuthenticated()) {
@@ -233,17 +186,17 @@ app.get("/profile", (req, res) => {
 });
 
 
-app.get("/test-referal-code", async(req:any, res:any)=>{
+app.get("/test-referal-code", async (req: any, res: any) => {
   const username = req.query.username! as string;
   const referralCode: string = await generateReferralCode(username);
   return res.status(200).json({
     status: true,
-    message:" Referral code was generated",
+    message: " Referral code was generated",
     data: referralCode
   })
 })
 
-app.get("/test-payment-verification-job", async(req:any, res:any)=>{
+app.get("/test-payment-verification-job", async (req: any, res: any) => {
   const jobData = {
     eventName: "card-payment-verification",
     paymentReference: 123456,
@@ -253,7 +206,7 @@ app.get("/test-payment-verification-job", async(req:any, res:any)=>{
   // addJob(jobData)
   return res.status(200).json({
     status: true,
-    message:" Referral code was generated",
+    message: " Referral code was generated",
   })
 })
 
