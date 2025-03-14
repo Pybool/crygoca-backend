@@ -14797,3 +14797,337 @@ info: Rollback action registered: 5d5869aa-22cf-4805-9fc4-a1443a4ea0ff {"timesta
 info: Rollback action registered: 34702b2c-08b6-40d2-ad6a-a64cadbfd336 {"timestamp":"2025-03-13T13:16:08.319+01:00"}
 info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-13T13:16:09.277+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-03-13T13:22:00.570+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T13:39:53.967+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T13:39:53.997+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T13:43:58.491+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T13:43:58.509+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T14:25:20.217+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T14:25:20.238+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T14:28:46.014+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T14:29:58.299+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T14:29:58.336+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T14:30:39.183+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T14:30:39.209+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T14:48:34.382+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T14:48:34.391+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T15:55:18.418+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T15:55:18.643+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T18:25:02.177+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T18:25:02.194+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T18:41:49.199+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T18:41:49.216+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:07:46.339+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:07:46.355+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:22:07.878+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:22:07.894+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:25:48.976+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:25:49.009+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:35:37.398+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:35:37.410+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:42:51.410+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:42:51.428+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:44:30.357+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:44:30.379+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:47:00.712+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:47:00.724+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T19:47:47.293+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T19:47:47.304+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T21:18:35.356+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T21:18:35.367+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-13T21:20:09.183+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T21:21:09.620+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T21:21:09.634+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-13T21:29:45.834+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-13T21:29:45.856+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T07:21:09.794+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:21:22.643+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:39:43.929+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T07:39:43.948+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:40:56.986+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T07:40:56.998+01:00"}
+info: Rollback action registered: d6dae20b-025d-44ad-b6e2-846d9b9c40b4 {"timestamp":"2025-03-14T07:41:38.371+01:00"}
+info: Rollback action registered: 82f85d9b-6f0c-4de2-a216-9d444f02a42b {"timestamp":"2025-03-14T07:41:39.168+01:00"}
+info: Rollback action registered: a25d9c41-9f08-4efa-afe8-8354106ad336 {"timestamp":"2025-03-14T07:41:39.338+01:00"}
+info: TypeError: Cannot read properties of null (reading '_id') {"timestamp":"2025-03-14T07:41:39.635+01:00"}
+info: Error occurred:Cannot read properties of null (reading '_id') {"timestamp":"2025-03-14T07:41:39.637+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:39.869+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-14T07:41:40.072+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:40.238+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:40.411+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-14T07:41:40.576+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-14T07:41:40.719+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:40.873+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:41.040+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:41.252+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-14T07:41:41.410+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:41.601+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:41.781+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:41.951+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:42.356+01:00"}
+info: Rollback executed: DELETE on WalletIncomingPayments {"timestamp":"2025-03-14T07:41:42.573+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:42.750+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:41:42.929+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:41:43.111+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T07:41:43.114+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:43:33.421+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T07:43:33.447+01:00"}
+info: Rollback action registered: fdc782dd-f433-4e22-88d3-fecd23703177 {"timestamp":"2025-03-14T07:44:12.248+01:00"}
+info: Rollback action registered: f424f5ba-c83a-4204-afdc-e173e36b6334 {"timestamp":"2025-03-14T07:44:13.782+01:00"}
+info: Rollback action registered: 1859c741-00b6-438d-8bac-29e3fd07be07 {"timestamp":"2025-03-14T07:44:13.867+01:00"}
+info: TypeError: Cannot read properties of null (reading '_id') {"timestamp":"2025-03-14T07:44:14.236+01:00"}
+info: Error occurred:Cannot read properties of null (reading '_id') {"timestamp":"2025-03-14T07:44:14.239+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:44:14.439+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T07:44:14.695+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T07:44:14.924+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T07:44:14.933+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:48:06.500+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T07:48:06.517+01:00"}
+info: Rollback action registered: b1fbf921-d94d-42bb-bfc6-11cee51ab803 {"timestamp":"2025-03-14T07:49:18.503+01:00"}
+info: Rollback action registered: a4e96c0b-8dc7-4051-9f07-b9e6930fd9e8 {"timestamp":"2025-03-14T07:49:19.363+01:00"}
+info: Rollback action registered: 0665db8c-a542-4d2e-99c2-0e5b0ac7be76 {"timestamp":"2025-03-14T07:49:19.545+01:00"}
+info: Rollback action registered: f44396ed-1d5b-4f56-b825-ca381556b868 {"timestamp":"2025-03-14T07:54:04.743+01:00"}
+info: Rollback action registered: a64f40de-81f0-4b1a-9464-4ae38a71fd21 {"timestamp":"2025-03-14T07:54:05.306+01:00"}
+info: Rollback action registered: a0ad2080-c3d7-4379-986c-a5c63e14e04c {"timestamp":"2025-03-14T07:54:05.479+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T07:58:20.611+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T07:58:20.637+01:00"}
+info: Rollback action registered: 87f470be-5568-4ea1-89e8-6774a93c74b9 {"timestamp":"2025-03-14T07:59:37.922+01:00"}
+info: Rollback action registered: 61b7d952-3613-4b0d-8873-d519b42f1114 {"timestamp":"2025-03-14T07:59:38.846+01:00"}
+info: Rollback action registered: 011484ea-fb9c-4bb8-91e2-97886233eb48 {"timestamp":"2025-03-14T07:59:39.194+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:07:52.289+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:07:52.313+01:00"}
+info: Rollback action registered: df8a8807-e249-412d-ba30-39eddf4a3593 {"timestamp":"2025-03-14T08:08:11.341+01:00"}
+info: Rollback action registered: 6f936907-caaf-42a0-ba6b-47a5e838d852 {"timestamp":"2025-03-14T08:08:12.108+01:00"}
+info: Rollback action registered: 56714028-4a70-4c34-b941-52dec79646db {"timestamp":"2025-03-14T08:08:12.252+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:11:24.161+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:11:24.180+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:12:06.252+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:12:06.269+01:00"}
+info: Rollback action registered: a36a4875-07dd-45a7-b797-22eedccb937d {"timestamp":"2025-03-14T08:13:09.663+01:00"}
+info: Rollback action registered: ac61bf04-d1ec-4aba-a6b8-efaf6296d7a8 {"timestamp":"2025-03-14T08:13:10.573+01:00"}
+info: Rollback action registered: a98b42f7-174d-48a5-bc4e-986e6304c5e8 {"timestamp":"2025-03-14T08:13:10.726+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:19:27.218+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:19:27.227+01:00"}
+info: Rollback action registered: e5232636-1a5c-4752-a8cd-081426b21d64 {"timestamp":"2025-03-14T08:20:10.501+01:00"}
+info: Rollback action registered: 45b0f0ff-de60-48d4-b744-af145e259e42 {"timestamp":"2025-03-14T08:20:12.073+01:00"}
+info: Rollback action registered: 438a80ae-6521-496c-9534-bbc258fd3888 {"timestamp":"2025-03-14T08:20:12.464+01:00"}
+info: Rollback action registered: d6e87a06-de89-4151-934a-9d9fac0cd159 {"timestamp":"2025-03-14T08:20:13.129+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:21:34.985+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:21:35.012+01:00"}
+info: Rollback action registered: f4ad893c-2b0f-40e5-af33-c18fc28be46a {"timestamp":"2025-03-14T08:22:44.870+01:00"}
+info: Rollback action registered: 03e7b1c1-8199-4e8e-accd-d82708e4dc46 {"timestamp":"2025-03-14T08:22:45.821+01:00"}
+info: Rollback action registered: 64fd26f3-d8b2-430c-8349-2635df2f0d50 {"timestamp":"2025-03-14T08:22:46.168+01:00"}
+info: Rollback action registered: b298e279-f84c-4a33-99cb-c6ed6bcde15c {"timestamp":"2025-03-14T08:22:46.753+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-14T08:22:46.925+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:26:54.492+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:26:54.503+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T08:51:12.300+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T08:51:12.340+01:00"}
+info: Rollback action registered: 64b76567-1a8e-41be-a093-be278e3e3c2b {"timestamp":"2025-03-14T08:51:46.594+01:00"}
+info: Rollback action registered: e1b483ad-4422-4d18-94ff-e4f1cd9da852 {"timestamp":"2025-03-14T08:51:47.429+01:00"}
+info: Rollback action registered: 1232f103-2b10-4f3c-9ed6-77299ea4e68a {"timestamp":"2025-03-14T08:51:47.992+01:00"}
+info: Rollback action registered: fc341d29-9499-45a9-9791-ef44a93585be {"timestamp":"2025-03-14T08:51:47.995+01:00"}
+info: Error: Test error for rollbacks... {"timestamp":"2025-03-14T08:51:48.346+01:00"}
+info: Error occurred:Test error for rollbacks... {"timestamp":"2025-03-14T08:51:48.353+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:48.551+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:48.745+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:48.934+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:49.120+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:49.460+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:49.700+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:49.902+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:50.076+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:50.247+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:50.426+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:51.028+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:51.222+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:51.515+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:51.731+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:51.951+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:52.149+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:52.346+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:52.568+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:52.797+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:52.972+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:53.196+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:53.387+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T08:51:53.591+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:53.801+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:54.033+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T08:51:54.258+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T08:51:54.268+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:31:22.906+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:31:27.782+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:33:20.277+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:33:22.055+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:36:25.934+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:36:27.794+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:38:31.071+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:38:33.385+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:40:17.543+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:40:19.382+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:49:47.072+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:49:48.902+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:50:36.307+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:50:38.345+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:53:16.508+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:53:16.530+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:54:05.067+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:54:05.085+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:56:04.907+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:56:06.824+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:57:15.874+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:57:19.866+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:58:04.001+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:58:10.320+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:10:08.401+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:10:10.249+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:16:46.446+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:16:46.447+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:16:47.433+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:16:47.435+01:00"}
+info: Rollback action registered: e7f26b90-8aa1-4578-9991-d4f6b7247b8e {"timestamp":"2025-03-14T13:16:47.777+01:00"}
+info: Error occurred:senderWalletTransaction.populate is not a function {"timestamp":"2025-03-14T13:16:47.937+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:17:47.919+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T13:17:47.945+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T13:20:16.309+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:20:27.006+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:22:26.671+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:22:28.505+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:23:39.163+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:23:39.173+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:23:40.350+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:23:40.354+01:00"}
+info: Rollback action registered: 6af5c0ed-0190-4eb4-a9e7-ff0d1db0423c {"timestamp":"2025-03-14T13:23:40.761+01:00"}
+info: Error occurred:User is not populated! {"timestamp":"2025-03-14T13:23:41.245+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:24:47.874+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T13:24:47.900+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:28:09.487+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:28:11.397+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:28:46.346+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:28:46.350+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:28:47.402+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:28:47.404+01:00"}
+info: Rollback action registered: 6ed7f5f6-3c64-48fd-965b-b786b2639c70 {"timestamp":"2025-03-14T13:28:47.909+01:00"}
+info: Rollback action registered: c3eb1e07-e799-4ebb-8b04-1e452868d319 {"timestamp":"2025-03-14T13:28:48.603+01:00"}
+info: Rollback action registered: ecab0771-b60b-44a1-b7b8-8a51d80377db {"timestamp":"2025-03-14T13:28:48.769+01:00"}
+info: Error occurred:Testing transactionas error {"timestamp":"2025-03-14T13:28:49.330+01:00"}
+info: Rollback action registered: addbcdb3-5047-40a5-b2cf-69f09ce75985 {"timestamp":"2025-03-14T13:28:49.353+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:28:49.518+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:29:47.945+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:29:48.105+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:29:48.280+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T13:29:48.308+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:30:38.304+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:30:40.284+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:31:05.159+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:31:05.162+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:31:06.371+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:31:06.373+01:00"}
+info: Rollback action registered: 02d2610a-574d-4eb0-8845-df5f89983953 {"timestamp":"2025-03-14T13:31:07.150+01:00"}
+info: Rollback action registered: d445abce-74ad-4467-9b1a-de88c7bb3581 {"timestamp":"2025-03-14T13:31:07.888+01:00"}
+info: Rollback action registered: 4c5eb846-4431-4ded-9836-22ddcdcac275 {"timestamp":"2025-03-14T13:31:08.073+01:00"}
+info: Error occurred:Testing transactionas error {"timestamp":"2025-03-14T13:31:08.591+01:00"}
+info: Rollback action registered: d1bc6c06-89a5-489d-b863-3fae68463903 {"timestamp":"2025-03-14T13:31:08.616+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:37:02.507+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:37:02.508+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:37:03.548+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:37:03.549+01:00"}
+info: Rollback action registered: c3ef5e95-1ff7-4dfa-bbb3-8062682f4a88 {"timestamp":"2025-03-14T13:37:03.868+01:00"}
+info: Rollback action registered: ce411e78-1037-4382-ae1f-88ecc4823ced {"timestamp":"2025-03-14T13:37:04.376+01:00"}
+info: Rollback action registered: a3fcc679-369c-4364-946c-c1cd7a637e35 {"timestamp":"2025-03-14T13:37:04.529+01:00"}
+info: Error occurred:Testing transactionas error {"timestamp":"2025-03-14T13:37:05.020+01:00"}
+info: Rollback action registered: 6ebd3b60-35ed-4d7a-a95f-07b1a5929bea {"timestamp":"2025-03-14T13:37:05.026+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:40:32.835+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:40:34.847+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:41:28.072+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:41:28.076+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:41:29.153+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:41:29.155+01:00"}
+info: Rollback action registered: 147474b1-35b9-40be-bb51-5d11f124e5a8 {"timestamp":"2025-03-14T13:41:30.441+01:00"}
+info: Error occurred:Testing transactionas error {"timestamp":"2025-03-14T13:41:31.170+01:00"}
+info: Rollback action registered: 1e3ebd10-ef16-4e6f-badd-a354ad1051bb {"timestamp":"2025-03-14T13:41:31.178+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:31.531+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:31.697+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:41:31.888+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:32.072+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:41:32.226+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:41:32.377+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:32.551+01:00"}
+info: Rollback executed: UPDATE-ONE on Wallet {"timestamp":"2025-03-14T13:41:32.719+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:32.899+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:41:33.103+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T13:41:33.110+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:42:35.714+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:42:35.718+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T13:42:36.763+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T13:42:36.764+01:00"}
+info: Rollback action registered: f8a0b1ef-d632-4ce0-81c8-1efec6097a7d {"timestamp":"2025-03-14T13:42:37.752+01:00"}
+info: Error occurred:Testing transactionas error {"timestamp":"2025-03-14T13:42:38.531+01:00"}
+info: Rollback action registered: 5cc0c15f-2687-4300-ab45-89839bc7b707 {"timestamp":"2025-03-14T13:42:38.544+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:42:38.951+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T13:42:39.147+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T13:42:39.178+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:47:51.026+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:47:52.739+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:49:02.181+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:49:04.045+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T14:00:45.995+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T14:00:49.077+01:00"}
+info: Rollback action registered: aa03f250-88fe-47b9-883f-893c9a0c3713 {"timestamp":"2025-03-14T14:03:57.515+01:00"}
+info: Rollback action registered: 3a49b8bc-231f-40c6-9084-bbf79656ee67 {"timestamp":"2025-03-14T14:03:58.499+01:00"}
+info: Error: Just test error =================>  {"timestamp":"2025-03-14T14:03:59.400+01:00"}
+info: Error occurred:Just test error =================>  {"timestamp":"2025-03-14T14:03:59.551+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:04:00.106+01:00"}
+info: Rollback executed: UPDATE-ONE on WalletExternalTransactions {"timestamp":"2025-03-14T14:04:00.264+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T14:04:00.309+01:00"}
+info: Rollback action registered: b8105844-2941-4271-baac-ccaf3f2ad1b0 {"timestamp":"2025-03-14T14:17:35.216+01:00"}
+info: Rollback action registered: 755bc598-896d-4575-930a-ac44b87a647e {"timestamp":"2025-03-14T14:17:36.073+01:00"}
+info: Error: Just test error =================>  {"timestamp":"2025-03-14T14:17:37.236+01:00"}
+info: Error occurred:Just test error =================>  {"timestamp":"2025-03-14T14:17:37.517+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:17:37.908+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T14:17:38.008+01:00"}
+info: Rollback action registered: e88e86a4-3e52-44e1-9ece-10c7461a507d {"timestamp":"2025-03-14T14:19:18.298+01:00"}
+info: Rollback action registered: 116b9de8-7218-46a7-b87c-02cfc7b85206 {"timestamp":"2025-03-14T14:19:19.034+01:00"}
+info: Error: Just test error =================>  {"timestamp":"2025-03-14T14:19:19.810+01:00"}
+info: Error occurred:Just test error =================>  {"timestamp":"2025-03-14T14:19:19.812+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:19:20.543+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T14:19:20.579+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T14:20:25.803+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T14:20:29.090+01:00"}
+info: Rollback action registered: 94133226-939a-4b45-8baf-206141264f64 {"timestamp":"2025-03-14T14:21:10.141+01:00"}
+info: Rollback action registered: 3e7e2ea6-f95d-4e4c-9e81-33fc735eb7ae {"timestamp":"2025-03-14T14:21:10.975+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-14T14:21:11.989+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T14:26:29.844+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T14:26:32.012+01:00"}
+info: Rollback action registered: de1eb308-5d88-441b-93b0-2c3f57933135 {"timestamp":"2025-03-14T14:28:38.129+01:00"}
+info: Rollback action registered: 21552ff9-d1a0-4e76-b93b-1473998bf439 {"timestamp":"2025-03-14T14:28:39.323+01:00"}
+info: Error occurred:Test error for rollbacks... {"timestamp":"2025-03-14T14:28:39.477+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:28:39.745+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:28:39.998+01:00"}
+info: Rollback executed: NOTIFICATION on Notification {"timestamp":"2025-03-14T14:28:40.299+01:00"}
+info: All operations were rolled back. {"timestamp":"2025-03-14T14:28:40.337+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T14:29:57.932+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T14:30:00.056+01:00"}
+info: Rollback action registered: 3f633889-e35a-46b8-ba0d-e2eff720b25c {"timestamp":"2025-03-14T14:31:46.268+01:00"}
+info: Rollback action registered: e2c5edff-8569-4a0e-a121-fd8cf6e7068d {"timestamp":"2025-03-14T14:31:47.379+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-14T14:31:47.530+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T14:42:52.721+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T14:42:54.795+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:50:55.241+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T12:50:55.542+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T12:50:55.552+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T12:52:54.864+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T12:52:57.830+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T12:56:05.243+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T12:56:05.245+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-14T12:56:06.289+01:00"}
+info: CW-8436045072 {"timestamp":"2025-03-14T12:56:06.291+01:00"}
+info: Rollback action registered: 3be936c7-fb7e-4953-9dec-dbece2c106d4 {"timestamp":"2025-03-14T12:56:07.735+01:00"}
+info: Rollback action registered: 6ec15b40-99c4-44a4-bba4-d7509b7c69bf {"timestamp":"2025-03-14T12:56:08.585+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-14T12:56:08.730+01:00"}
+info: Wallet direct top completed successfully. {"timestamp":"2025-03-14T12:57:36.761+01:00"}
+info: Complete Withdrawal data ===>  {"account_bank":"110100","account_number":"0419946331016","amount":"100","beneficiary_name":"THAMES FLOW INVESTMENTS LTD","callback_url":"","currency":"GHS","destination_branch_code":"2006228LFZ","narration":"Crygoca Wallet Withdrawal","reference":"BW-5C51DRG95FMV","timestamp":"2025-03-14T12:58:41.768+01:00"}
+info: Withdrawal error  {"timestamp":"2025-03-14T12:58:42.890+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T13:02:33.891+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:02:33.912+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T13:05:10.005+01:00"}

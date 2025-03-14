@@ -16,6 +16,7 @@ import { WalletAuthorization } from "../../services/v1/wallet/wallet-authorizati
 import { WalletFundingService } from "../../services/v1/wallet/wallet-funding.service";
 import mongoose from "mongoose";
 import MerchantAccounts from "../../models/accounts-merchant.model";
+import { IWalletExternalTransaction } from "../../models/wallet-externaltransactions.model";
 
 const makeTransfer = async (payload: any) => {
   const {
@@ -27,7 +28,7 @@ const makeTransfer = async (payload: any) => {
     saveBeneficiary,
     otp,
     jobType,
-    orderId
+    orderId,
   } = payload;
 
   let amount: number = 0.0;
@@ -47,16 +48,15 @@ const makeTransfer = async (payload: any) => {
         return {
           status: false,
           message: "Failed to validate transaction",
-          code: 400
+          code: 400,
         };
       }
     }
-
   } catch (error: any) {
     return {
       status: false,
       message: error.message,
-      code: 500
+      code: 500,
     };
   }
 
@@ -89,7 +89,7 @@ const makeTransfer = async (payload: any) => {
       return {
         status: false,
         message: "Currency conversion failed, please try again later!",
-        code: 422
+        code: 422,
       };
     }
     amount = sourceAmount * exchangeRate;
@@ -103,7 +103,7 @@ const makeTransfer = async (payload: any) => {
   try {
     let meta: ItopUps | null = null;
     if (jobType === "wallet-balance-payment") {
-      meta = { checkOutId: orderId }
+      meta = { checkOutId: orderId };
     }
     const transferId: string = `${debitDetails.accountNumber}-${creditDetails.accountNumber}`;
     await addWalletBalanceUpdateJob(
@@ -115,35 +115,72 @@ const makeTransfer = async (payload: any) => {
       creditDetails,
       saveBeneficiary
     );
-    return { status: true, message: "Transaction queued successfully", code: 200 };
+    return {
+      status: true,
+      message: "Transaction queued successfully",
+      code: 200,
+    };
   } catch (error: any) {
     return { status: false, error: error.message, code: 500 };
   }
-}
+};
 
-const processExternalPayment = async (payload: any) => {
-  const merchantCredentials = payload.merchantCredentials;
-  const merchantWallet = await Wallet.findOne({user: merchantCredentials.account})
-  .populate({
-    path: "user",
-    model: "merchantAccounts", // Dynamically use the model name
-  });
-  if(!merchantWallet){
-    return {
-      status: false,
-      message: "No wallet found for merchant"
+const processExternalPayment = async (
+  payload: any,
+  externalWalletTransaction: IWalletExternalTransaction | any
+) => {
+  try {
+    const { merchantCredentials } = payload;
+    const merchantWallet = await Wallet.findOne({
+      user: merchantCredentials.account,
+    }).populate({
+      path: "user",
+      model: "merchantAccounts",
+    });
+
+    if (!merchantWallet) {
+      return { status: false, message: "No wallet found for merchant" };
     }
-  }
 
-  return {
-    status: true,
-    message: "Transaction completed successfully.",
-    data:{
-      merchantWallet
-    },
-    code: 200
+    const jobType = "external-wallet-balance-payment";
+    const meta: ItopUps = { checkOutId: externalWalletTransaction.txRef };
+    const amount = externalWalletTransaction.isConverted
+      ? externalWalletTransaction.convertedAmount
+      : externalWalletTransaction.amount;
+
+    const debitDetails = {
+      walletAccountNo: externalWalletTransaction.debitWallet.walletAccountNo,
+      currency: externalWalletTransaction.debitWallet.currency,
+      amount,
+    };
+
+    const creditDetails = {
+      walletAccountNo: externalWalletTransaction.creditWallet.walletAccountNo,
+      currency: externalWalletTransaction.creditWallet.currency,
+      amount,
+    };
+
+    const transferId = `${debitDetails.walletAccountNo}-${creditDetails.walletAccountNo}`;
+
+    await addWalletBalanceUpdateJob(
+      jobType,
+      amount,
+      meta,
+      transferId,
+      debitDetails,
+      creditDetails,
+      false
+    );
+
+    return {
+      status: true,
+      message: "Transaction queued successfully",
+      code: 200,
+    };
+  } catch (error: any) {
+    return { status: false, error: error.message, code: 500 };
   }
-}
+};
 
 export const createWallet = async (req: Xrequest, res: Response) => {
   try {
@@ -243,7 +280,11 @@ export const getReceipientWallet = async (req: Xrequest, res: Response) => {
       status: boolean;
       message: string;
       wallet?: IWallet;
-    } = await WalletService.getReceipientWallet(walletId, accountId, isTransfer);
+    } = await WalletService.getReceipientWallet(
+      walletId,
+      accountId,
+      isTransfer
+    );
     return res.status(200).json(walletResponse);
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
@@ -372,12 +413,30 @@ export const sendWalletPaymentAuthorizationPin = async (
   try {
     const payloadHash: string = req.body.payloadHash!;
     const checkOutId: string = req.body.checkOutId!;
-    const accountId: string = req.accountId! as string || req.body.accountId! as string;
+    const accountId: string =
+      (req.accountId! as string) || (req.body.accountId! as string);
     const response =
       await WalletAuthorization.sendWalletPaymentAuthorizationPin(
         accountId,
         payloadHash,
         checkOutId
+      );
+    return res.status(200).json(response);
+  } catch (error: any) {
+    res.status(500).json({ status: false, error: error.message });
+  }
+};
+
+export const sendExternalWalletPaymentAuthorizationPin = async (
+  req: Xrequest,
+  res: Response
+) => {
+  try {
+    const payload = req.body;
+    payload.merchantCredentials = req.merchantCredentials;
+    const response =
+      await WalletAuthorization.sendExternalWalletPaymentAuthorizationPin(
+        payload
       );
     return res.status(200).json(response);
   } catch (error: any) {
@@ -391,8 +450,12 @@ export const payWithWalletBalance = async (req: Xrequest, res: Response) => {
     const checkOutId: string = req.body.orderId!;
     const amount: string = req.body.amount!;
     const authorizationPin: string = req.body.authorizationPin.toString()!;
-    const accountId: string = req.accountId! as string || req.body.accountId! as string;
-    console.log("Pay with balance payload ===> ", JSON.stringify(req.body, null, 2))
+    const accountId: string =
+      (req.accountId! as string) || (req.body.accountId! as string);
+    console.log(
+      "Pay with balance payload ===> ",
+      JSON.stringify(req.body, null, 2)
+    );
     let response =
       await WalletAuthorization.validateWalletPaymentAuthorizationPin(
         accountId,
@@ -403,7 +466,7 @@ export const payWithWalletBalance = async (req: Xrequest, res: Response) => {
     if (response.status) {
       const wallet = await Wallet.findOne({ user: accountId });
       if (!wallet) {
-        throw new Error("No wallet found to debit for request.")
+        throw new Error("No wallet found to debit for request.");
       }
       const payload = req.body;
       payload.otp = payload.authorizationPin;
@@ -422,23 +485,32 @@ export const makeExternalPayment = async (req: Xrequest, res: Response) => {
   try {
     const payload = req.body;
     const response = await WalletService.makeExternalPayment(payload);
-    return res.status(response?.code || 200).json(response?.data || { status: false, message: "Operation failed" })
+    return res
+      .status(response?.code || 200)
+      .json(response?.data || { status: false, message: "Operation failed" });
   } catch (error: any) {
     res.status(500).json({ status: false, error: error.message });
   }
-}
+};
 
 //Handles integration of crygoca-pay sdk, called by above method.
-export const externalPaymentProcessing = async (req: Xrequest, res: Response) => {
+export const externalPaymentProcessing = async (
+  req: Xrequest,
+  res: Response
+) => {
   try {
     const paymentHash: string = req.body.paymentHash!;
     const checkOutId: string = req.body.orderId!;
     const amount: string = req.body.amount!;
     const authorizationPin: string = req.body.authorizationPin.toString()!;
-    const accountId: string = req.accountId! as string || req.body.accountId! as string;
-    console.log("Pay with balance payload ===> ", JSON.stringify(req.body, null, 2));
+    const accountId: string =
+      (req.accountId! as string) || (req.body.accountId! as string);
+    console.log(
+      "Pay with balance payload ===> ",
+      JSON.stringify(req.body, null, 2)
+    );
     let response =
-      await WalletAuthorization.validateWalletPaymentAuthorizationPin(
+      await WalletAuthorization.validateExternalWalletPaymentAuthorizationPin(
         accountId,
         paymentHash,
         authorizationPin,
@@ -447,14 +519,20 @@ export const externalPaymentProcessing = async (req: Xrequest, res: Response) =>
     if (response.status) {
       const wallet = await Wallet.findOne({ user: accountId });
       if (!wallet) {
-        throw new Error("No wallet found to debit for request.")
+        throw new Error("No wallet found to debit for request.");
       }
       const payload = req.body;
       payload.otp = payload.authorizationPin;
       payload.jobType = "external-wallet-balance-payment";
       payload.merchantCredentials = req.merchantCredentials;
-      const response = await processExternalPayment(payload);
-      return res.status(response?.code || 200).json(response);
+      const _response = (await processExternalPayment(
+        payload,
+        response.data!
+      )!) as any;
+      if (_response) {
+        _response.data = JSON.parse(JSON.stringify(response.data));
+      }
+      return res.status(_response?.code || 200).json(_response);
     }
     return res.status(200).json(response);
   } catch (error: any) {

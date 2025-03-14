@@ -67,9 +67,6 @@ export async function processRollbacks() {
         if (rollback.actionType === "DELETE") {
           await collection.deleteOne(rollback.query);
         }
-        if (rollback.actionType === "UPDATE-ONE") {
-          await Wallet.updateOne(rollback.query, rollback.operation);
-        }
         if (rollback.actionType === "NOTIFICATION") {
           await WalletNotificationService.createCreditNotification(
             rollback.query.wallet,
@@ -86,6 +83,7 @@ export async function processRollbacks() {
         // Remove successfully executed rollback action from Redis
         await redis.hdel("rollback_actions", id);
       } catch (error: any) {
+        await redis.hdel("rollback_actions", id);
         console.error(`Rollback failed for ${id}:`, error.message);
       }
     }

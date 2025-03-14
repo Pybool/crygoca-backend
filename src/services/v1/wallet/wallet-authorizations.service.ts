@@ -22,6 +22,11 @@ import { WalletService } from "./wallet.service";
 import * as CryptoJS from "crypto-js";
 import CryptoListingPurchase from "../../../models/listingPurchase.model";
 import { WalletIncomingPayments } from "../../../models/wallet-incomingpayments.model";
+import {
+  IWalletExternalTransaction,
+  WalletExternalTransactions,
+} from "../../../models/wallet-externaltransactions.model";
+import MerchantCredentials from "../../../models/merchant-credentials.model";
 
 //For Payout topup and direct topups
 export interface ItopUps {
@@ -252,12 +257,14 @@ export class WalletAuthorization {
           message: "No account was found for this request",
         };
       }
-      const previousPayment = await WalletIncomingPayments.findOne({checkOutId:checkOutId});
-      if(previousPayment){
+      const previousPayment = await WalletIncomingPayments.findOne({
+        checkOutId: checkOutId,
+      });
+      if (previousPayment) {
         return {
           status: false,
-          message: "This transaction already has a payment."
-        }
+          message: "This transaction already has a payment.",
+        };
       }
       if (payloadHash) {
         const otp: string = generateOtp();
@@ -290,24 +297,33 @@ export class WalletAuthorization {
     accountId: string,
     paymentHash: string,
     authorizationPin: string,
-    checkOutId:string,
+    checkOutId: string,
+    isExternal: boolean = false
   ) {
     try {
       const key: string = `${accountId}:${paymentHash}`;
-      const previousPayment = await WalletIncomingPayments.findOne({checkOutId:checkOutId});
-      if(previousPayment){
+      const previousPayment = await WalletIncomingPayments.findOne({
+        checkOutId: checkOutId,
+      });
+      if (previousPayment) {
         return {
           status: false,
-          message: "This transaction already has a payment."
+          message: "This transaction already has a payment.",
+        };
+      }
+
+      if (!isExternal) {
+        const purchaseIntent = await CryptoListingPurchase.findOne({
+          checkOutId: checkOutId,
+        });
+        if (!purchaseIntent) {
+          return {
+            status: false,
+            message: "No checkout intent was found for this action.",
+          };
         }
       }
-      const purchaseIntent = await CryptoListingPurchase.findOne({checkOutId:checkOutId});
-      if(!purchaseIntent){
-        return {
-          status: false,
-          message: "No checkout intent was found for this action."
-        }
-      }
+
       if (authorizationPin) {
         const cachedCode: any = await getExpirableCode(
           "crygoca-balance-pay",
@@ -330,7 +346,180 @@ export class WalletAuthorization {
         }
         return {
           status: false,
-          message: "Wallet payment authorization failed, enter a valid authorization pin",
+          message:
+            "Wallet payment authorization failed, enter a valid authorization pin",
+        };
+      }
+
+      return {
+        status: false,
+        message: "No valid authorization pin was sent",
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public static async sendExternalWalletPaymentAuthorizationPin(payload: any) {
+    try {
+      const payloadHash: string = payload.payloadHash!;
+      const txRef: string = payload.txRef!;
+      const accountId: string = payload.accountId! as string;
+      const merchantCredentials: any = payload.merchantCredentials;
+      const merchantCredentialsDb = await MerchantCredentials.findOne({
+        $or: [
+          { livePublicKey: merchantCredentials.livePublicKey },
+          { testPublicKey: merchantCredentials.testPublicKey },
+        ],
+      });
+
+      if (!merchantCredentialsDb) {
+        return {
+          status: false,
+          message: "Unauthorized merchant.",
+        };
+      }
+      const merchantAccountId: string =
+        merchantCredentialsDb.account.toString();
+
+      const account: any = await Accounts.findOne({ _id: accountId });
+      if (!account) {
+        return {
+          status: false,
+          message: "No account was found for this request",
+        };
+      }
+      const previousPayment = await WalletIncomingPayments.findOne({
+        checkOutId: txRef,
+      });
+      if (previousPayment) {
+        return {
+          status: false,
+          message: "This transaction already has a payment.",
+        };
+      }
+      const debitWallet = await Wallet.findOne({ user: account._id });
+      if (!debitWallet) {
+        return {
+          status: false,
+          message: "No debit wallet was found...",
+        };
+      }
+
+      const creditWallet = await Wallet.findOne({
+        user: merchantAccountId,
+        userType: "merchantAccounts",
+      });
+      if (!creditWallet) {
+        return {
+          status: false,
+          message: "No valid merchant was found...",
+        };
+      }
+
+      if (payloadHash) {
+        const otp: string = generateOtp();
+        console.log("External Wallet Balance Payment OTP ", otp);
+        const key: string = `${accountId}:${payloadHash}`;
+
+        await setExpirableCode(key, "external-crygoca-balance-pay", otp);
+        await WalletExternalTransactions.findOneAndDelete({
+          txRef: payload.txRef,
+          status: "PENDING"
+        });        
+        const transactionData: IWalletExternalTransaction = {
+          creditWallet: creditWallet._id,
+          debitWallet: debitWallet._id,
+          amount: payload.amount,
+          status: "PENDING",
+          txRef: payload.txRef,
+          currency: payload.currency,
+          convertedAmount: payload.convertedAmount,
+          app_fee: 0.0,
+          payment_type: "external-crygoca-wallet-balance",
+          authorized: false,
+          exchangeRate: payload.exchangeRate,
+          conversionPayload: payload.conversionPayload,
+          isConverted: payload.isConverted,
+          mode: payload.mode,
+          businessName: payload.businessName,
+          logo: payload.logo,
+          redirectUrl: payload.redirectUrl,
+        };
+        const walletExternalTransaction =
+          await WalletExternalTransactions.create(transactionData);
+        /*Send otp to email */
+        mailActions.wallet.sendWalletPaymentAuthorizationPin(
+          account.email,
+          Number(otp),
+          txRef,
+          account
+        );
+        return {
+          status: true,
+          message: "External Wallet Payment Authorization pin sent sucessfully",
+          data: walletExternalTransaction,
+        };
+      }
+      return {
+        status: false,
+        message: "Failed to send External Wallet Payment Authorization pin!",
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  public static async validateExternalWalletPaymentAuthorizationPin(
+    accountId: string,
+    paymentHash: string,
+    authorizationPin: string,
+    checkOutId: string
+  ) {
+    try {
+      const key: string = `${accountId}:${paymentHash}`;
+      const previousTransaction = await WalletExternalTransactions.findOne({
+        txRef: checkOutId,
+      });
+      if (previousTransaction && previousTransaction.status === "SUCCESS") {
+        return {
+          status: false,
+          message: "This transaction is already completed.",
+        };
+      }
+
+      if (authorizationPin) {
+        const cachedCode: any = await getExpirableCode(
+          "external-crygoca-balance-pay",
+          key
+        );
+        if (cachedCode) {
+          if (cachedCode?.code === authorizationPin) {
+            await setExpirableCode(
+              key,
+              "external-wallet-pay-authorization",
+              "authorized",
+              120
+            );
+            const walletExternalTransaction =
+              await WalletExternalTransactions.findOneAndUpdate(
+                {
+                  txRef: checkOutId,
+                },
+                { status: "AUTHORIZED", authorized: true },
+                { new: true }
+              ).populate("creditWallet").populate("debitWallet").exec();
+            return {
+              status: true,
+              message: "External Wallet payment request authorized",
+              data: walletExternalTransaction,
+            };
+          }
+        }
+        return {
+          status: false,
+          message:
+            "External Wallet payment authorization failed, enter a valid authorization pin",
         };
       }
 

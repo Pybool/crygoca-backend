@@ -13,12 +13,14 @@ import {
   walletGetBeneficiaries,
   cardTopUpFundWallet,
   sendWalletPaymentAuthorizationPin,
+  sendExternalWalletPaymentAuthorizationPin,
   payWithWalletBalance,
   externalPaymentProcessing,
   makeExternalPayment
 } from "../../controllers/v1/wallet.controller";
 import { fetchTransactions } from "../../controllers/v1/waalet.transaction.controller";
 import { validateSecretKey } from "../../middlewares/validateSecretKey";
+import { validatePublicKey } from "../../middlewares/validatePublicKey";
 
 const walletRouter = express.Router();
 walletRouter.get("/get-wallet-balance", decode, processWalletTransfer);
@@ -40,6 +42,9 @@ walletRouter.post("/send-transfer-otp", decode, sendTransferOtp);
 walletRouter.post("/verify-transfer-otp", decode, verifyTransferOtp);
 
 walletRouter.post("/send-withdrawal-otp", decode, sendWithdrawalOtp);
+
+
+walletRouter.post("/send-external-wallet-pay-authorization-pin", validatePublicKey, sendExternalWalletPaymentAuthorizationPin)
 
 walletRouter.post("/send-wallet-pay-authorization-pin", decodeExt, sendWalletPaymentAuthorizationPin)
 

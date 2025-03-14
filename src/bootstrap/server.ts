@@ -71,22 +71,29 @@ setupSocketHandlers(io);
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:4200",
-      "http://localhost:4201",
-      "https://www.crygoca.com",
-      "https://crygoca.com",
-      "https://marketplace.crygoca.com",
-      "https://crygoca.co.uk",
-      "https://www.crygoca.co.uk",
-      "https://test.crygoca.com",
-      "https://uatmarketplace.crygoca.com",
-      "https://test.crygoca.co.uk",
-      "https://uatmarketplace.crygoca.com"
-    ], // Array of allowed origins // Explicitly specify the allowed origin
+    origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
     credentials: true, // Allow cookies and credentials to be sent
   })
 );
+
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:4200",
+//       "http://localhost:4201",
+//       "https://www.crygoca.com",
+//       "https://crygoca.com",
+//       "https://marketplace.crygoca.com",
+//       "https://crygoca.co.uk",
+//       "https://www.crygoca.co.uk",
+//       "https://test.crygoca.com",
+//       "https://uatmarketplace.crygoca.com",
+//       "https://test.crygoca.co.uk",
+//       "https://uatmarketplace.crygoca.com"
+//     ], // Array of allowed origins // Explicitly specify the allowed origin
+//     credentials: true, // Allow cookies and credentials to be sent
+//   })
+// );
 
 // Configure body-parser or express.json() with a higher limit
 app.use(express.json({ limit: "10mb" })); // Increase to 10MB or adjust as needed

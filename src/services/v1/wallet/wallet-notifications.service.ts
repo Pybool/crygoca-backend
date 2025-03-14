@@ -25,7 +25,7 @@ export class WalletNotificationService {
 
     const user: IuserDetails = walletTransaction.user as IuserDetails;
     const notification: any = await NotificationModel.create({
-      user: user._id,
+      user: user?._id,
       title: `Credit Alert! ${
         user.geoData.currency.symbol
       }${walletTransaction.amount.toFixed(2)} ${reversalMsg} on your wallet`,
@@ -143,6 +143,36 @@ export class WalletNotificationService {
     //   receiverWallet,
     // });
     return notification;
+  }
+
+  public static async createExternalPaymentCreditNotification(
+    wallet: IWallet,
+    walletTransaction: IWalletTransaction,
+    isReversal: boolean = false
+    
+  ) {
+    //Notification for credit alert
+    if (typeof walletTransaction.user !== "object") {
+      throw new Error("User is not populated!");
+    }
+    const reversalMsg = isReversal ? "reversal " : "";
+
+    const user: IuserDetails = walletTransaction.user as IuserDetails;
+    const notification: any = await NotificationModel.create({
+      user: user?._id,
+      title: `Credit Alert! ${
+        user.geoData.currency.symbol
+      }${walletTransaction.amount.toFixed(2)} ${reversalMsg} on your wallet`,
+      message: `Hi ${user.firstname}\n\nWe wish to inform you that a ${reversalMsg}wallet payment was deposited into your merchant account.`,
+      createdAt: new Date(),
+      status: "UNREAD",
+      class: "success",
+      meta: {
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+          walletTransaction._id
+        }`,
+      },
+    });
   }
 
   private static async sendSocketNotification(

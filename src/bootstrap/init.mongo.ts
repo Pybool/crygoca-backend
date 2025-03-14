@@ -16,7 +16,6 @@ const startBackgroundTasks = () => {
   startAutoConfirmationTask();
   startTimeoutAutoCompleteWorker();
   startFlutterwavePaymentsVerification();
-  // processRollbacks();
 };
 
 mongoose
