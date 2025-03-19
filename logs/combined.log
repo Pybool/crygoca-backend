@@ -15131,3 +15131,58 @@ info: Withdrawal error  {"timestamp":"2025-03-14T12:58:42.890+01:00"}
 info: Mongoose connected to db {"timestamp":"2025-03-14T13:02:33.891+01:00"}
 info: MongoDB connected Successfully. {"timestamp":"2025-03-14T13:02:33.912+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-03-14T13:05:10.005+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T17:55:34.544+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T17:55:34.572+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T17:58:59.217+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T17:58:59.233+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T17:59:51.582+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T18:01:16.134+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T18:01:16.151+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T18:09:51.368+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T18:09:51.375+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T18:50:03.214+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T18:50:13.967+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:35:18.196+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T19:36:38.918+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:47:08.097+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:47:08.115+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:47:08.122+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:50:22.830+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:50:22.840+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:50:22.846+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:51:58.931+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:51:58.940+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:51:58.941+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:54:06.534+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T19:55:23.783+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:55:23.798+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-03-14T19:55:23.805+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T20:04:00.469+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-14T20:04:00.482+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-14T22:11:16.961+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-14T22:11:32.309+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-15T00:02:49.320+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-15T00:03:15.436+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-15T00:16:56.904+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-15T00:17:10.677+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-18T19:55:44.578+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-18T19:55:44.611+01:00"}
+info: Rollback action registered: 3ece598d-a838-4635-9068-7eff977ef153 {"timestamp":"2025-03-18T20:01:53.697+01:00"}
+info: Rollback action registered: a16d6786-5425-44c1-b59f-137a79429e0d {"timestamp":"2025-03-18T20:01:55.028+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-18T20:01:55.215+01:00"}
+info: Rollback action registered: 7a4deb74-736b-439e-9738-d412938da895 {"timestamp":"2025-03-18T20:04:27.113+01:00"}
+info: Rollback action registered: 012bc0a2-5a2e-41e5-96ec-cb7680d22e12 {"timestamp":"2025-03-18T20:04:28.511+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-18T20:04:28.740+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-18T21:32:47.230+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-18T21:32:47.243+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-18T21:50:12.990+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-18T21:50:13.009+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-18T23:31:06.804+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-18T23:31:06.824+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-19T00:30:02.871+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-19T00:30:02.900+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-19T14:09:15.613+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-19T14:09:15.645+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-19T14:19:13.725+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-19T14:19:13.743+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-19T17:39:04.483+01:00"}

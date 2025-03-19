@@ -210,7 +210,7 @@ const mailActions = {
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
-          const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}/marketplace/dispute-order/${data.checkOutId}/${accountId}`;
+          const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}//dispute-order/${data.checkOutId}/${accountId}`;
           const template = await ejs.renderFile(
             "src/templates/orderAutoConfirmWarnTemplate.ejs",
             { data, disputeUrl, timeout, marketplaceUrl }

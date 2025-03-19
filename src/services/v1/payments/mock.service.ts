@@ -33,7 +33,7 @@ export const googlePayChargeSuccess: any = {
     meta: {
       authorization: {
         mode: "redirect",
-        redirect: `${process.env.CRYGOCA_FRONTEND_BASE_URL}/marketplace/flwv3-pug/getpaid/api/short-url/XPtNw-WkQ`,
+        redirect: `${process.env.CRYGOCA_FRONTEND_BASE_URL}//flwv3-pug/getpaid/api/short-url/XPtNw-WkQ`,
       },
     },
   },

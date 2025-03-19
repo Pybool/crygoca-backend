@@ -69,16 +69,16 @@ setupSocketHandlers(io);
 
 // app.use(cors(corsOptions));
 
-if (process.env.NODE_ENV === "dev") {
-  app.use(
-    cors({
-      origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
-      credentials: true, // Allow cookies and credentials to be sent
-    })
-  );
-}
+// if (process.env.NODE_ENV === "dev") {
+//   app.use(
+//     cors({
+//       origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
+//       credentials: true, // Allow cookies and credentials to be sent
+//     })
+//   );
+// }
 
-if (process.env.NODE_ENV === "prod") {
+if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "prod") {
   app.use(
     cors({
       origin: [
@@ -98,7 +98,6 @@ if (process.env.NODE_ENV === "prod") {
     })
   );
 }
-
 
 
 // Configure body-parser or express.json() with a higher limit
@@ -245,7 +244,7 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", "src/templates");
 
-function generateAsciiArt(text: string) {
+function generateAsciiArt(text: string, env: string) {
   const length = text.length;
   const line = Array(length + 8)
     .fill("-")
@@ -255,9 +254,9 @@ function generateAsciiArt(text: string) {
   return `
    ${line}
   |  ${text}  |
-  |  😊 Development Server started successfully.            |
+  |  😊 ${env} Server started successfully.            |
   |  🎧 Listening on port ${PORT}...                           |
-  |  💿 Database: CRYGOCA                                   |
+  |  💿 Database: ${process.env.CRYGOCA_DATABASE_NAME}                                   |
   |  👨🏽‍💻Author: Emmanuel Eko @Adonyneus                |
    ${line}
   `;
@@ -265,8 +264,12 @@ function generateAsciiArt(text: string) {
 
 // Start the server
 server.listen(PORT, () => {
+  let env = "Development"
+  if (process.env.NODE_ENV === "prod") {
+    env = "Production"
+  }
   const serverMessage = generateAsciiArt(
-    `Crygoca Development Server is running on ${SERVER_URL}:${PORT}`.toUpperCase()
+    `Crygoca ${env} Server is running on ${SERVER_URL}:${PORT}`.toUpperCase(), env
   );
   console.log(serverMessage);
 });
