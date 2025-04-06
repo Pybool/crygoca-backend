@@ -98,6 +98,13 @@ const makeTransfer = async (payload: any) => {
 
     debitDetails.amount = sourceAmount; // Source/Raw amount
     debitDetails.currency = sourceCurrency;
+
+    console.log("Conversion Data XXXX ========================> ",{
+      convertedAMount: amount,
+      rawAmount: sourceAmount,
+      targetCurrency:creditDetails.currency,
+      sourceCurrency
+    })
   }
   debitDetails.otp = otp;
   try {

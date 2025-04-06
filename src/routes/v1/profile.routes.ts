@@ -1,6 +1,7 @@
 import express from "express";
 import { decode, decodeExt } from "../../middlewares/jwt";
 import { profileController } from "../../controllers/v1/profile.controller";
+import { getMulterConfigSingle } from "../../middlewares/fileUploads.middleware";
 
 const profileRouter = express.Router();
 profileRouter.get(
@@ -39,10 +40,13 @@ profileRouter.get(
   profileController._sendAddPasswordCode
 );
 
-profileRouter.put(
-  "/add-password",
+profileRouter.put("/add-password", decode, profileController._addPassword);
+
+profileRouter.post(
+  "/upload-avatar",
   decode,
-  profileController._addPassword
+  getMulterConfigSingle("../public/accounts/customers/"),
+  profileController._uploadAvatar
 );
 
 export default profileRouter;

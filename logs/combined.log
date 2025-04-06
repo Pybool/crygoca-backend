@@ -15186,3 +15186,164 @@ info: MongoDB connected Successfully. {"timestamp":"2025-03-19T14:09:15.645+01:0
 info: Mongoose connected to db {"timestamp":"2025-03-19T14:19:13.725+01:00"}
 info: MongoDB connected Successfully. {"timestamp":"2025-03-19T14:19:13.743+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-03-19T17:39:04.483+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-26T23:45:26.140+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-26T23:45:26.161+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T07:31:36.816+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T07:31:36.857+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-27T09:55:59.805+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T09:58:14.127+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T09:58:14.160+01:00"}
+info: Wallet direct top completed successfully. {"timestamp":"2025-03-27T10:00:57.998+01:00"}
+info: Rollback action registered: 451d71e3-94f1-4ee0-9885-ee42e7f6f80c {"timestamp":"2025-03-27T10:02:04.509+01:00"}
+info: Rollback action registered: c60a9b7e-9cf5-4cba-8c48-27817ee7d7ee {"timestamp":"2025-03-27T10:02:05.227+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-27T10:02:06.279+01:00"}
+info: Rollback action registered: 0126d02f-49ab-43c4-b0d7-50c133673a70 {"timestamp":"2025-03-27T10:06:01.032+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T10:06:01.319+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T10:17:43.642+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T10:17:43.675+01:00"}
+info: Rollback action registered: f46bea03-edc9-4ed9-9a16-11b3a7d0fde7 {"timestamp":"2025-03-27T10:20:05.804+01:00"}
+info: Rollback action registered: d8fbadb6-f0df-4e46-8ca3-d01414ff8a34 {"timestamp":"2025-03-27T10:20:06.564+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-27T10:20:07.862+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-27T10:21:39.952+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T10:22:39.818+01:00"}
+info: Rollback action registered: c8364a0e-7238-4b22-be13-2504cd99b650 {"timestamp":"2025-03-27T10:28:21.022+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T10:28:21.333+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T10:37:53.162+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T10:37:53.168+01:00"}
+info: Rollback action registered: 540672cc-6905-47bc-b7b1-6c18f01c3311 {"timestamp":"2025-03-27T10:39:04.798+01:00"}
+info: Rollback action registered: 004f35a4-140d-4a00-bd5a-0b75774df08d {"timestamp":"2025-03-27T10:39:05.581+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-27T10:39:06.576+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T11:13:02.561+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T11:13:02.599+01:00"}
+info: Rollback action registered: 3769a0dd-bac7-446f-acd5-5a7aa73c5b9e {"timestamp":"2025-03-27T11:17:11.566+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T11:17:11.862+01:00"}
+info: Rollback action registered: c36a04c6-aedf-45f9-8318-43416ddd3aaa {"timestamp":"2025-03-27T11:19:19.505+01:00"}
+info: Rollback action registered: 03a20e48-5e51-458e-b63d-04d25c8da5f7 {"timestamp":"2025-03-27T11:19:20.185+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-27T11:19:20.977+01:00"}
+info: Rollback action registered: 9275d9df-31e2-471c-a506-8e0f595d0850 {"timestamp":"2025-03-27T11:20:54.775+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T11:20:55.068+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T12:01:09.112+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T12:01:09.125+01:00"}
+info: Rollback action registered: b4e97237-b361-44fd-a88e-51f60df7aae1 {"timestamp":"2025-03-27T12:37:30.278+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T12:37:30.561+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-27T12:52:04.791+01:00"}
+info: CMR-8261742327341 {"timestamp":"2025-03-27T12:52:04.791+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-27T12:52:05.850+01:00"}
+info: CMR-8261742327341 {"timestamp":"2025-03-27T12:52:05.852+01:00"}
+info: Rollback action registered: 52839d3f-9cbf-4643-8e53-047dc9c4161c {"timestamp":"2025-03-27T12:52:06.851+01:00"}
+info: Rollback action registered: 68b1bc9c-3f37-49d6-9e83-56ff8c773be6 {"timestamp":"2025-03-27T12:52:07.596+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T12:52:08.087+01:00"}
+info: Wallet direct top completed successfully. {"timestamp":"2025-03-27T12:54:31.949+01:00"}
+info: Transfer verification response=====>  Transfer request authorization failed {"status":false,"timestamp":"2025-03-27T12:55:55.517+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-27T12:57:28.640+01:00"}
+info: CMR-8261742327341 {"timestamp":"2025-03-27T12:57:28.641+01:00"}
+info: Transfer verification response=====>  Transfer request authorized {"status":true,"timestamp":"2025-03-27T12:57:29.642+01:00"}
+info: CMR-8261742327341 {"timestamp":"2025-03-27T12:57:29.643+01:00"}
+info: Rollback action registered: 55284a9c-d0de-42a1-8014-41e66e810ccb {"timestamp":"2025-03-27T12:57:30.587+01:00"}
+info: Rollback action registered: 1f29150c-1f3e-4971-b96d-fa412de2a0bb {"timestamp":"2025-03-27T12:57:31.321+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-27T12:57:31.475+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T16:00:50.852+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T16:00:50.887+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T19:43:17.094+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T19:43:17.103+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-27T20:47:57.838+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-27T20:47:57.865+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-28T09:09:01.472+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T09:09:22.794+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T09:28:44.139+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T09:28:44.153+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T09:33:43.956+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T09:33:44.006+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T09:46:01.609+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T09:46:01.617+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T10:22:27.885+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T10:22:27.912+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T12:25:30.130+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T12:25:30.162+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T13:13:39.592+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T13:13:39.633+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T13:28:10.317+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T13:28:10.365+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T14:00:23.213+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T14:00:23.236+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T14:59:45.708+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T14:59:45.725+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T15:41:33.665+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T15:41:33.707+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T15:44:10.905+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T15:44:10.924+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T16:15:24.981+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T16:15:25.007+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T16:51:23.897+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T16:51:23.934+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T16:57:54.574+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T16:57:54.607+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T17:12:32.054+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T17:12:32.107+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T17:15:52.462+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T17:15:52.474+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-28T18:23:44.324+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T18:23:56.364+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T18:49:12.079+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T18:49:12.101+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T20:23:39.166+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T20:23:39.195+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T20:55:50.340+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T20:55:50.362+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T21:31:20.717+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T21:31:20.757+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:11:44.173+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:11:44.249+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:18:19.809+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:18:19.897+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:22:58.994+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:22:59.009+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:25:57.625+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:25:57.642+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:28:00.904+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:28:00.927+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-28T22:46:21.308+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-28T22:46:21.449+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-29T00:54:10.862+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T00:54:22.520+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T09:59:48.029+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T09:59:48.051+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T10:01:20.660+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T10:01:20.670+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T11:01:40.447+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T11:01:40.475+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T11:06:01.723+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T11:06:01.755+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T11:13:14.527+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T11:13:14.541+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-29T11:17:45.543+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T11:18:31.867+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T11:18:31.885+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T13:48:45.088+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T13:48:45.123+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-29T14:12:45.701+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T14:22:40.836+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T14:22:40.868+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T14:47:28.290+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T14:47:28.297+01:00"}
+info: Rollback action registered: 60c7c2a6-d133-4017-bab9-1e9f35e62038 {"timestamp":"2025-03-29T14:51:32.217+01:00"}
+info: Rollback action registered: cc502b65-7527-4ae5-a9ae-3ca2247915f3 {"timestamp":"2025-03-29T14:51:33.249+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-03-29T14:51:34.389+01:00"}
+info: Rollback action registered: ba8b3008-4b4a-48e7-aff5-c2bd8f1f9541 {"timestamp":"2025-03-29T14:52:50.466+01:00"}
+info: Wallet operations completed successfully. {"timestamp":"2025-03-29T14:52:50.893+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-29T15:11:35.278+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T15:11:46.190+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-29T15:13:54.893+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-29T15:16:28.799+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-29T15:16:28.884+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-03-30T01:10:30.237+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-03-30T01:10:30.264+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-03-30T01:16:44.820+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-04-05T18:39:13.984+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-04-05T18:39:13.995+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-04-05T23:22:42.134+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-04-05T23:22:42.166+01:00"}
+info: Rollback action registered: cf271d89-c7f7-4c6c-88ad-16ec5c7208be {"timestamp":"2025-04-06T00:24:00.132+01:00"}
+info: Rollback action registered: a5a26a99-f461-4d74-b995-768388080c74 {"timestamp":"2025-04-06T00:24:00.874+01:00"}
+info: Wallet balance payment operations completed successfully. {"timestamp":"2025-04-06T00:24:01.842+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-04-06T01:44:39.639+01:00"}

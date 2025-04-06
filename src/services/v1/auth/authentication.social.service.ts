@@ -82,7 +82,7 @@ export class SocialAuthentication {
         }
         googleUser.username = username;
         googleUser.referralCode = await generateReferralCode(`${googleUser.firstname}${googleUser.lastname}`)
-        googleUser.avatar = googleUser.avatar;
+        googleUser.avatar = '/assets/images/avatar.jpg';
         googleUser.createdAt = new Date();
         googleUser.lastLogin = new Date();
         googleUser.provider = "GOOGLE";

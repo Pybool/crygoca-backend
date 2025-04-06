@@ -61,22 +61,6 @@ const wrap =
 io.use(wrap(sessionMiddleware));
 app.set("io", io);
 setupSocketHandlers(io);
-// const corsOptions = {
-//   origin: "*",
-//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// };
-
-// app.use(cors(corsOptions));
-
-// if (process.env.NODE_ENV === "dev") {
-//   app.use(
-//     cors({
-//       origin: "*", // Array of allowed origins // Explicitly specify the allowed origin
-//       credentials: true, // Allow cookies and credentials to be sent
-//     })
-//   );
-// }
 
 if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "prod") {
   app.use(
@@ -239,6 +223,8 @@ app.use(
     },
   })
 );
+
+app.use(express.static(process.env.PUBLIC_FOLDER_2!));
 
 
 app.set("view engine", "ejs");

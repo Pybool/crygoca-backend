@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema
 
 export interface ISalelisting{
+  _id?:string;
   account?: string;
   cryptoName: string;
   cryptoCode: string;
@@ -54,6 +55,16 @@ const CryptoListingSchema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  isArchived:{
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  isCrygoca:{
+    type: Boolean,
+    required: false,
+    default: false,
   },
   createdAt: {
     type: Date,

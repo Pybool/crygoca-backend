@@ -596,6 +596,7 @@ export class WalletService {
         checkOutId: meta.checkOutId,
         status: "PENDING",
         amount: creditDetails.amount,
+        currency: creditDetails.currency,
         debitWalletAccountNo: senderWalletAccountNo,
       };
       let walletIncomingPayment: any = await WalletIncomingPayments.create(
@@ -626,7 +627,8 @@ export class WalletService {
       const paymentData = {
         tx_ref: meta.checkOutId,
         amount: creditDetails.amount,
-        currency: senderWallet.currency,
+        // senderCurrency: senderWallet.currency,
+        currency: creditDetails.currency,
         charged_amount: creditDetails.amount,
         app_fee: 0.0,
         status: "successful",
@@ -639,7 +641,7 @@ export class WalletService {
             tx_ref: meta.checkOutId,
             data: paymentData,
             account: account._id,
-            paymentProcessor: "CRYGOCA",
+            paymentProcessor: "CRYGOCA"
           },
         ],
         { session }
@@ -886,6 +888,7 @@ export class WalletService {
       }
 
       const positiveAmount = Math.abs(amount);
+      console.log("Payout data =====> ", type, amount, meta)
       let operation = { $inc: { balance: -1 * positiveAmount } }; // Debit Operation
       if (meta.operationType === "credit") {
         operation = { $inc: { balance: positiveAmount } }; // Credit Operation

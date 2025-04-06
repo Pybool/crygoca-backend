@@ -9,6 +9,8 @@ interface Xrequest extends Request {
   merchantCredentials?:any;
   payload?:any;
   body:any;
+  files?:File[] | any;
+  attachments?:any
 }
 
 export default Xrequest;

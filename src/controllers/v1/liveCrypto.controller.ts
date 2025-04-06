@@ -1,5 +1,5 @@
 import {Request, Response } from "express";
-import { createListingForSale, fetchCrypto, fetchOrFilterListingsForSale, getCryptos } from "../../services/v1/listingsServices/cryptolisting.service";
+import { archiveListings, bookMarkingListing, createListingForSale, editListing, fetchCrypto, fetchOrFilterListingsForSale, getCryptos } from "../../services/v1/listingsServices/cryptolisting.service";
 
 interface Xrequest extends Request {
     body:any;
@@ -64,6 +64,57 @@ export const liveCryptoCurrenciesController: any = {
   ) => {
     try {
       const result = await fetchOrFilterListingsForSale(req)
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        return res.status(422).json(result);
+      }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  archiveListings: async (
+    req: Xrequest,
+    res: Response
+  ) => {
+    try {
+      const result = await archiveListings(req)
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        return res.status(422).json(result);
+      }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  editListing: async (
+    req: Xrequest,
+    res: Response
+  ) => {
+    try {
+      const result = await editListing(req)
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        return res.status(422).json(result);
+      }
+    } 
+    catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
+
+  bookMarkingListing: async (
+    req: Xrequest,
+    res: Response
+  ) => {
+    try {
+      const result = await bookMarkingListing(req)
       if (result) {
         res.status(200).json(result);
       } else {

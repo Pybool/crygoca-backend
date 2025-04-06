@@ -13,6 +13,8 @@ import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import Accounts from "../../../models/accounts.model";
 import { formatTimestamp, generateReferenceCode } from "../helpers";
 import { paymentVerificationQueue } from "../jobs/payment-verification/paymentVerificationQueue";
+import mongoose from "mongoose";
+import CryptoListingBookmarks from "../../../models/saleListingBookmark.model";
 const memCache = new Cache();
 
 export const fetchCrypto = async (url: string, isTask = false) => {
@@ -92,7 +94,7 @@ export const createListingForSale = async (req: Xrequest) => {
 
     // Populate the 'account' field with data from the Account or User collection
     const populatedListing = await CryptoListing.findById(listing._id).populate(
-      "account"
+      ["account", "cryptoCurrency"]
     );
 
     return {
@@ -111,6 +113,10 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const searchText: string = (req.query.searchText as string) || "";
+    let searchGroup: string = (req.query.searchGroup as string) || "";
+    if (searchGroup) {
+      searchGroup = searchGroup.replace("group:", "");
+    }
 
     const skip = (page - 1) * limit;
 
@@ -129,6 +135,30 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
           { cryptoLogo: { $regex: new RegExp(searchText, "i") } },
         ],
       });
+    }
+
+    if (searchGroup === "owner") {
+      filter.$and.push({
+        account: new mongoose.Types.ObjectId(req.accountId),
+      });
+    }
+
+    if (searchGroup === "crygoca") {
+      filter.$and.push({
+        isCrygoca: true,
+      });
+    }
+
+    if (searchGroup === "bookmarks") {
+      const bookmarkedListings = await CryptoListingBookmarks.find({
+        account: req.accountId,
+      }).select("cryptoListing");
+
+      const bookmarkedIds = bookmarkedListings.map(
+        (b) => new mongoose.Types.ObjectId(b.cryptoListing)
+      );
+
+      filter.$and.push({ _id: { $in: bookmarkedIds } });
     }
 
     if (req.query.minPrice && req.query.maxPrice) {
@@ -187,6 +217,11 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       {
         $unwind: "$cryptoCurrencyDetails", // Unwind cryptoCurrencyDetails array
       },
+      // {
+      //   $match: {
+      //     isArchived: { $ne: true }, // Exclude listings where isArchived is true
+      //   },
+      // },
     ];
 
     // Define the aggregation pipeline for fetching listings
@@ -216,6 +251,17 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
     // Extract the total count from the result
     const totalListingsCount =
       totalListings.length > 0 ? totalListings[0].totalCount : 0;
+
+    for (let listing of listings) {
+      const exists = await CryptoListingBookmarks.findOne({
+        cryptoListing: listing?._id,
+        account: req.accountId,
+      });
+      listing.isBookMarked = exists !== null;
+      if (searchGroup === "bookmarks" && listing.isBookMarked) {
+        listing.updatedAt = exists?.createdAt
+      }
+    }
 
     return {
       status: true,
@@ -341,5 +387,129 @@ export const getListingChanges = async (listing: any) => {
       status: false,
       message: "This listing may be out of stock or no longer exists",
     };
+  }
+};
+
+export const archiveListings = async (req: Xrequest) => {
+  try {
+    const { listingId, action } = req.body;
+
+    if (!["archive", "unarchive"].includes(action)) {
+      return {
+        status: false,
+        message: `${action} is not a valid parameter for this operation`,
+        code: 400,
+      };
+    }
+
+    const isArchived = action === "archive"; // Set isArchived based on action
+
+    const listing = await CryptoListing.findOneAndUpdate(
+      { _id: listingId },
+      { isArchived }, // Update isArchived dynamically
+      { new: true }
+    );
+
+    if (!listing) {
+      return {
+        status: false,
+        message: "Listing not found",
+        code: 404,
+      };
+    }
+
+    return {
+      status: true,
+      message: `Listing successfully ${action}d.`,
+      data: listing,
+    };
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const editListing = async (req: Xrequest) => {
+  try {
+    const payload: ISalelisting = req.body;
+    const accountId: string = req.accountId!;
+    const updatedListing = await CryptoListing.findOneAndUpdate(
+      { _id: payload._id },
+      payload,
+      { new: true }
+    ).populate(["account", "cryptoCurrency"]);
+
+    return {
+      status: true,
+      message: "Your listing has been updated on crygoca",
+      data: updatedListing,
+      code: 201,
+    };
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const bookMarkingListing = async (req: Xrequest) => {
+  try {
+    const { listingId, action } = req.body;
+    const accountId: string = req.accountId!;
+    const listing = await CryptoListing.findOne({
+      _id: listingId,
+      isArchived: false,
+    });
+    if (!listing) {
+      return {
+        status: false,
+        message: "No listing was found or listing may have been archived",
+      };
+    }
+
+    if (action === "bookmark") {
+      const exists = await CryptoListingBookmarks.findOne({
+        cryptoListing: listingId,
+        account: accountId,
+      });
+
+      if (exists) {
+        return {
+          status: false,
+          message: "You have already bookmarked this listing.",
+        };
+      }
+
+      const bookmark = await CryptoListingBookmarks.create({
+        cryptoListing: listingId,
+        account: accountId,
+        createdAt: new Date(),
+      });
+
+      return {
+        status: true,
+        message: "Bookmarked successfully",
+        data: bookmark,
+        code: 201,
+      };
+    }
+
+    if (action === "unbookmark") {
+      await CryptoListingBookmarks.findOneAndDelete({
+        cryptoListing: listingId,
+        account: accountId,
+      });
+      return {
+        status: true,
+        message: "Unbookmarked successfully",
+        data: null,
+        code: 200,
+      };
+    }
+
+    return {
+      status: false,
+      message: "Operation was not successful",
+      code: 200,
+    };
+  } catch (error: any) {
+    throw error;
   }
 };

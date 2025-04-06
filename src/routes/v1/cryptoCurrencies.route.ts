@@ -17,11 +17,33 @@ liveCrypto.post(
   liveCryptoCurrenciesController.createListing
 );
 
+liveCrypto.put(
+  "/edit-crypto-sales-listing",
+  decode,
+  liveCryptoCurrenciesController.editListing
+);
+
+liveCrypto.post(
+  "/bookmarking-crypto-sales-listing",
+  decode,
+  liveCryptoCurrenciesController.bookMarkingListing
+);
+
+
+
+
+
 liveCrypto.get(
   "/fetch-crypto-sales-listings",
   decode,
   liveCryptoCurrenciesController.fetchOrFilterListings
 );
+
+liveCrypto.post(
+  "/archive-crypto-sales-listing",
+  decode,
+  liveCryptoCurrenciesController.archiveListings
+)
 
 liveCrypto.post("/update-crypto-quotes", async (req: any, res: any) => {
   const cryptocurrenciesData = req.body.data;

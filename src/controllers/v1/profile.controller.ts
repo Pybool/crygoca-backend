@@ -117,4 +117,15 @@ export const profileController: any = {
       res.status(500).json({ status: false, message: error?.message });
     }
   },
+
+  _uploadAvatar: async (req: Xrequest, res: Response) => {
+    try {
+      let status = 400;
+      const result = await ProfileService.uploadAvatar(req);
+      if (result) status = 200;
+      return res.status(status).json(result);
+    } catch (error: any) {
+      res.status(500).json({ status: false, message: error?.message });
+    }
+  },
 };

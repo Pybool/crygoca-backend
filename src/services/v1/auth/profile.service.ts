@@ -221,4 +221,33 @@ export class ProfileService {
     );
     return result;
   }
+
+  public static async uploadAvatar(req: Xrequest) {
+    try {
+      let account: any = await Accounts.findOne({ _id: req.accountId });
+      if (!account) {
+        return {
+          status: false,
+          message: "Account was not found",
+          code: 400
+        }
+      }
+
+      console.log(req.attachments)
+
+      if (req?.attachments?.length > 0) {
+        account.avatar = req.attachments[0].replaceAll("/public", "");
+      }
+
+      account = await account.save();
+      return {
+        status: true,
+        data: account,
+        message: "Avatar updated successfully..",
+      };
+    } catch (error) {
+      console.log(error);
+      return { status: false, message: "Profile update failed.." };
+    }
+  }
 }

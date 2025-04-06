@@ -163,14 +163,19 @@ CryptoListingPurchaseSchema.post("save", async function (doc) {
       console.log(from, to, currencyFrom, currencyTo);
 
       const convertToDefaultCurrency = async (amount: number) => {
-        if (from && to && currencyFrom && currencyTo) {
-          return await convertCurrency(
-            from,
-            to,
-            currencyFrom,
-            currencyTo,
-            amount?.toString()
-          );
+        if(currencyFrom !== currencyTo){
+          if (from && to && currencyFrom && currencyTo) {
+            return await convertCurrency(
+              from,
+              to,
+              currencyFrom,
+              currencyTo,
+              amount?.toString()
+            );
+          }
+          return null;
+        }else{
+          return amount;
         }
         return null;
       };
