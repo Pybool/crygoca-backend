@@ -154,6 +154,17 @@ const AccountsSchema = new Schema({
     default: null,
     required: false,
   },
+  paymentMethods: [
+    {
+      country: { type: String, required: true },
+      provider: { type: String, required: true },
+      accountName: { type: String, required: true },
+      accountNumber: { type: String, required: true },
+      routingNumber: { type: String },
+      _id: { type: Schema.Types.ObjectId, auto: true }, // For easier editing/deleting
+    }
+  ],
+  
 });
 
 interface IAccountModel extends mongoose.Model<any> {

@@ -1,5 +1,5 @@
 import {Request, Response } from "express";
-import { archiveListings, bookMarkingListing, createListingForSale, editListing, fetchCrypto, fetchOrFilterListingsForSale, getCryptos } from "../../services/v1/listingsServices/cryptolisting.service";
+import { archiveListings, bookMarkingListing, createListingForSale, editListing, fetchCrypto, fetchOrFilterListingsForSale, getCryptos, getSupportedCryptos } from "../../services/v1/listingsServices/cryptolisting.service";
 
 interface Xrequest extends Request {
     body:any;
@@ -41,12 +41,12 @@ export const liveCryptoCurrenciesController: any = {
     }
   },
 
-  createListing: async (
+  getSupportedCryptos: async (
     req: Xrequest,
     res: Response
   ) => {
     try {
-      const result = await createListingForSale(req)
+      const result = await getSupportedCryptos(req)
       if (result) {
         res.status(200).json(result);
       } else {
@@ -57,6 +57,23 @@ export const liveCryptoCurrenciesController: any = {
       res.status(500).json({ status: false, message: error?.message });
     }
   },
+
+  // createListing: async (
+  //   req: Xrequest,
+  //   res: Response
+  // ) => {
+  //   try {
+  //     const result = await createListingForSale(req, )
+  //     if (result) {
+  //       res.status(200).json(result);
+  //     } else {
+  //       return res.status(422).json(result);
+  //     }
+  //   } 
+  //   catch (error: any) {
+  //     res.status(500).json({ status: false, message: error?.message });
+  //   }
+  // },
 
   fetchOrFilterListings: async (
     req: Xrequest,

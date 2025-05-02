@@ -13,8 +13,12 @@ import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import Accounts from "../../../models/accounts.model";
 import { formatTimestamp, generateReferenceCode } from "../helpers";
 import { paymentVerificationQueue } from "../jobs/payment-verification/paymentVerificationQueue";
-import mongoose from "mongoose";
+import mongoose, { ClientSession } from "mongoose";
 import CryptoListingBookmarks from "../../../models/saleListingBookmark.model";
+import {
+  ERC20_TOKENS,
+  NATIVE_CRYPTO,
+} from "../../../escrow/config/tokens.config";
 const memCache = new Cache();
 
 export const fetchCrypto = async (url: string, isTask = false) => {
@@ -70,7 +74,57 @@ export const getCryptos = async (req: Xrequest) => {
   }
 };
 
-export const createListingForSale = async (req: Xrequest) => {
+export const getSupportedCryptos = async (req: Xrequest) => {
+  try {
+    const limit: number = Number(req.query.limit! as string);
+    const searchQuery = req.query.q || "";
+
+    // Step 1: Prepare allowed symbols (lowercase)
+    const allowedSymbols = [
+      ...ERC20_TOKENS.map((token) => token.symbol.toLowerCase()),
+      ...NATIVE_CRYPTO.map((crypto) => crypto.symbol.toLowerCase()),
+    ];
+
+    // Step 2: MongoDB filter
+    const filter = {
+      $and: [
+        {
+          $or: [
+            { name: { $regex: searchQuery, $options: "i" } },
+            { symbol: { $regex: searchQuery, $options: "i" } },
+            { slug: { $regex: searchQuery, $options: "i" } },
+            { tags: { $regex: searchQuery, $options: "i" } },
+          ],
+        },
+        {
+          $expr: {
+            $in: [
+              { $toLower: "$symbol" }, // convert document symbol to lowercase
+              allowedSymbols,
+            ],
+          },
+        },
+      ],
+    };
+
+    // Step 3: Query MongoDB
+    const cryptos = await Cryptocurrencies.find(filter).limit(limit);
+
+    return {
+      status: true,
+      message: "Cryptocurrencies fetched",
+      data: cryptos,
+      code: 200,
+    };
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const createListingForSale = async (
+  req: Xrequest,
+  session: ClientSession
+) => {
   try {
     const payload: ISalelisting = req.body;
     const accountId: string = req.accountId!;
@@ -78,6 +132,7 @@ export const createListingForSale = async (req: Xrequest) => {
     payload.account = accountId;
     payload.createdAt = new Date();
     payload.updatedAt = new Date();
+    payload.depositConfirmed = false;
     const _crypto = await Cryptocurrencies.findOne({
       symbol: payload.cryptoCode,
     });
@@ -90,16 +145,15 @@ export const createListingForSale = async (req: Xrequest) => {
       };
     }
 
-    const listing = await CryptoListing.create(payload);
+    const listing = await CryptoListing.create([payload], { session });
 
     // Populate the 'account' field with data from the Account or User collection
-    const populatedListing = await CryptoListing.findById(listing._id).populate(
-      ["account", "cryptoCurrency"]
-    );
+    const populatedListing = await CryptoListing.findById(
+      listing[0]._id
+    ).populate(["account", "cryptoCurrency"]);
 
     return {
       status: true,
-      message: "Your cryptocurrency has been listed on crygoca",
       data: populatedListing,
       code: 201,
     };
@@ -136,6 +190,8 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
         ],
       });
     }
+
+    filter.$and.push({ depositConfirmed: true });
 
     if (searchGroup === "owner") {
       filter.$and.push({
@@ -217,6 +273,18 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       {
         $unwind: "$cryptoCurrencyDetails", // Unwind cryptoCurrencyDetails array
       },
+      {
+        $lookup: {
+          from: "escrows",
+          localField: "escrow",
+          foreignField: "_id",
+          as: "escrow",
+        },
+      },
+      {
+        $unwind: "$escrow", // Unwind cryptoCurrencyDetails array
+        // preserveNullAndEmptyArrays: true
+      },
       // {
       //   $match: {
       //     isArchived: { $ne: true }, // Exclude listings where isArchived is true
@@ -259,7 +327,7 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
       });
       listing.isBookMarked = exists !== null;
       if (searchGroup === "bookmarks" && listing.isBookMarked) {
-        listing.updatedAt = exists?.createdAt
+        listing.updatedAt = exists?.createdAt;
       }
     }
 

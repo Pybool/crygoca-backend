@@ -8,6 +8,7 @@ export interface ISalelisting{
   cryptoCode: string;
   cryptoLogo?:string;
   cryptoCurrency?:string;
+  depositConfirmed?:boolean;
   units: number;
   minUnits: number;
   currency: string;
@@ -60,6 +61,15 @@ const CryptoListingSchema = new Schema({
     type: Boolean,
     required: false,
     default: false,
+  },
+  depositConfirmed:{
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  escrow:{
+    type: Schema.Types.ObjectId, ref: "Escrow",
+    required: false,
   },
   isCrygoca:{
     type: Boolean,

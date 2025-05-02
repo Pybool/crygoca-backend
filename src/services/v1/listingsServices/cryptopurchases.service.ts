@@ -7,6 +7,14 @@ import { NotificationModel } from "../../../models/notifications.model";
 import VerifiedTransactions from "../../../models/verifiedtransactions.model";
 import mailActions, { IEmailCheckoutData } from "../mail/mailservice";
 import Accounts from "../../../models/accounts.model";
+import { Order } from "../../../models/orders.model";
+import {
+  ERC20Transfer,
+  IErc20Transfer,
+} from "../../../crypto-transfers/scripts/enqueueTransfer";
+import { ERC20_TOKENS } from "../../../escrow/config/tokens.config";
+import { RegisterERC20Payout, RegisterNativeETHPayout } from "./crypto-payouts";
+import Escrow from "../../../models/escrow.model";
 
 export const fetchOrders = async (req: Xrequest) => {
   try {
@@ -59,14 +67,14 @@ export const fetchOrders = async (req: Xrequest) => {
       // Add a new lookup for verifiedTransaction field
       {
         $lookup: {
-          from: "verifiedtransactions", // Replace with the collection containing the verifiedTransaction details
-          localField: "verifiedTransaction", // Field in CryptoListingPurchase that links to the transactions
+          from: "orders", // Replace with the collection containing the verifiedTransaction details
+          localField: "order", // Field in CryptoListingPurchase that links to the transactions
           foreignField: "_id", // Field in transactions to match
-          as: "verifiedTransaction", // Alias for the populated transaction
+          as: "order", // Alias for the populated transaction
         },
       },
       {
-        $unwind: "$verifiedTransaction",
+        $unwind: "$order",
       },
     ];
 
@@ -81,7 +89,7 @@ export const fetchOrders = async (req: Xrequest) => {
               "cryptoListing.account": new mongoose.Types.ObjectId(userId),
             },
             {
-              paymentConfirmed: true,
+              orderConfirmed: true,
             },
 
             {
@@ -136,7 +144,7 @@ export const fetchOrders = async (req: Xrequest) => {
           ],
         },
       },
-      
+
       { $sort: { createdAt: -1 } }, // Sort by creation date (descending)
       { $skip: skip }, // Pagination: Skip
       { $limit: limit }, // Pagination: Limit
@@ -156,7 +164,7 @@ export const fetchOrders = async (req: Xrequest) => {
               "cryptoListing.account": new mongoose.Types.ObjectId(userId),
             },
             {
-              paymentConfirmed: true,
+              orderConfirmed: true,
             },
             {
               $or: [
@@ -244,7 +252,8 @@ export const fetchMyOrders = async (req: Xrequest) => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const searchText: string = (req.query.searchText as string) || "";
-    const userId: string = req.accountId as string; // Assuming userId is passed as query parameter
+    const userId: string = req.accountId as string;
+    console.log("userId ", userId);
 
     const skip = (page - 1) * limit;
 
@@ -275,14 +284,14 @@ export const fetchMyOrders = async (req: Xrequest) => {
       // Add a new lookup for verifiedTransaction field
       {
         $lookup: {
-          from: "verifiedtransactions", // Replace with the collection containing the verifiedTransaction details
-          localField: "verifiedTransaction", // Field in CryptoListingPurchase that links to the transactions
+          from: "orders", // Replace with the collection containing the verifiedTransaction details
+          localField: "order", // Field in CryptoListingPurchase that links to the transactions
           foreignField: "_id", // Field in transactions to match
-          as: "verifiedTransaction", // Alias for the populated transaction
+          as: "order", // Alias for the populated transaction
         },
       },
       {
-        $unwind: "$verifiedTransaction",
+        $unwind: "$order",
       },
       // Adding this lookup to populate the 'account' field inside the cryptoListing
       {
@@ -299,7 +308,6 @@ export const fetchMyOrders = async (req: Xrequest) => {
           preserveNullAndEmptyArrays: true, // Optional: this will include entries even if there is no match for accountDetails
         },
       },
-      
     ];
 
     // Define the aggregation pipeline for fetching listings
@@ -314,7 +322,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
             },
 
             {
-              paymentConfirmed: true,
+              orderConfirmed: true,
             },
 
             {
@@ -395,7 +403,7 @@ export const fetchMyOrders = async (req: Xrequest) => {
             },
 
             {
-              paymentConfirmed: true,
+              orderConfirmed: true,
             },
 
             {
@@ -485,6 +493,8 @@ export const fetchMyOrders = async (req: Xrequest) => {
 };
 
 export const updateStatus = async (req: Xrequest) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     const accountId: string = req.accountId! as string;
     const data: { status: string; listingPurchaseId: string } = req.body;
@@ -500,9 +510,16 @@ export const updateStatus = async (req: Xrequest) => {
       _id: data.listingPurchaseId,
     })
       .populate("account")
-      .populate("cryptoListing");
+      // .populate("cryptoListing");
+      .populate({
+        path: "cryptoListing",
+        populate: {
+          path: "cryptoCurrency",
+        },
+      })
+
     if (listingPurchase) {
-      if (!listingPurchase.paymentConfirmed) {
+      if (!listingPurchase.orderConfirmed) {
         return {
           status: false,
           message: "This order's payment has not yet been confirmed.",
@@ -517,16 +534,69 @@ export const updateStatus = async (req: Xrequest) => {
           code: 403,
         };
       }
+
+      const order = await Order.findOne({
+        checkoutId: listingPurchase.checkOutId,
+      });
+      if (!order) {
+        return {
+          status: false,
+          message: "Invalid order cannot be approved",
+          code: 400,
+        };
+      }
+
+      listingPurchase.paymentConfirmed = true;
       listingPurchase.fulfillmentStatus = data.status;
-      if(listingPurchase.fulfillmentStatus === "Completed"){
+      if (listingPurchase.fulfillmentStatus === "Approved") {
         listingPurchase.updatedAt = new Date();
       }
-      listingPurchase = await listingPurchase.save();
+
+      order.status = data.status;
+      await order.save({ session });
+
+      listingPurchase = await listingPurchase.save({ session });
       listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
       listingPurchase.cryptoListing.account = await Accounts.findOne({
         _id: listingPurchase.cryptoListing.account,
       });
+
+      if (listingPurchase.fulfillmentStatus === "Approved") {
+        //Dispense crypto from crypto escrow account...
+
+        const getPlatformData = () => {
+          const platform =
+            listingPurchase.cryptoListing.cryptoCurrency.platform;
+          return platform;
+        };
+        const platform = getPlatformData();
+        const escrowId = listingPurchase.cryptoListing.escrow;
+        const escrowAccount = await Escrow.findOne({ _id: escrowId });
+        if (!escrowAccount) {
+          throw new Error("No escrow accout was found for this listing");
+        }
+        if (escrowAccount.availableEscrowBalance < order.amount) {
+          throw new Error(
+            "No enough stock at this moment to service this order"
+          );
+        }
+        
+        if (
+          !platform &&
+          listingPurchase.cryptoListing.cryptoCurrency.symbol === "ETH"
+        ) {
+          RegisterNativeETHPayout(listingPurchase, order, escrowId);
+        } else if (platform && platform?.symbol === "ETH") {
+          RegisterERC20Payout(listingPurchase, order, escrowId, platform);
+        } else {
+          console.log("⏳ No handler found for payout...");
+        }
+      }
+
       await createStatusUpdateNotification(data.status, listingPurchase);
+
+      await session.commitTransaction();
+      session.endSession();
       return {
         status: true,
         message: "Order status was updated successfully",
@@ -534,12 +604,15 @@ export const updateStatus = async (req: Xrequest) => {
         code: 200,
       };
     }
+
     return {
       status: false,
       message: "Invalid 'OrderID' in request",
       code: 400,
     };
   } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
     throw error;
   }
 };
@@ -548,7 +621,7 @@ export const updateBuyerClaim = async (req: Xrequest) => {
   try {
     const accountId: string = req.accountId! as string;
     const data: { status: string; listingPurchaseId: string } = req.body;
-    if (!["Closed", "Disputed"].includes(data.status)) {
+    if (!["Paid", "Disputed"].includes(data.status)) {
       return {
         status: false,
         message: "Invalid order status in request",
@@ -562,13 +635,13 @@ export const updateBuyerClaim = async (req: Xrequest) => {
       .populate("account")
       .populate("cryptoListing");
     if (listingPurchase) {
-      if (listingPurchase.fulfillmentStatus !== "Completed") {
-        return {
-          status: false,
-          message: "An orders must have been completed to Approve or Dispute",
-          code: 422,
-        };
-      }
+      // if (listingPurchase.fulfillmentStatus !== "Completed") {
+      //   return {
+      //     status: false,
+      //     message: "An orders must have been completed to Approve or Dispute",
+      //     code: 422,
+      //   };
+      // }
       if (listingPurchase.account._id?.toString() !== accountId) {
         return {
           status: false,
@@ -577,6 +650,7 @@ export const updateBuyerClaim = async (req: Xrequest) => {
           code: 403,
         };
       }
+      console.log("1000000000000000")
       listingPurchase.buyerFulfillmentClaim = data.status;
       listingPurchase = await listingPurchase.save();
       listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
@@ -606,7 +680,7 @@ const createStatusUpdateNotification = async (
   const userId = listingPurchase.account._id;
   await NotificationModel.create({
     user: userId,
-    title: `Your order has new status :${status}`,
+    title: `Order status was updated to ${status}`,
     message: `Your order "${listingPurchase?.checkOutId}" for ${listingPurchase.cryptoListing.cryptoName} is now ${status}.`,
     createdAt: new Date(),
     status: "UNREAD",
@@ -618,10 +692,10 @@ const createStatusUpdateNotification = async (
     },
   });
 
-  const verifiedTransaction = await VerifiedTransactions.findOne({
-    tx_ref: listingPurchase?.checkOutId,
-  });
-  if (verifiedTransaction) {
+  const order = await Order.findOne({
+    checkoutId: listingPurchase?.checkOutId,
+  }).populate("seller");
+  if (order) {
     const email: string = listingPurchase.account.email;
     const date = listingPurchase.createdAt.toLocaleString("en-US", {
       weekday: "long", // "Monday"
@@ -640,10 +714,10 @@ const createStatusUpdateNotification = async (
       cryptoLogo: listingPurchase.cryptoListing.cryptoLogo,
       units: listingPurchase.units,
       currency: listingPurchase.cryptoListing?.currency?.toUpperCase(),
-      amount: verifiedTransaction.data.amount,
+      amount: order.toPay,
       walletAddress: listingPurchase.walletAddress,
       buyerUserName: listingPurchase.account.username,
-      sellerUserName: listingPurchase.cryptoListing.account.username,
+      sellerUserName: order.seller.username,
       paymentOption: listingPurchase.paymentOption,
       date,
       status: status,

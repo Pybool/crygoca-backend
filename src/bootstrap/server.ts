@@ -12,11 +12,9 @@ import authRouter from "../routes/v1/authentication.route";
 import { config as dotenvConfig } from "dotenv";
 import { getUserCountry } from "../services/v1/conversions/comparison.service";
 import { sessionMiddleware } from "../middlewares/session";
-
 import "../services/v1/tasks/scripts/cryptoLiveUpdates";
 import "../services/v1/tasks/scripts/livecurrencies";
 import "../services/v1/tasks/wallet/bankWithdrawals.worker";
-
 import { Server as SocketIOServer } from "socket.io";
 import { enquiriesService } from "../services/v1/contact/enquiries.service";
 import liveCrypto from "../routes/v1/cryptoCurrencies.route";
@@ -40,6 +38,7 @@ import { generateReferralCode } from "../services/v1/helpers";
 import "../services/v1/jobs/payment-verification/paymentVerificationWorker";
 import { checkRedis } from "../middlewares/checkredis";
 import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
+import crypto from 'crypto';
 
 dotenvConfig();
 dotenvConfig({ path: `.env` });
@@ -116,6 +115,26 @@ app.get("/ip", async (req, res) => {
     status: true,
     data: result,
   });
+});
+
+const MOONPAY_WEBHOOK_SECRET = process.env.MOONPAY_WEBHOOK_SECRET!;
+
+app.post('/webhook/moonpay', (req, res) => {
+  const signature = req.headers['moonpay-signature'] as string;
+  const payload = JSON.stringify(req.body);
+
+  const expectedSignature = crypto
+    .createHmac('sha256', MOONPAY_WEBHOOK_SECRET)
+    .update(payload)
+    .digest('hex');
+
+  if (signature !== expectedSignature) {
+    return res.status(400).send('Invalid signature');
+  }
+
+  const event = req.body;
+  console.log('MoonPay event:', event);
+  res.sendStatus(200);
 });
 
 app.post("/save-banks", async (req, res) => {

@@ -9,13 +9,15 @@ liveCrypto.get(
   liveCryptoCurrenciesController.fetchCrypto
 );
 
-liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getCryptos);
+// liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getCryptos);
+liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getSupportedCryptos);
 
-liveCrypto.post(
-  "/create-crypto-sales-listing",
-  decode,
-  liveCryptoCurrenciesController.createListing
-);
+
+// liveCrypto.post(
+//   "/create-crypto-sales-listing",
+//   decode,
+//   liveCryptoCurrenciesController.createListing
+// );
 
 liveCrypto.put(
   "/edit-crypto-sales-listing",

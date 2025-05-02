@@ -7,6 +7,10 @@ import { processRollbacks } from "../services/v1/wallet/rollback.service";
 import { startAutoConfirmationTask } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
 import { startTimeoutAutoCompleteWorker } from "../services/v1/jobs/payment-verification/timeoutAutoCompleteWorker";
 import { startFlutterwavePaymentsVerification } from "../services/v1/tasks/scripts/verifycardpayment";
+import { startEscrowTransfersListeners } from "../escrow";
+import { startEscrowPayoutNotificationListener } from "../crypto-transfers/sockets/notificationListener";
+import { startTransfersWorker } from "../crypto-transfers/bullmq/transfer.processor";
+import { startEscrowBalanceWorker } from "../escrow/workers/escrow-balance-worker";
 dotenvConfig();
 
 const mongouri: any = process.env.CRYGOCA_MONGODB_URI;
@@ -16,6 +20,8 @@ const startBackgroundTasks = () => {
   startAutoConfirmationTask();
   startTimeoutAutoCompleteWorker();
   startFlutterwavePaymentsVerification();
+  startEscrowTransfersListeners();
+  
 };
 
 mongoose
@@ -31,6 +37,11 @@ mongoose
 
     if (process.env.NODE_ENV == "prod") {
       startBackgroundTasks();
+    }else{
+      startEscrowTransfersListeners();
+      startEscrowPayoutNotificationListener();
+      startTransfersWorker();
+      startEscrowBalanceWorker();
     }
   })
   .catch((err: any) => logger.info(err.message));

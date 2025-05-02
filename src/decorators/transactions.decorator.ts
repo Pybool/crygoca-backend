@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { ClientSession } from "mongodb"; // Import ClientSession from mongodb
+
 
 /**
  * Generic transaction decorator that:
@@ -6,7 +8,7 @@ import mongoose from "mongoose";
  * - Passes session automatically to all Mongoose queries
  * - Commits on success, rolls back on failure
  */
-export function Transactional() {
+export function MongooseTransaction() {
   return function (
     target: any,
     propertyKey?: string,
@@ -17,22 +19,30 @@ export function Transactional() {
       const originalMethod = descriptor.value!;
 
       descriptor.value = async function (...args: any[]) {
-        const session = await mongoose.startSession();
-        session.startTransaction();
+        let session: ClientSession | null = args.find(arg => arg instanceof ClientSession) || null;
+
+        // Start a new session only if one doesn't exist
+        if (!session) {
+            session = await mongoose.startSession();
+            session.startTransaction();
+            args.push(session); // Pass the session to the original function
+        }
 
         try {
-          // ✅ Ensure session is explicitly passed to the original method
-          const result = await originalMethod.apply(this, [...args, session]);
-          await session.commitTransaction();
-          return result;
-        } catch (error) {
-          await session.abortTransaction();
-          throw error;
+            const result = await originalMethod.apply(this, args);
+            await session.commitTransaction();
+            return result;
+        } catch (error:any) {
+            await session.abortTransaction();
+            return {
+              status:false,
+              message:"Database transaction failed.",
+              error: error?.message
+            }
         } finally {
-          session.endSession();
+            session.endSession();
         }
-      };
-
+    };
       return descriptor;
     }
 
@@ -40,3 +50,6 @@ export function Transactional() {
     // ✅ Wrap standalone functions manually when exporting them.
   };
 }
+
+
+

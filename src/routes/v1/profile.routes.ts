@@ -2,6 +2,7 @@ import express from "express";
 import { decode, decodeExt } from "../../middlewares/jwt";
 import { profileController } from "../../controllers/v1/profile.controller";
 import { getMulterConfigSingle } from "../../middlewares/fileUploads.middleware";
+import { addPaymentMethod, deletePaymentMethod, getPaymentMethods } from "../../controllers/v1/payment-methods.controller";
 
 const profileRouter = express.Router();
 profileRouter.get(
@@ -48,5 +49,10 @@ profileRouter.post(
   getMulterConfigSingle("../public/accounts/customers/"),
   profileController._uploadAvatar
 );
+
+
+profileRouter.post('/add-payment-method', decode, addPaymentMethod);
+profileRouter.delete('/delete-payment-method', decode, deletePaymentMethod);
+profileRouter.get('/get-payment-methods', decode, getPaymentMethods);
 
 export default profileRouter;
