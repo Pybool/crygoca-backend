@@ -17,10 +17,13 @@ const mongouri: any = process.env.CRYGOCA_MONGODB_URI;
 const startBackgroundTasks = () => {
   startCryptoLiveUpdatesWorker();
   startExchangeRatesUpdatesWorker();
-  startAutoConfirmationTask();
-  startTimeoutAutoCompleteWorker();
-  startFlutterwavePaymentsVerification();
+  // startAutoConfirmationTask();
+  // startTimeoutAutoCompleteWorker();
+  // startFlutterwavePaymentsVerification();
   startEscrowTransfersListeners();
+  startEscrowPayoutNotificationListener();
+  startTransfersWorker();
+  startEscrowBalanceWorker();
   
 };
 
