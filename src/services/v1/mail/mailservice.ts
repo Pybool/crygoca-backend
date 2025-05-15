@@ -264,6 +264,36 @@ const mailActions = {
         console.log(error);
       });
     },
+
+    sendBuyerLockedOrderMail: async (
+      email: string,
+      data: any
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/buyerLockedOrderTemplate.ejs",
+            { data, marketplaceUrl }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Order Received",
+            text: `Your order was successful.`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
   },
 
   wallet: {
@@ -468,6 +498,100 @@ const mailActions = {
       });
     }
   },
+
+  complaints:{
+    sendComplaintReceivedMail: async (
+      email: string,
+      data: any
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/complaintReceived.ejs",
+            { data, marketplaceUrl }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Complaint Received",
+            text: `Your complaint ${data.complaint.ticketNo} was received.`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    }
+  },
+
+  deposits:{
+    sendDepositIntentMail: async (
+      email: string,
+      data: any
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/depositIntentTemplate.ejs",
+            { data, marketplaceUrl }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Listing Deposit",
+            text: `New Deposit Intent`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    },
+
+    sendDepositSuccessMail: async (
+      email: string,
+      data: any
+    ) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const template = await ejs.renderFile(
+            "src/templates/depositSuccessTemplate.ejs",
+            { data, marketplaceUrl }
+          );
+          console.log("Mail data ==> ", data);
+
+          const mailOptions = {
+            from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
+            to: email,
+            subject: "Blockchain Deposit Success",
+            text: `Deposit Success`,
+            html: template,
+          };
+          await sendMail(mailOptions);
+          resolve({ status: true });
+        } catch (error) {
+          console.log(error);
+          resolve({ status: false });
+        }
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    }
+  }
 };
 
 export default mailActions;

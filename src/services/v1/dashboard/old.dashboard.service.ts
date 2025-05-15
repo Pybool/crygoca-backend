@@ -35,7 +35,7 @@ export class DashboardService {
   public static async getImmediatelyVisibleData(req: Xrequest) {
     try {
       const totalSales = await DashboardService.getTotalSalesData(req);
-      const totalPurchases = await DashboardService.getTotalBoughtData(req);
+      const totalEarnings = await DashboardService.getTotalEarningsData(req);
       const totalPurchaseSpend = await DashboardService.getPurchaseSpendData(
         req
       );
@@ -55,7 +55,7 @@ export class DashboardService {
         status: true,
         data: {
           totalSales,
-          totalPurchases,
+          totalEarnings,
           totalDisputesCount,
           totalPendingOrdersCount,
           totalPurchaseSpend,
@@ -91,7 +91,7 @@ export class DashboardService {
   public static async fetchEarningsTimelineData(req: Xrequest) {
     /* Immediately visible are the top 3 cards, referral data and graph */
     try {
-      const totalEarnings = await DashboardService.getTotalBoughtData(req);
+      const totalEarnings = await DashboardService.getTotalEarningsData(req);
       const accountDateFilter = DashboardService.getAccountDateFilter(req);
       return {
         status: true,
@@ -355,161 +355,56 @@ export class DashboardService {
     return results;
   }
 
-
-  private static async getTotalBoughtData(req: Xrequest) {
+  private static async getTotalEarningsData(req: Xrequest) {
     const accountDateFilter = DashboardService.getAccountDateFilter(req);
     const accountId: string = accountDateFilter.accountId;
     const dateFilterBackWard: any = accountDateFilter.dateFilter.backward;
     const dateFilterForWard: any = accountDateFilter.dateFilter.forward;
 
-    const commonAggregationStages: any = [
-      {
-        $lookup: {
-          from: "cryptolistings",
-          localField: "cryptoListing",
-          foreignField: "_id",
-          as: "cryptoListing",
-        },
-      },
-      {
-        $unwind: "$cryptoListing", // Unwind cryptoListing array
-      },
-      {
-        $lookup: {
-          from: "accounts", // The accounts collection to join with
-          localField: "cryptoListing.account", // The field in the cryptoListing that links to the accounts collection
-          foreignField: "_id", // Match it with the _id field in the accounts collection
-          as: "cryptoListing.accountDetails", // The alias for the populated account
-        },
-      },
-      {
-        $unwind: {
-          path: "$cryptoListing.accountDetails", // Unwind the accountDetails inside cryptoListing
-          preserveNullAndEmptyArrays: true, // Optional: include entries even if there is no match for accountDetails
-        },
-      },
-    ];
-
-    const getPipeline: any = (_dateFilter: any) => {
-      const pipeline: any[] = [
-        ...commonAggregationStages,
-        {
-          $match: {
-            $and: [
-              {
-                // Match orders for a specific accountId
-                account: new mongoose.Types.ObjectId(
-                  accountId
-                ),
-              },
-              {
-                fulfillmentStatus: "Approved",
-              },
-              {
-                buyerFulfillmentClaim: "Paid",
-              },
-            ].filter(Boolean),
-          },
-        },
-        {
-          $addFields: {
-            purchases: {
-              $multiply: ["$units", "$unitPriceAtPurchaseTime"], // Compute sales per purchase
-            },
-          },
-        },
-        {
-          $facet: {
-            totalPurchases: [
-              {
-                $group: {
-                  _id: null, // Group all documents
-                  totalPurchases: { $sum: "$purchases" }, // Sum up the sales
-                },
-              },
-            ],
-          },
-        },
-        {
-          $project: {
-            purchases: 1,
-            totalPurchases: { $arrayElemAt: ["$totalPurchases.totalPurchases", 0] }, // Extract totalSales value
-          },
-        },
-      ];
-
-      // Conditionally add the createdAt filter if the timePeriod query is present
-      if (req.query.timePeriod) {
-        pipeline[pipeline.length - 4].$match.$and.push({
-          createdAt: _dateFilter, // Apply the date filter dynamically
-        });
-      }
-
-      return {
-        aggregationPipeline: pipeline,
-      };
+    const forwardMatch: any = {
+      vendorAccount: new mongoose.Types.ObjectId(accountId),
     };
 
-    const pipelineBackward =
-      getPipeline(dateFilterBackWard).aggregationPipeline;
-    const pipelineForward = getPipeline(dateFilterForWard).aggregationPipeline;
-    const resultBackward = await CryptoListingPurchase.aggregate(
-      pipelineBackward
-    );
-    const resultForward = await CryptoListingPurchase.aggregate(
-      pipelineForward
-    );
-
-    const account = await Accounts.findOne({ _id: accountId });
-    if (!account) {
-      return null;
-    }
-
-    console.log(resultForward, resultBackward, account)
-
-    const currencyTo = account.geoData.currency?.code || 'USD';
-    const currencyFrom = "USD";
-    const from = getCountryCodeByCurrencyCode(currencyFrom.toUpperCase())!.code;
-
-    const to = getCountryCodeByCurrencyCode(currencyTo.toUpperCase())!.code;
-    console.log(from, to, currencyFrom, currencyTo);
-
-    const convertToDefaultCurrency = async (amount: number) => {
-      if (from && to && currencyFrom && currencyTo) {
-        return await convertCurrency(
-          from,
-          to,
-          currencyFrom,
-          currencyTo,
-          amount?.toString()
-        );
-      }
-      return null;
+    const backwardMatch: any = {
+      vendorAccount: new mongoose.Types.ObjectId(accountId),
     };
 
-    const exchangeRateData:any = await convertToDefaultCurrency(1);
-
-    const exchangeRate:any = exchangeRateData?.data?.data[currencyTo]?.value || 1;
-
-    const convertedResultForward =(resultForward[0] || { purchases: [], totalPurchases: 0 })
-    .totalPurchases * exchangeRate!;
-
-    const convertedResultBackward = (resultBackward[0] || { purchases: [], totalPurchases: 0 })
-    .totalPurchases * exchangeRate!;
-
-    let activeCurrency:any = null;
-    
-    if(!exchangeRateData!?.data!?.data[currencyTo]?.value){
-      activeCurrency = currencyFrom
+    if (req.query.timePeriod) {
+      forwardMatch.createdAt = dateFilterForWard;
+      backwardMatch.createdAt = dateFilterBackWard;
     }
+
+    const earningsbackwards = await Payout.aggregate([
+      {
+        $match: backwardMatch,
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$payout" },
+        },
+      },
+    ]);
+
+    const earningsForwards = await Payout.aggregate([
+      {
+        $match: forwardMatch,
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmount: { $sum: "$payout" },
+        },
+      },
+    ]);
 
     const results: Data = {
-      resultForward: convertedResultForward,
-      resultBackward: convertedResultBackward,
-      activeCurrency: activeCurrency
+      resultForward:
+        earningsForwards.length > 0 ? earningsForwards[0].totalAmount : 0,
+      resultBackward:
+        earningsbackwards.length > 0 ? earningsbackwards[0].totalAmount : 0,
     };
     results.percentageChange = calculatePercentageChange(results);
-
     return results;
   }
 

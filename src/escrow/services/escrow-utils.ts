@@ -2,13 +2,15 @@ import mongoose from "mongoose";
 import Escrow from "../../models/escrow.model";
 import CryptoListingPurchase from "../../models/listingPurchase.model";
 import { Order } from "../../models/orders.model";
+import mailActions from "../../services/v1/mail/mailservice";
 
 /**
  * Increase total and available escrow balance when seller tops up
  */
 export const topUpEscrow = async (escrowId: string, amount: number) => {
-  const escrow = await Escrow.findById(escrowId);
+  const escrow = await Escrow.findOne({ _id: escrowId });
   if (!escrow) throw new Error("Escrow account not found");
+  amount = Number(amount);
 
   escrow.totalEscrowBalance += amount;
   escrow.availableEscrowBalance += amount;
@@ -39,13 +41,17 @@ export const lockEscrowFunds = async (
     escrow.lockedEscrowBalance += amount;
 
     const order = await Order.create(metaData.orderCreationData, { session });
-
+    await order[0].populate("buyer")
     const populatedOrder = await order[0].populate("listing");
 
     metaData.cryptoListingData.order = order[0]._id;
 
+    // const exists = await CryptoListingPurchase.findOne({
+    //   checkOutId: metaData.cryptoListingData.checkOutId,
+    // });
+
     const cryptoListingPurchase = await CryptoListingPurchase.findOneAndUpdate(
-      { checkOutId: metaData.cryptoListingData.checkoutId },
+      { checkOutId: metaData.cryptoListingData.checkOutId },
       { $set: metaData.cryptoListingData },
       {
         upsert: true,
@@ -57,6 +63,9 @@ export const lockEscrowFunds = async (
     await escrow.save({ session });
     await session.commitTransaction();
     session.endSession();
+    mailActions.orders.sendBuyerLockedOrderMail(populatedOrder.buyer.email, {
+      order: populatedOrder,
+    });
     return {
       status: true,
       message: "Order reservation was successful",
@@ -65,6 +74,7 @@ export const lockEscrowFunds = async (
       cryptoListingPurchase,
     };
   } catch (err: any) {
+    console.log(err);
     await session.abortTransaction();
     session.endSession();
     throw err;
@@ -113,17 +123,38 @@ export const dispenseAvailableFunds = async (
 /**
  * Release previously locked funds (e.g. order cancelled)
  */
-export const releaseLockedFunds = async (escrowId: string, amount: number) => {
-  const escrow = await Escrow.findById(escrowId);
-  if (!escrow) throw new Error("Escrow account not found");
+export const releaseLockedFunds = async (
+  escrowId: string,
+  amount: number,
+  checkOutId: string
+) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const escrow = await Escrow.findById(escrowId);
+    if (!escrow) throw new Error("Escrow account not found");
 
-  if (escrow.lockedEscrowBalance < amount) {
-    throw new Error("Not enough locked balance to release");
+    if (escrow.lockedEscrowBalance < amount) {
+      throw new Error("Not enough locked balance to release");
+    }
+
+    escrow.lockedEscrowBalance -= amount;
+    escrow.availableEscrowBalance += amount;
+    await escrow.save({ session });
+    await CryptoListingPurchase.findOneAndDelete(
+      { checkOutId: checkOutId },
+      { session }
+    );
+
+    await Order.findOneAndDelete({ checkoutId: checkOutId }, { session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return escrow;
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
-
-  escrow.lockedEscrowBalance -= amount;
-  escrow.availableEscrowBalance += amount;
-
-  await escrow.save();
-  return escrow;
 };

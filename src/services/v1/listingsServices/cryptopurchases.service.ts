@@ -15,6 +15,7 @@ import {
 import { ERC20_TOKENS } from "../../../escrow/config/tokens.config";
 import { RegisterERC20Payout, RegisterNativeETHPayout } from "./crypto-payouts";
 import Escrow from "../../../models/escrow.model";
+import Complaint, { IComplaint } from "../../../models/complaints.model";
 
 export const fetchOrders = async (req: Xrequest) => {
   try {
@@ -516,7 +517,7 @@ export const updateStatus = async (req: Xrequest) => {
         populate: {
           path: "cryptoCurrency",
         },
-      })
+      });
 
     if (listingPurchase) {
       if (!listingPurchase.orderConfirmed) {
@@ -580,7 +581,7 @@ export const updateStatus = async (req: Xrequest) => {
             "No enough stock at this moment to service this order"
           );
         }
-        
+
         if (
           !platform &&
           listingPurchase.cryptoListing.cryptoCurrency.symbol === "ETH"
@@ -650,7 +651,7 @@ export const updateBuyerClaim = async (req: Xrequest) => {
           code: 403,
         };
       }
-      console.log("1000000000000000")
+      console.log("1000000000000000");
       listingPurchase.buyerFulfillmentClaim = data.status;
       listingPurchase = await listingPurchase.save();
       listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
@@ -671,6 +672,89 @@ export const updateBuyerClaim = async (req: Xrequest) => {
     throw error;
   }
 };
+
+export const submitOrderComplaint = async (req: Xrequest) => {
+  try {
+    let account: any = await Accounts.findOne({ _id: req.accountId });
+    if (!account) {
+      return {
+        status: false,
+        message: "Account was not found",
+        code: 400,
+      };
+    }
+
+    console.log(req.attachments, req.body);
+
+    const reqData = JSON.parse(req.body.message);
+
+    let listingPurchase = await CryptoListingPurchase.findOne({
+      checkOutId: reqData.checkOutId,
+    });
+    if (!listingPurchase) {
+      return {
+        status: false,
+        message: "No order was found for this complaint",
+        code: 400,
+      };
+    }
+
+    let attachment = "";
+    if (req?.attachments?.length > 0) {
+      attachment = req.attachments[0].replaceAll("/public", "");
+    }
+
+    const data = {
+      ticketNo: await generateUniqueTicketNumber(),
+      checkoutId: reqData.checkOutId,
+      message: reqData.message,
+      attachment: attachment,
+      account: account._id,
+      listingPurchase: listingPurchase._id,
+      status: "pending",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const complaint = await Complaint.create(data);
+    mailActions.complaints.sendComplaintReceivedMail(account.email, {
+      account,
+      complaint,
+    });
+    account = await account.save();
+    return {
+      status: true,
+      data: account,
+      message: "Complaint submitted successfully..",
+    };
+  } catch (error) {
+    console.log(error);
+    return { status: false, message: "Complaint submission failed.." };
+  }
+};
+
+function generateComplaintTicketNumber(): string {
+  const prefix = "CMP"; // CMP stands for Complaint
+  const date = new Date();
+  const timestamp = date.getTime().toString(36); // base36 timestamp
+  const random = Math.floor(Math.random() * 1e6).toString(36); // base36 random number
+  return `${prefix}-${timestamp}-${random}`.toUpperCase();
+}
+
+async function generateUniqueTicketNumber(): Promise<string> {
+  let unique = false;
+  let ticket = "";
+
+  while (!unique) {
+    ticket = generateComplaintTicketNumber(); // your generator function
+    const existing = await Complaint.findOne({ ticketNo: ticket });
+    if (!existing) {
+      unique = true;
+    }
+  }
+
+  return ticket;
+}
 
 const createStatusUpdateNotification = async (
   status: string,

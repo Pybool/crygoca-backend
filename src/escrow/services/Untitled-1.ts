@@ -1,3 +1,9 @@
+
+
+
+
+
+
 import web3 from "../config/web3";
 import { AbiItem } from "web3-utils";
 import dotenv from "dotenv";
@@ -9,7 +15,6 @@ import CryptoListing from "../../models/saleListing.model";
 import Escrow from "../../models/escrow.model";
 import mongoose from "mongoose"; // ✅ added mongoose
 import { escrowBalanceQueue } from "../queues/escrow-balance-queue";
-import mailActions from "../../services/v1/mail/mailservice";
 
 dotenv.config();
 
@@ -55,28 +60,20 @@ export const listenToERC20 = async () => {
       receivingAddress: decoded.to?.toLowerCase(),
     };
     const match = await DepositIntent.findOne(filter);
-    console.log("Match ", match);
     if (match) {
       const session = await mongoose.startSession();
       try {
         session.startTransaction();
 
         match.status = "confirmed";
-        match.chainId = log.address;
-        match.blockHash = log.blockHash;
-        match.blockNumber = log.blockNumber!.toString();
         match.txHash = log.transactionHash; // ✅ fixed from decoded.hash to log.transactionHash
 
-        const listing: any = await CryptoListing.findOne({
+        const listing = await CryptoListing.findOne({
           _id: match.listing,
-        })
-          .populate("account")
-          .populate("listing")
-          .session(session);
-
+        }).session(session);
         if (listing) {
           const data = {
-            account: listing.account?._id?.toString(),
+            account: listing.account?.toString(),
             totalEscrowBalance: value,
             availableEscrowBalance: value,
             lockedEscrowBalance: 0,
@@ -90,12 +87,12 @@ export const listenToERC20 = async () => {
           } else {
             escrow = await Escrow.findOne({ _id: listing.escrow });
             console.log({
-              buyerId: listing.account?._id?.toString(),
+              buyerId: listing.account,
               escrowId: escrow._id,
               amount: filter.amount,
-            });
+            })
             await escrowBalanceQueue.add("topUpEscrow", {
-              buyerId: listing.account?._id?.toString(),
+              buyerId: listing.account,
               escrowId: escrow._id,
               amount: filter.amount,
             });
@@ -109,10 +106,6 @@ export const listenToERC20 = async () => {
         console.log(
           `📦 ERC20 (${token.symbol}) deposit: from ${decoded.from} → ${decoded.to} | amount: ${value}`
         );
-        mailActions.deposits.sendDepositSuccessMail(listing.account.email, {
-          account: listing.account,
-          intent: match,
-        });
       } catch (error) {
         console.error("ERC20 Transaction error: ", error);
         await session.abortTransaction();
@@ -149,27 +142,20 @@ export const listenToETH = async () => {
 
           const match = await DepositIntent.findOne(filter);
           if (match) {
-            console.log("Match ", match);
             const session = await mongoose.startSession();
             try {
               session.startTransaction();
 
               match.status = "confirmed";
               match.txHash = tx.hash;
-              match.chainId = tx.chainId;
-              match.blockHash = tx.blockHash;
-              match.blockNumber = tx.blockNumber.toString();
 
-              const listing: any = await CryptoListing.findOne({
+              const listing = await CryptoListing.findOne({
                 _id: match.listing,
-              })
-                .populate("account")
-                .populate("listing")
-                .session(session);
+              }).session(session);
               if (listing) {
-                let escrow: any;
+                let escrow:any;
                 const data = {
-                  account: listing.account?._id.toString(),
+                  account: listing.account?.toString(),
                   totalEscrowBalance: value,
                   availableEscrowBalance: value,
                   lockedEscrowBalance: 0,
@@ -183,7 +169,7 @@ export const listenToETH = async () => {
                 } else {
                   escrow = await Escrow.findOne({ _id: listing.escrow });
                   await escrowBalanceQueue.add("topUpEscrow", {
-                    buyerId: listing.account?._id.toString(),
+                    buyerId: listing.account,
                     escrowId: escrow._id,
                     amount: filter.amount,
                   });
@@ -193,10 +179,6 @@ export const listenToETH = async () => {
                 console.log(`ETH deposit confirmed for ${match.intentId}`);
                 console.log("💸 Escrow deposit detected!", tx);
                 sendTransferNotification(match.account.toString(), match);
-                mailActions.deposits.sendDepositSuccessMail(
-                  listing.account.email,
-                  { account: listing.account, intent: match }
-                );
               }
             } catch (error) {
               console.error("ETH Transaction error: ", error);

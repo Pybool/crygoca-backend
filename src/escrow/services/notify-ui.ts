@@ -23,3 +23,27 @@ export const sendLockedOrderNotification = async (userId: string, payload:any)=>
     console.log(error);
   }
 }
+
+export const sendReleaseLockedFundsNotification = async (userId: string, payload:any)=>{
+  try {
+    const socket: any = getUserProfileSockets(userId);
+    if (socket) {
+      console.log(`Socket for user ${userId} found`);
+      socket.emit("crypto-order-released", JSON.stringify(payload));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const sendTopUpNotification = async (userId: string, payload:any)=>{
+  try {
+    const socket: any = getUserProfileSockets(userId);
+    if (socket) {
+      console.log(`Socket for user ${userId} found`);
+      socket.emit("crypto-top-up", JSON.stringify(payload));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

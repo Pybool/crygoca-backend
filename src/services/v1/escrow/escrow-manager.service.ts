@@ -11,8 +11,9 @@ import { createListingForSale } from "../listingsServices/cryptolisting.service"
 import { MongooseTransaction } from "../../../decorators/transactions.decorator";
 import CryptoListing from "../../../models/saleListing.model";
 import Escrow from "../../../models/escrow.model";
-import CryptoListingPurchase from "../../../models/listingPurchase.model";
 import { escrowBalanceQueue } from "../../../escrow/queues/escrow-balance-queue";
+import message from "../../../helpers/messages";
+import mailActions from "../mail/mailservice";
 
 export class EscrowManager {
   @MongooseTransaction()
@@ -46,7 +47,15 @@ export class EscrowManager {
   @MongooseTransaction()
   static async createDepositIntent(req: Xrequest) {
     const session = await mongoose.startSession();
-    const { depositorAddress, units, platform, cryptoCode } = req.body;
+    const {
+      depositorAddress,
+      units,
+      platform,
+      cryptoCode,
+      amount,
+      isTopUp,
+      listingId,
+    } = req.body;
     let tokenAddress: string | undefined;
 
     if (!platform && cryptoCode === "ETH") {
@@ -64,35 +73,273 @@ export class EscrowManager {
     } else {
       return { status: false, message: "Invalid platform or crypto code" };
     }
-    const listingResponse = await createListingForSale(req, session);
-    const listing = listingResponse.data;
+    if (!isTopUp) {
+      const listingResponse = await createListingForSale(req, session);
+      const listing = listingResponse.data;
 
-    if (!listing) {
-      throw new Error("Failed to create listing");
+      if (!listing) {
+        throw new Error("Failed to create listing");
+      }
+
+      let intent: any = new DepositIntent({
+        intentId: uuidv4(),
+        sender: depositorAddress.toLowerCase(),
+        amount: units,
+        tokenAddress: tokenAddress!.toLowerCase(),
+        account: listing!.account,
+        listing: listing!._id,
+        receiver: "",
+        isTopUp: isTopUp || false,
+      });
+
+      intent.receivingAddress = EscrowManager.getReceivingAddress(intent);
+      intent.amount = parseFloat(intent.amount) + 0.001; //0.001 simulates escrow fee.
+
+      const filter = {
+        sender: depositorAddress.toLowerCase(),
+        tokenAddress: tokenAddress!.toLowerCase(),
+        status: "pending",
+        receivingAddress: intent.receivingAddress,
+        account: req.accountId
+      };
+
+      const depositIntent = await DepositIntent.findOne(filter);
+      if (depositIntent) {
+        return {
+          status: false,
+          data: depositIntent,
+          message:
+            "You have an existing deposit not yet completed or cancelled",
+        };
+      }
+
+      let _intent = await intent.save({ session });
+      await _intent.populate('account');
+      await _intent.populate('listing');
+
+      intent = JSON.parse(JSON.stringify(_intent));
+      intent.cryptoCode = listing?.cryptoCode;
+      mailActions.deposits.sendDepositIntentMail(_intent.account.email, {
+        account: _intent.account,
+        intent: _intent,
+      });
+      console.log("Done Sending mail")
+
+      return {
+        status: true,
+        data: intent,
+        message: "Redirecting to escrow details page",
+      };
+    } else {
+      const listing = await CryptoListing.findOne({ _id: listingId });
+
+      if (!listing) {
+        throw new Error("Failed to create listing");
+      }
+
+      let intent: any = new DepositIntent({
+        intentId: uuidv4(),
+        sender: depositorAddress.toLowerCase(),
+        amount: amount,
+        tokenAddress: tokenAddress!.toLowerCase(),
+        account: listing!.account,
+        listing: listing!._id,
+        receiver: "",
+        isTopUp: isTopUp || false,
+      });
+
+      intent.receivingAddress = EscrowManager.getReceivingAddress(intent);
+      intent.amount = parseFloat(intent.amount); //0.001 simulates escrow fee.
+      const filter = {
+        sender: depositorAddress.toLowerCase(),
+        tokenAddress: tokenAddress!.toLowerCase(),
+        status: "pending",
+        receivingAddress: intent.receivingAddress,
+        account: req.accountId
+      };
+
+      const depositIntent = await DepositIntent.findOne(filter);
+      if (depositIntent) {
+        return {
+          status: false,
+          data: depositIntent,
+          message:
+            "You have an existing deposit not yet completed or cancelled",
+        };
+      }
+
+      let _intent = await intent.save({ session });
+      await _intent.populate('account');
+      await _intent.populate('listing');
+
+      intent = JSON.parse(JSON.stringify(_intent));
+      intent.cryptoCode = listing?.cryptoCode;
+      mailActions.deposits.sendDepositIntentMail(_intent.account.email, {
+        account: _intent.account,
+        intent: _intent,
+      });
+      console.log("Done Sending mail")
+
+      return {
+        status: true,
+        data: intent,
+        message: "Redirecting to escrow details page",
+      };
     }
+  }
 
-    let intent: any = new DepositIntent({
-      intentId: uuidv4(),
-      sender: depositorAddress.toLowerCase(),
-      amount: units,
-      tokenAddress: tokenAddress!.toLowerCase(),
-      account: listing!.account,
-      listing: listing!._id,
-      receiver: "",
-    });
+  // static async fetchDepositIntents(req: Xrequest) {
+  //   try {
+  //     const {
+  //       sender,
+  //       searchText,
+  //       tokenAddress,
+  //       status,
+  //       receivingAddress,
+  //       page = 1,
+  //       limit = 10,
+  //     } = req.query;
 
-    intent.receivingAddress = EscrowManager.getReceivingAddress(intent);
-    intent.amount = parseFloat(intent.amount) + 0.001; //0.001 simulates escrow fee.
-    await intent.save({ session });
+  //     const query: any = {};
 
-    intent = JSON.parse(JSON.stringify(intent));
-    intent.cryptoCode = listing?.cryptoCode;
+  //     if (sender) query.sender = sender.toString().toLowerCase();
+  //     if (tokenAddress)
+  //       query.tokenAddress = tokenAddress.toString().toLowerCase();
+  //     if (searchText) query.searchText = searchText.toString();
+  //     if (status) query.status = status.toString().toLowerCase();
+  //     if (receivingAddress)
+  //       query.receivingAddress = receivingAddress.toString().toLowerCase();
 
-    return {
-      status: true,
-      data: intent,
-      message: "Redirecting to escrow details page",
-    };
+  //     const skip = (Number(page) - 1) * Number(limit);
+
+  //     const [items, total] = await Promise.all([
+  //       DepositIntent.find(query)
+  //         .populate("listing")
+  //         .sort({ createdAt: -1 })
+  //         .skip(skip)
+  //         .limit(Number(limit)),
+  //       DepositIntent.countDocuments(query),
+  //     ]);
+
+  //     return {
+  //       status: true,
+  //       data: items,
+  //       pagination: {
+  //         total,
+  //         page: Number(page),
+  //         limit: Number(limit),
+  //         pages: Math.ceil(total / Number(limit)),
+  //       },
+  //     };
+  //   } catch (error: any) {
+  //     throw new Error(`Failed to fetch deposit intents: ${error.message}`);
+  //   }
+  // }
+  static async fetchDepositIntents(req: Xrequest) {
+    try {
+      const {
+        sender,
+        searchText,
+        tokenAddress,
+        status,
+        receivingAddress,
+        page = 1,
+        limit = 10,
+      } = req.query;
+
+      const matchStage: any = {};
+
+      if (sender) matchStage.sender = sender.toString().toLowerCase();
+      if (tokenAddress)
+        matchStage.tokenAddress = tokenAddress.toString().toLowerCase();
+      if (status) matchStage.status = status.toString().toLowerCase();
+      if (receivingAddress)
+        matchStage.receivingAddress = receivingAddress.toString().toLowerCase();
+
+      const skip = (Number(page) - 1) * Number(limit);
+
+      console.log("Match stage ===> ", matchStage);
+
+      const aggregation: any[] = [
+        { $match: matchStage },
+        {
+          $lookup: {
+            from: "cryptolistings", // ⚠️ Match the actual MongoDB collection name
+            localField: "listing",
+            foreignField: "_id",
+            as: "listing",
+          },
+        },
+        { $unwind: { path: "$listing", preserveNullAndEmptyArrays: true } },
+      ];
+      let regex: any = null;
+
+      if (searchText) {
+        regex = new RegExp(searchText.toString(), "i");
+        aggregation.push({
+          $match: {
+            $or: [
+              { "listing.cryptoName": regex },
+              { "listing.cryptoCode": regex },
+              { sender: regex },
+              { receivingAddress: regex },
+              { status: searchText },
+            ],
+          },
+        });
+      }
+
+      aggregation.push(
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: Number(limit) }
+      );
+
+      const [items, totalCount] = await Promise.all([
+        DepositIntent.aggregate(aggregation),
+        DepositIntent.aggregate([
+          { $match: matchStage },
+          {
+            $lookup: {
+              from: "cryptolistings",
+              localField: "listing",
+              foreignField: "_id",
+              as: "listing",
+            },
+          },
+          { $unwind: { path: "$listing", preserveNullAndEmptyArrays: true } },
+          ...(searchText
+            ? [
+                {
+                  $match: {
+                    $or: [
+                      { "listing.cryptoName": regex },
+                      { "listing.cryptoCode": regex },
+                      { sender: regex },
+                      { receivingAddress: regex },
+                      { status: searchText },
+                    ],
+                  },
+                },
+              ]
+            : []),
+          { $count: "total" },
+        ]).then((res) => res[0]?.total || 0),
+      ]);
+
+      return {
+        status: true,
+        data: items,
+        pagination: {
+          total: totalCount,
+          page: Number(page),
+          limit: Number(limit),
+          pages: Math.ceil(totalCount / Number(limit)),
+        },
+      };
+    } catch (error: any) {
+      throw new Error(`Failed to fetch deposit intents: ${error.message}`);
+    }
   }
 
   static getReceivingAddress(intent: any) {
@@ -108,6 +355,7 @@ export class EscrowManager {
     checkoutId,
     walletToFund,
     toPay,
+    selectedBank
   }: {
     intentId: string;
     listingId: string;
@@ -117,10 +365,11 @@ export class EscrowManager {
     amount: number;
     walletToFund: string;
     toPay: string;
+    selectedBank:any
   }): Promise<any> {
     try {
-      const intent = await DepositIntent.findOne({ _id: intentId });
-      if (!intent) throw new Error("No deposit intent for this order");
+      // const intent = await DepositIntent.findOne({ _id: intentId });
+      // if (!intent) throw new Error("No deposit intent for this order");
 
       const listing = await CryptoListing.findOne({ _id: listingId });
       if (!listing) throw new Error("No listing was found for this order");
@@ -150,6 +399,7 @@ export class EscrowManager {
           listing: listingId,
           walletToFund,
           toPay,
+          selectedBank
         },
       ];
 
@@ -173,7 +423,7 @@ export class EscrowManager {
         cryptoListingData,
         orderCreationData,
         escrowId,
-        intent,
+        intent: null,
       };
       await escrowBalanceQueue.add("lockEscrowFunds", {
         buyerId,
@@ -185,7 +435,7 @@ export class EscrowManager {
         status: true,
         message: "Order reservation has been queued",
         data: {},
-        intent
+        intent: null,
       };
     } catch (err) {
       throw err;
@@ -230,23 +480,52 @@ export class EscrowManager {
     }
   }
 
+  static async cancelDeposit(depositId: string) {
+    try {
+      const deposit = await DepositIntent.findOneAndDelete({
+        intentId: depositId,
+      });
+      if (!deposit) {
+        return {
+          status: false,
+          message: "No such deposit intent was found",
+        };
+      }
+      return {
+        status: true,
+        message: "Deposit intent was cancelled successfully",
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static async cancelOrder(orderId: string): Promise<boolean> {
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      const order = await Order.findById(orderId).session(session);
-      if (!order || order.status !== "pending")
+      const order = await Order.findOne({ _id: orderId })
+        .populate("listing")
+        .session(session);
+      if (!order || order.status !== "Pending")
         throw new Error("Invalid or non-pending order");
 
-      const seller = await Accounts.findById(order.seller).session(session);
-      if (!seller || (seller.lockedEscrow || 0) < order.amount)
-        throw new Error("Locked escrow insufficient");
+      const escrowAccount = await Escrow.findById(order.listing.escrow);
+      if (!escrowAccount) throw new Error("Escrow Account not found");
 
-      seller.lockedEscrow -= order.amount;
+      const buyerId = order.buyer;
+      const escrowId = escrowAccount._id;
+      const amount = order.amount;
+
       order.status = "cancelled";
 
-      await Promise.all([seller.save({ session }), order.save({ session })]);
+      await escrowBalanceQueue.add("releaseLockedFunds", {
+        buyerId,
+        escrowId,
+        amount,
+        metaData: { checkOutId: order.checkoutId },
+      });
 
       await session.commitTransaction();
       session.endSession();

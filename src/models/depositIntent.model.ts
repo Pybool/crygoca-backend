@@ -1,23 +1,51 @@
 // deposit intent model placeholder
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
-const depositIntentSchema = new mongoose.Schema({
-  intentId: String,
-  sender: String,
-  receivingAddress:String,
-  currency: String,
-  amount: String,
-  tokenAddress: String,
-  account: {
-    type: Schema.Types.ObjectId, ref: "accounts",
-    required: true,
+const depositIntentSchema = new mongoose.Schema(
+  {
+    intentId: String,
+    sender: String,
+    receivingAddress: String,
+    currency: String,
+    amount: String,
+    tokenAddress: String,
+    isTopUp: { type: Boolean, default: false },
+    account: {
+      type: Schema.Types.ObjectId,
+      ref: "accounts",
+      required: true,
+    },
+    listing: {
+      type: Schema.Types.ObjectId,
+      ref: "cryptolisting",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "confirmed"],
+      default: "pending",
+    },
+    txHash: {
+      type: String,
+      required: false,
+    },
+    chainId: {
+      type: String,
+      required: false,
+    },
+    blockHash: {
+      type: String,
+      required: false,
+    },
+    blockNumber: {
+      type: String,
+      required: false,
+    },
   },
-  listing: {
-    type: Schema.Types.ObjectId, ref: "cryptolisting",
-    required: true,
-  },
-  status: { type: String, enum: ['pending', 'confirmed'], default: 'pending' },
-  txHash: String,
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-export const DepositIntent = mongoose.model('DepositIntent', depositIntentSchema);
+export const DepositIntent = mongoose.model(
+  "DepositIntent",
+  depositIntentSchema
+);

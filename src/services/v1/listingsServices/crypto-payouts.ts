@@ -48,6 +48,4 @@ export const RegisterNativeETHPayout = (
   listingPurchase: any,
   order: any,
   escrowId: string
-) => {
-  
-};
+) => {};

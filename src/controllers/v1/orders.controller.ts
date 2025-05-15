@@ -1,15 +1,18 @@
-import {Request, Response } from "express";
-import { fetchOrders, fetchMyOrders, updateStatus, updateBuyerClaim } from "../../services/v1/listingsServices/cryptopurchases.service";
+import { Request, Response } from "express";
+import {
+  fetchOrders,
+  fetchMyOrders,
+  updateStatus,
+  updateBuyerClaim,
+  submitOrderComplaint,
+} from "../../services/v1/listingsServices/cryptopurchases.service";
 
 interface Xrequest extends Request {
-    body:any;
+  body: any;
 }
 
 export const ordersController: any = {
-  _fetchOrders: async (
-    req: Xrequest,
-    res: Response
-    ) => {
+  _fetchOrders: async (req: Xrequest, res: Response) => {
     try {
       const result = await fetchOrders(req);
       if (result) {
@@ -22,10 +25,7 @@ export const ordersController: any = {
     }
   },
 
-  _fetchMyOrders: async (
-    req: Xrequest,
-    res: Response
-    ) => {
+  _fetchMyOrders: async (req: Xrequest, res: Response) => {
     try {
       const result = await fetchMyOrders(req);
       if (result) {
@@ -38,10 +38,7 @@ export const ordersController: any = {
     }
   },
 
-  _updateStatus: async (
-    req: Xrequest,
-    res: Response
-    ) => {
+  _updateStatus: async (req: Xrequest, res: Response) => {
     try {
       const result = await updateStatus(req);
       if (result) {
@@ -54,10 +51,7 @@ export const ordersController: any = {
     }
   },
 
-  _updateBuyerClaim: async (
-    req: Xrequest,
-    res: Response
-    ) => {
+  _updateBuyerClaim: async (req: Xrequest, res: Response) => {
     try {
       const result = await updateBuyerClaim(req);
       if (result) {
@@ -69,4 +63,15 @@ export const ordersController: any = {
       res.status(500).json({ status: false, message: error?.message });
     }
   },
-}
+
+  _submitComplaint: async (req: Xrequest, res: Response) => {
+      try {
+        let status = 400;
+        const result = await submitOrderComplaint(req);
+        if (result) status = 200;
+        return res.status(status).json(result);
+      } catch (error: any) {
+        res.status(500).json({ status: false, message: error?.message });
+      }
+    },
+};

@@ -7,6 +7,7 @@ const OrderSchema = new mongoose.Schema({
   walletToFund:String,
   checkoutId: String,
   toPay:String,
+  selectedBank:{ type: mongoose.Schema.Types.Mixed, required:false},
   listing:{ type: mongoose.Schema.Types.ObjectId, ref: "cryptolisting" },
   status: { type: String, enum: ["Pending", "Approved", "cancelled"], default: "Pending" },
 }, { timestamps: true });

@@ -104,9 +104,6 @@ export const startTransfersWorker = () => {
             });
           }
         }
-
-        
-
         console.log(`✅ Sent ${amount} ${symbol} to ${recipient}`);
       } catch (err: any) {
         console.error(`❌ Transfer failed: ${err.message}`);
