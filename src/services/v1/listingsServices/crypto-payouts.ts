@@ -21,11 +21,11 @@ export const RegisterERC20Payout = (
     return { status: false, message: "Token not supported" };
   }
 
-  if (process.env.NODE_ENV === "prod") {
-    if (platform.token_address.toLowercase() !== token!.address.toLowerCase()) {
-      throw new Error("Non-matching token addresses");
-    }
-  }
+  // if (process.env.NODE_ENV === "prod") {
+  //   if (platform.token_address.toLowerCase() !== token!.address.toLowerCase()) {
+  //     throw new Error("Non-matching token addresses");
+  //   }
+  // }
 
   const tokenAddress = token?.address;
   const data: IErc20Transfer = {

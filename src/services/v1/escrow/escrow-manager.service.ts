@@ -61,7 +61,8 @@ export class EscrowManager {
     if (!platform && cryptoCode === "ETH") {
       // Native ETH deposit
       tokenAddress = "NATIVE_ETH";
-    } else if (platform) {
+    } 
+    else if (platform) {
       // ERC20 Token deposit
       const token = ERC20_TOKENS.find(
         (t) => t.symbol.toUpperCase() === cryptoCode.toUpperCase()
@@ -70,7 +71,8 @@ export class EscrowManager {
         return { status: false, message: "Token not supported" };
       }
       tokenAddress = token?.address || platform?.token_address;
-    } else {
+    } 
+    else {
       return { status: false, message: "Invalid platform or crypto code" };
     }
     if (!isTopUp) {

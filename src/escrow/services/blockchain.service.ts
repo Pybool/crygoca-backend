@@ -71,7 +71,7 @@ export const listenToERC20 = async () => {
           _id: match.listing,
         })
           .populate("account")
-          .populate("listing")
+          .populate("cryptoCurrency")
           .session(session);
 
         if (listing) {
@@ -164,7 +164,7 @@ export const listenToETH = async () => {
                 _id: match.listing,
               })
                 .populate("account")
-                .populate("listing")
+                .populate("cryptoCurrency")
                 .session(session);
               if (listing) {
                 let escrow: any;
