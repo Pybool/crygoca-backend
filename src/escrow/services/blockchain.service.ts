@@ -16,7 +16,7 @@ dotenv.config();
 const ESCROW_ADDRESS = process.env.ESCROW_ADDRESS?.toLowerCase();
 
 export const listenToERC20 = async () => {
-  console.log("Starting erc20 listener");
+  console.log("Starting ERC20 listener");
   const ERC20_TRANSFER_TOPIC = web3.utils.sha3(
     "Transfer(address,address,uint256)"
   )!;
@@ -36,90 +36,8 @@ export const listenToERC20 = async () => {
     );
     if (!token) return;
 
-    const decoded: any = web3.eth.abi.decodeLog(
-      [
-        { type: "address", name: "from", indexed: true },
-        { type: "address", name: "to", indexed: true },
-        { type: "uint256", name: "value" },
-      ],
-      log.data,
-      log.topics.slice(1)
-    );
-
-    const value = Number(decoded.value) / 10 ** token.decimals;
-    const filter = {
-      sender: decoded.from.toLowerCase(),
-      tokenAddress: token.address?.toLowerCase(),
-      status: "pending",
-      amount: value.toString(),
-      receivingAddress: decoded.to?.toLowerCase(),
-    };
-    const match = await DepositIntent.findOne(filter);
-    console.log("Match ", match);
-    if (match) {
-      const session = await mongoose.startSession();
-      try {
-        session.startTransaction();
-
-        match.status = "confirmed";
-        match.chainId = log.address;
-        match.blockHash = log.blockHash;
-        match.blockNumber = log.blockNumber!.toString();
-        match.txHash = log.transactionHash; // ✅ fixed from decoded.hash to log.transactionHash
-
-        const listing: any = await CryptoListing.findOne({
-          _id: match.listing,
-        })
-          .populate("account")
-          .populate("cryptoCurrency")
-          .session(session);
-
-        if (listing) {
-          const data = {
-            account: listing.account?._id?.toString(),
-            totalEscrowBalance: value,
-            availableEscrowBalance: value,
-            lockedEscrowBalance: 0,
-          };
-          let escrow: any;
-          if (!match.isTopUp) {
-            escrow = await Escrow.create([data], { session });
-            listing.escrow = escrow[0]?._id;
-            listing.depositConfirmed = true;
-            await listing.save({ session });
-          } else {
-            escrow = await Escrow.findOne({ _id: listing.escrow });
-            console.log({
-              buyerId: listing.account?._id?.toString(),
-              escrowId: escrow._id,
-              amount: filter.amount,
-            });
-            await escrowBalanceQueue.add("topUpEscrow", {
-              buyerId: listing.account?._id?.toString(),
-              escrowId: escrow._id,
-              amount: filter.amount,
-            });
-          }
-          await match.save({ session });
-        }
-
-        await session.commitTransaction();
-        console.log(`ERC20 deposit confirmed for ${match.intentId}`);
-        sendTransferNotification(match.account.toString(), match);
-        console.log(
-          `📦 ERC20 (${token.symbol}) deposit: from ${decoded.from} → ${decoded.to} | amount: ${value}`
-        );
-        mailActions.deposits.sendDepositSuccessMail(listing.account.email, {
-          account: listing.account,
-          intent: match,
-        });
-      } catch (error) {
-        console.error("ERC20 Transaction error: ", error);
-        await session.abortTransaction();
-      } finally {
-        session.endSession();
-      }
-    }
+    
+    
   });
 };
 
@@ -131,7 +49,8 @@ export const listenToETH = async () => {
     console.log("Pending transaction ", tx);
   });
 
-  (await web3.eth.subscribe("newBlockHeaders")).on(
+  (await web3.eth.subscribe("newBlockHeaders"))
+  .on(
     "data",
     async (blockHeader: any) => {
       const block = await web3.eth.getBlock(blockHeader.hash, true);

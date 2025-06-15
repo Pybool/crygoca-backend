@@ -1,42 +1,35 @@
-import { parseUnits, parseEther } from "ethers/lib/utils";
-import { Contract } from "ethers";
-import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
-import Escrow from "../../models/escrow.model";
 
-const hre = require("hardhat");
+import { transferERC20Token } from "./erc-transfers";
+import { transferNativeETHEREUM } from "./eth-native-transfers";
+
 
 export async function transferERC20(
-  checkOutId:string,
+  checkOutId: string,
   tokenAddress: string,
   recipient: string,
   amount: string,
   decimals: number,
-  signer: any
+  privateKey: string
 ) {
-  const contract: Contract = new hre.ethers.Contract(
-    tokenAddress,
-    ERC20.abi,
-    signer
-  );
-  console.log("parsedAmount ----> ", amount, decimals);
-  const parsedAmount = parseUnits(amount, decimals);
-  console.log("Paresd amount ", parsedAmount);
-  // const tx = await contract.transfer(recipient, parsedAmount);
-  // await tx.wait();
-  // return tx.hash;
-  return "";
+  try {
+    const transferHash = await transferERC20Token(
+      privateKey,
+      tokenAddress,
+      recipient,
+      amount
+    );
+    console.log("[Transfer Response] ", transferHash);
+    return transferHash;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function transferNativeETH(
   recipient: string,
   amount: string,
-  signer: any
+  privateKey: any
 ) {
-  // const tx = await signer.sendTransaction({
-  //   to: recipient,
-  //   value: parseEther(amount),
-  // });
-  // await tx.wait();
-  // return tx.hash;
-  return "";
+  const txHash = await transferNativeETHEREUM(recipient, amount, privateKey);
+  return txHash;
 }

@@ -2,6 +2,7 @@ import express from "express";
 import { liveCryptoCurrenciesController } from "../../controllers/v1/liveCrypto.controller";
 import { decode } from "../../middlewares/jwt";
 import Cryptocurrencies from "../../models/cryptocurrencies.model";
+import { convertCryptoToCrypto } from "../../helpers/convert-crypto";
 
 const liveCrypto = express.Router();
 liveCrypto.get(
@@ -13,11 +14,12 @@ liveCrypto.get(
 liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getSupportedCryptos);
 
 
-// liveCrypto.post(
-//   "/create-crypto-sales-listing",
-//   decode,
-//   liveCryptoCurrenciesController.createListing
-// );
+liveCrypto.get(
+  "/crypto-conversion",
+  liveCryptoCurrenciesController.cryptoConversion
+);
+
+liveCrypto.get('/exchange-prices', liveCryptoCurrenciesController.exchangePrices);
 
 liveCrypto.put(
   "/edit-crypto-sales-listing",
@@ -46,6 +48,23 @@ liveCrypto.post(
   decode,
   liveCryptoCurrenciesController.archiveListings
 )
+
+liveCrypto.get("/convert-crypto-to-crypto", async (req: any, res: any) => {
+  const { from, to, amount } = req.query;
+
+  if (!from || !to || !amount) {
+    return res.status(400).json({ error: "Missing 'from', 'to', or 'amount' in query params." });
+  }
+
+  try {
+    const result = await convertCryptoToCrypto(from, to, amount);
+    return res.json({ success: true, conversion: result });
+  } catch (err: any) {
+    console.error("Conversion error:", err.message);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 liveCrypto.post("/update-crypto-quotes", async (req: any, res: any) => {
   const cryptocurrenciesData = req.body.data;

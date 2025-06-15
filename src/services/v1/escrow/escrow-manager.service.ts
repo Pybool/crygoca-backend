@@ -14,6 +14,13 @@ import Escrow from "../../../models/escrow.model";
 import { escrowBalanceQueue } from "../../../escrow/queues/escrow-balance-queue";
 import message from "../../../helpers/messages";
 import mailActions from "../mail/mailservice";
+import BlockChainWallets, {
+  IChainWallets,
+} from "../../../models/accounts-chain-wallets";
+import { DepositWallets } from "./depositWallets.service";
+import { ERC20ListenerManager } from "../../../escrow/services/listener-managers/erc-listener-manager.service";
+import { ETHNativeListenerManager } from "../../../escrow/services/listener-managers/eth-native-listener-manager.service";
+import { convertCryptoToCrypto } from "../../../helpers/convert-crypto";
 
 export class EscrowManager {
   @MongooseTransaction()
@@ -55,15 +62,15 @@ export class EscrowManager {
       amount,
       isTopUp,
       listingId,
+      blockchain,
+      chainId,
     } = req.body;
     let tokenAddress: string | undefined;
+    let tokenDecimal: number | undefined;
 
-    if (!platform && cryptoCode === "ETH") {
-      // Native ETH deposit
+    if (cryptoCode === "ETH") {
       tokenAddress = "NATIVE_ETH";
-    } 
-    else if (platform) {
-      // ERC20 Token deposit
+    } else if (platform && cryptoCode !== "ETH") {
       const token = ERC20_TOKENS.find(
         (t) => t.symbol.toUpperCase() === cryptoCode.toUpperCase()
       );
@@ -71,10 +78,11 @@ export class EscrowManager {
         return { status: false, message: "Token not supported" };
       }
       tokenAddress = token?.address || platform?.token_address;
-    } 
-    else {
+      tokenDecimal = token?.decimals;
+    } else {
       return { status: false, message: "Invalid platform or crypto code" };
     }
+
     if (!isTopUp) {
       const listingResponse = await createListingForSale(req, session);
       const listing = listingResponse.data;
@@ -83,7 +91,22 @@ export class EscrowManager {
         throw new Error("Failed to create listing");
       }
 
+      let walletInfo: IChainWallets | null = await BlockChainWallets.findOne({
+        account: listing!.account._id,
+        chainId: chainId,
+      });
+
+      if (!walletInfo) {
+        walletInfo = await DepositWallets.createWallet(
+          listing!.account._id.toString(),
+          chainId,
+          session
+        );
+      }
+
       let intent: any = new DepositIntent({
+        blockchain,
+        chainId,
         intentId: uuidv4(),
         sender: depositorAddress.toLowerCase(),
         amount: units,
@@ -94,15 +117,25 @@ export class EscrowManager {
         isTopUp: isTopUp || false,
       });
 
-      intent.receivingAddress = EscrowManager.getReceivingAddress(intent);
-      intent.amount = parseFloat(intent.amount) + 0.001; //0.001 simulates escrow fee.
+      intent.receivingAddress = walletInfo.address.toLowerCase();
+      intent.amount = parseFloat(intent.amount);
+      const conversionResult = await convertCryptoToCrypto(
+        "ETH",
+        cryptoCode,
+        intent.amount
+      );
+      if (conversionResult) {
+        intent.gasFeeEth = conversionResult.originalAmount;
+        intent.gasFeeToken = conversionResult.convertedAmount;
+        intent.gasConversionRate = conversionResult.rate;
+      }
 
       const filter = {
         sender: depositorAddress.toLowerCase(),
         tokenAddress: tokenAddress!.toLowerCase(),
         status: "pending",
         receivingAddress: intent.receivingAddress,
-        account: req.accountId
+        account: req.accountId,
       };
 
       const depositIntent = await DepositIntent.findOne(filter);
@@ -116,20 +149,26 @@ export class EscrowManager {
       }
 
       let _intent = await intent.save({ session });
-      await _intent.populate('account');
-      await _intent.populate('listing');
+      await _intent.populate("account");
+      await _intent.populate("listing");
 
       intent = JSON.parse(JSON.stringify(_intent));
       intent.cryptoCode = listing?.cryptoCode;
+      this.setUpListenerManager(
+        filter.account!,
+        intent.receivingAddress,
+        platform,
+        tokenAddress!
+      );
       mailActions.deposits.sendDepositIntentMail(_intent.account.email, {
         account: _intent.account,
         intent: _intent,
       });
-      console.log("Done Sending mail")
 
       return {
         status: true,
         data: intent,
+        tokenDecimals: tokenDecimal,
         message: "Redirecting to escrow details page",
       };
     } else {
@@ -137,6 +176,18 @@ export class EscrowManager {
 
       if (!listing) {
         throw new Error("Failed to create listing");
+      }
+
+      let walletInfo: IChainWallets | null = await BlockChainWallets.findOne({
+        account: listing!.account._id,
+        chainId: chainId,
+      });
+      if (!walletInfo) {
+        walletInfo = await DepositWallets.createWallet(
+          listing!.account._id.toString(),
+          chainId,
+          session
+        );
       }
 
       let intent: any = new DepositIntent({
@@ -150,14 +201,25 @@ export class EscrowManager {
         isTopUp: isTopUp || false,
       });
 
-      intent.receivingAddress = EscrowManager.getReceivingAddress(intent);
-      intent.amount = parseFloat(intent.amount); //0.001 simulates escrow fee.
+      intent.receivingAddress = walletInfo.address;
+      intent.amount = parseFloat(intent.amount);
+      const conversionResult = await convertCryptoToCrypto(
+        "ETH",
+        cryptoCode,
+        intent.amount
+      );
+      if (conversionResult) {
+        intent.gasFeeEth = conversionResult.originalAmount;
+        intent.gasFeeToken = conversionResult.convertedAmount;
+        intent.gasConversionRate = conversionResult.rate;
+      }
+
       const filter = {
         sender: depositorAddress.toLowerCase(),
         tokenAddress: tokenAddress!.toLowerCase(),
         status: "pending",
         receivingAddress: intent.receivingAddress,
-        account: req.accountId
+        account: req.accountId,
       };
 
       const depositIntent = await DepositIntent.findOne(filter);
@@ -171,20 +233,27 @@ export class EscrowManager {
       }
 
       let _intent = await intent.save({ session });
-      await _intent.populate('account');
-      await _intent.populate('listing');
+      await _intent.populate("account");
+      await _intent.populate("listing");
 
       intent = JSON.parse(JSON.stringify(_intent));
       intent.cryptoCode = listing?.cryptoCode;
+      this.setUpListenerManager(
+        filter.account!,
+        intent.receivingAddress,
+        platform,
+        tokenAddress!
+      );
       mailActions.deposits.sendDepositIntentMail(_intent.account.email, {
         account: _intent.account,
         intent: _intent,
       });
-      console.log("Done Sending mail")
+      console.log("Done Sending mail");
 
       return {
         status: true,
         data: intent,
+        tokenDecimals: tokenDecimal,
         message: "Redirecting to escrow details page",
       };
     }
@@ -259,8 +328,6 @@ export class EscrowManager {
         matchStage.receivingAddress = receivingAddress.toString().toLowerCase();
 
       const skip = (Number(page) - 1) * Number(limit);
-
-      console.log("Match stage ===> ", matchStage);
 
       const aggregation: any[] = [
         { $match: matchStage },
@@ -344,9 +411,6 @@ export class EscrowManager {
     }
   }
 
-  static getReceivingAddress(intent: any) {
-    return process.env.ESCROW_ADDRESS!.toLowerCase();
-  }
 
   static async lockFundsForOrder({
     intentId,
@@ -357,7 +421,7 @@ export class EscrowManager {
     checkoutId,
     walletToFund,
     toPay,
-    selectedBank
+    selectedBank,
   }: {
     intentId: string;
     listingId: string;
@@ -367,7 +431,7 @@ export class EscrowManager {
     amount: number;
     walletToFund: string;
     toPay: string;
-    selectedBank:any
+    selectedBank: any;
   }): Promise<any> {
     try {
       // const intent = await DepositIntent.findOne({ _id: intentId });
@@ -401,7 +465,7 @@ export class EscrowManager {
           listing: listingId,
           walletToFund,
           toPay,
-          selectedBank
+          selectedBank,
         },
       ];
 
@@ -493,6 +557,18 @@ export class EscrowManager {
           message: "No such deposit intent was found",
         };
       }
+      if (deposit.tokenAddress !== "native_eth") {
+        await new ERC20ListenerManager().removeEscrowAddress(
+          deposit.account.toString(),
+          deposit.receivingAddress!
+        );
+      } else {
+        await new ETHNativeListenerManager().removeEscrowAddress(
+          deposit.account.toString(),
+          deposit.receivingAddress!
+        );
+      }
+
       return {
         status: true,
         message: "Deposit intent was cancelled successfully",
@@ -502,7 +578,7 @@ export class EscrowManager {
     }
   }
 
-  static async cancelOrder(orderId: string): Promise<boolean> {
+  static async cancelOrder(orderId: string): Promise<any> {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -531,7 +607,10 @@ export class EscrowManager {
 
       await session.commitTransaction();
       session.endSession();
-      return true;
+      return {
+        status: true,
+        message: "Your order has been queued for cancellation",
+      };
     } catch (err) {
       await session.abortTransaction();
       session.endSession();
@@ -551,5 +630,28 @@ export class EscrowManager {
       totalEscrow: user.escrowBalance || 0,
       locked: user.lockedEscrow || 0,
     };
+  }
+
+  private static async setUpListenerManager(
+    acccountId: string,
+    escrowAddress: string,
+    platform: any,
+    tokenAddress: string
+  ) {
+    if (
+      (platform.id === 1 || platform.name === "Ethereum") &&
+      tokenAddress !== "NATIVE_ETH"
+    ) {
+      const erc20ListenerManager = new ERC20ListenerManager();
+      erc20ListenerManager.addEscrowAddress(acccountId, escrowAddress);
+    }
+
+    if (
+      (platform.id === 1 || platform.name === "Ethereum") &&
+      tokenAddress === "NATIVE_ETH"
+    ) {
+      const ethNativeListenerManager = new ETHNativeListenerManager();
+      ethNativeListenerManager.addEscrowAddress(acccountId, escrowAddress);
+    }
   }
 }

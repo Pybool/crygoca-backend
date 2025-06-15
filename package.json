@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/bootstrap/server.ts",
+    "dev": "nodemon src/bootstrap/index.ts",
     "start": "node dist/src/bootstrap/server.js",
+    "encrypt-env": "node env/encrypt-env.js",
+    "deploy-meta-transfer-contract": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy-meta-transfer-contract-prod": "hardhat run scripts/deploy.js --network sepolia",
     "prebuild": "tsc -p .",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -18,6 +21,8 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@opengsn/provider": "^3.0.0-beta.6",
+    "@solana/web3.js": "^1.98.2",
     "@types/flutterwave-node": "^1.0.5",
     "@types/passport": "^1.0.17",
     "@withvoid/make-validation": "1.0.5",
@@ -51,14 +56,16 @@
     "nodemailer": "^6.9.6",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "prompt-sync": "^4.2.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "sharp": "^0.33.5",
     "socket.io": "^4.7.2",
     "uuid": "^11.1.0",
-    "web3": "^4.2.2"
+    "web3": "^4.16.0"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.3.0",
     "@types/bcryptjs": "^2.4.6",
@@ -79,6 +86,7 @@
     "@types/node": "^20.12.7",
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.15",
+    "@types/prompt-sync": "^4.2.3",
     "@types/redis": "^4.0.11",
     "@types/socket.io": "^3.0.2",
     "@types/supertest": "^6.0.2",

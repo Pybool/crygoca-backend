@@ -11,6 +11,8 @@ import { startEscrowTransfersListeners } from "../escrow";
 import { startEscrowPayoutNotificationListener } from "../crypto-transfers/sockets/notificationListener";
 import { startTransfersWorker } from "../crypto-transfers/bullmq/transfer.processor";
 import { startEscrowBalanceWorker } from "../escrow/workers/escrow-balance-worker";
+import { updatePlatforms } from "../services/v1/listingsServices/cryptolisting.service";
+import { initMetaRelayer } from "../crypto-transfers/services/metaTx";
 dotenvConfig();
 
 const mongouri: any = process.env.CRYGOCA_MONGODB_URI;
@@ -20,11 +22,10 @@ const startBackgroundTasks = () => {
   // startAutoConfirmationTask();
   // startTimeoutAutoCompleteWorker();
   // startFlutterwavePaymentsVerification();
-  startEscrowTransfersListeners();
+  // startEscrowTransfersListeners();//DEPRECATED
   startEscrowPayoutNotificationListener();
   startTransfersWorker();
   startEscrowBalanceWorker();
-  
 };
 
 mongoose
@@ -37,17 +38,24 @@ mongoose
   } as mongoose.ConnectOptions)
   .then(async () => {
     logger.info("MongoDB connected Successfully.");
-
+    // updatePlatforms()
+    await initMetaRelayer();
     if (process.env.NODE_ENV == "prod") {
       startBackgroundTasks();
-    }else{
-      startEscrowTransfersListeners();
+      startEscrowPayoutNotificationListener();
+      startTransfersWorker();
+      startEscrowBalanceWorker();
+    } else {
+      // startEscrowTransfersListeners();//DEPRECATED
       startEscrowPayoutNotificationListener();
       startTransfersWorker();
       startEscrowBalanceWorker();
     }
   })
-  .catch((err: any) => logger.info(err.message));
+  .catch((err: any) => {
+    console.log(err)
+    logger.info(err.message)
+  });
 
 mongoose.connection.on("connected", () => {
   logger.info("Mongoose connected to db");

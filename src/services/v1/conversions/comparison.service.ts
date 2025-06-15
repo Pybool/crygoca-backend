@@ -65,8 +65,7 @@ export async function convertCurrency(
       maxAge: 0,
     };
     const url = `https://api.currencyapi.com/v3/latest?apikey=${
-      process.env.CURRENCYAPI_APP_ID ||
-      "cur_live_d52M3q2XMNDurG4Q7kHtSr3P5iqTsNWpUtF5kcNx"
+      process.env.CURRENCYAPI_APP_ID!
       }&base_currency=${data.currencyFrom}&currencies=${data.currencyTo}&amount=${
       data.amount
     }`;

@@ -66,7 +66,7 @@ export class Authentication {
         const otp: string = generateOtp();
         console.log("Register OTP ", otp);
         await setExpirableCode(result.email, "account-verification", otp);
-        mailActions.auth.sendEmailConfirmationOtp(result.email, otp);
+        mailActions.auth.sendEmailConfirmationOtp("Verify you email address", result.email, otp);
         return {
           status: true,
           data: savedUser._id,
@@ -106,7 +106,7 @@ export class Authentication {
       }
       const otp: string = generateOtp();
       await setExpirableCode(user.email, "account-verification", otp);
-      return mailActions.auth.sendEmailConfirmationOtp(user.email, otp);
+      return mailActions.auth.sendEmailConfirmationOtp("Verify your email address",user.email, otp);
     } catch (error) {
       console.log(error);
       throw error;
@@ -294,8 +294,11 @@ export class Authentication {
 
       if (!account.email_confirmed) {
         const otp: string = generateOtp();
+        if(process.env.NODE_ENV=='dev'){
+          console.log("Login OTP ===> ", otp)
+        }
         await setExpirableCode(result.email, "account-verification", otp);
-        await mailActions.auth.sendEmailConfirmationOtp(result.email, otp);
+        await mailActions.auth.sendEmailConfirmationOtp("Confirm your signin",result.email, otp);
         return {
           status: false,
           code: 1001, //Code 101 is code to restart otp verification...
@@ -429,7 +432,7 @@ export class Authentication {
       if (otpChannel === "email") {
         await setExpirableCode(account.email, "email-2fa-signin-otp", otp);
         console.log("Email 2FA OTP ===> ", Number(otp));
-        await mailActions.auth.sendEmailConfirmationOtp(account.email, otp);
+        await mailActions.auth.sendEmailConfirmationOtp("Crygoca login otp resent",account.email, otp);
       } else if (otpChannel === "sms") {
         const key = "sms-2fa-signin-otp";
         await this.sendPhoneOtp(key, account, "");

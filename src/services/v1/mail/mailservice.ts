@@ -28,12 +28,11 @@ export interface IEmailCheckoutData {
   status?: string;
 }
 
-const marketplaceUrl: string =
-  process.env.marketplaceUrl! || process.env.CRYGOCA_FRONTEND_BASE_URL!;
+const marketplaceUrl: string = process.env.CRYGOCA_FRONTEND_BASE_URL!;
 
 const mailActions = {
   auth: {
-    sendEmailConfirmationOtp: async (email: string, otp: string) => {
+    sendEmailConfirmationOtp: async (subject:string, email: string, otp: string) => {
       return new Promise(async (resolve, reject) => {
         try {
           const template = await ejs.renderFile(
@@ -45,11 +44,11 @@ const mailActions = {
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
             to: email,
-            subject: "Confirm your registration",
+            subject: subject,
             text: `Use the otp in this mail to complete your account onboarding`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -74,7 +73,7 @@ const mailActions = {
             text: `You have requested a password for your account.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -99,7 +98,7 @@ const mailActions = {
             text: `You have requested a password reset.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -131,7 +130,7 @@ const mailActions = {
             text: `Your payment was successful and your order received.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -161,7 +160,7 @@ const mailActions = {
             text: `Your listing has a new order.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -191,7 +190,7 @@ const mailActions = {
             text: `Your order status has been updated`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -210,7 +209,7 @@ const mailActions = {
     ) => {
       return new Promise(async (resolve, reject) => {
         try {
-          const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}//dispute-order/${data.checkOutId}/${accountId}`;
+          const disputeUrl: string = `${process.env.CRYGOCA_FRONTEND_BASE_URL}dispute-order/${data.checkOutId}/${accountId}`;
           const template = await ejs.renderFile(
             "src/templates/orderAutoConfirmWarnTemplate.ejs",
             { data, disputeUrl, timeout, marketplaceUrl }
@@ -224,7 +223,7 @@ const mailActions = {
             text: `Imminent System Auto Confirmation!`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -254,7 +253,7 @@ const mailActions = {
             text: `Your order was auto Completed!`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -275,7 +274,7 @@ const mailActions = {
             "src/templates/buyerLockedOrderTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
+          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -284,7 +283,7 @@ const mailActions = {
             text: `Your order was successful.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -314,7 +313,7 @@ const mailActions = {
             text: `Credit Alert 🎉`,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -342,7 +341,7 @@ const mailActions = {
             text: `Debit alert`,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -376,7 +375,7 @@ const mailActions = {
             text: ``,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -401,7 +400,7 @@ const mailActions = {
             text: `Your withdrawal otp code is ${otp}`,
             html: "",
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -431,7 +430,7 @@ const mailActions = {
             text: ``,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -459,7 +458,7 @@ const mailActions = {
             text: `Payment Debit alert`,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -487,7 +486,7 @@ const mailActions = {
             text: `Pending Incoming Payment⏱`,
             html: juice(template),
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -510,7 +509,7 @@ const mailActions = {
             "src/templates/complaintReceived.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
+          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -519,7 +518,7 @@ const mailActions = {
             text: `Your complaint ${data.complaint.ticketNo} was received.`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -542,7 +541,7 @@ const mailActions = {
             "src/templates/depositIntentTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
+          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -551,7 +550,7 @@ const mailActions = {
             text: `New Deposit Intent`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);
@@ -572,7 +571,7 @@ const mailActions = {
             "src/templates/depositSuccessTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
+          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -581,7 +580,7 @@ const mailActions = {
             text: `Deposit Success`,
             html: template,
           };
-          await sendMail(mailOptions);
+          sendMail(mailOptions);
           resolve({ status: true });
         } catch (error) {
           console.log(error);

@@ -9,6 +9,8 @@ import CryptoListing from "../../models/saleListing.model";
 import Escrow from "../../models/escrow.model";
 import { escrowBalanceQueue } from "../../escrow/queues/escrow-balance-queue";
 import { sendTransferNotification } from "../../escrow/services/notify-ui";
+import { ERC20ListenerManager } from "../../escrow/services/listener-managers/erc-listener-manager.service";
+import { ETHNativeListenerManager } from "../../escrow/services/listener-managers/eth-native-listener-manager.service";
 
 export const EscrowController = {
   async createDepositIntent(req: Request, res: Response) {
@@ -18,13 +20,16 @@ export const EscrowController = {
       if (!data.depositorAddress?.trim()) {
         return res
           .status(400)
-          .json({ message: "Depositor Wallet Address is required" });
+          .json({
+            status: true,
+            message: "Depositor Wallet Address is required",
+          });
       }
       const result = await EscrowManager.createDepositIntent(req);
       res.status(200).json(result);
     } catch (error: any) {
       console.error("Error creating deposit intent:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ status: true, message: "Internal server error" });
     }
   },
 
@@ -34,7 +39,7 @@ export const EscrowController = {
       res.status(200).json(result);
     } catch (error: any) {
       console.error("Error fetching deposit intent:", error);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ status: true, message: "Internal server error" });
     }
   },
 
@@ -49,7 +54,7 @@ export const EscrowController = {
         checkoutId,
         walletToFund,
         toPay,
-        selectedBank
+        selectedBank,
       } = req.body;
       const result = await EscrowManager.lockFundsForOrder({
         intentId,
@@ -60,11 +65,11 @@ export const EscrowController = {
         checkoutId,
         walletToFund,
         toPay,
-        selectedBank
+        selectedBank,
       });
       res.status(200).json(result);
     } catch (err: any) {
-      res.status(400).json({ error: err.message });
+      res.status(400).json({ message: err.message });
     }
   },
 
@@ -82,7 +87,7 @@ export const EscrowController = {
     try {
       const { orderId } = req.params;
       const result = await EscrowManager.cancelOrder(orderId);
-      res.status(200).json({ success: result });
+      res.status(200).json(result);
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
@@ -109,8 +114,7 @@ export const EscrowController = {
   },
 
   async manuallyConfirmDeposit(req: Request, res: Response) {
-    const { sender, receivingAddress, amount, tokenSymbol } =
-      req.body;
+    const { sender, receivingAddress, amount, tokenSymbol } = req.body;
 
     if (!sender || !receivingAddress || !amount) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -124,8 +128,7 @@ export const EscrowController = {
     }
 
     try {
-      
-      const fromBlock = (await web3.eth.getBlockNumber()) - 1000n; // search past ~5000 blocks
+      const fromBlock = (await web3.eth.getBlockNumber()) - 5000n; // search past ~5000 blocks
       const logs = await web3.eth.getPastLogs({
         fromBlock,
         toBlock: "latest",
@@ -137,7 +140,7 @@ export const EscrowController = {
         ],
       });
 
-      console.log("=================> ", logs)
+      console.log("=================> ", logs);
 
       for (let log of logs) {
         const _log: any = log;
@@ -151,6 +154,8 @@ export const EscrowController = {
           _log.topics.slice(1)
         );
 
+        console.log("decoded ", decoded);
+
         const decodedAmount = Number(decoded.value) / 10 ** token.decimals;
         if (Math.abs(decodedAmount - Number(amount)) > 0.00001) continue;
 
@@ -162,10 +167,13 @@ export const EscrowController = {
           receivingAddress: decoded.to?.toLowerCase(),
         };
 
+        console.log("Filter ", filter);
+
         const match = await DepositIntent.findOne(filter);
+        console.log("Match ", match);
         if (!match) continue;
 
-        console.log("Match found ", match)
+        console.log("Match found ", match);
 
         const session = await mongoose.startSession();
         try {
@@ -203,7 +211,21 @@ export const EscrowController = {
             await session.commitTransaction();
 
             sendTransferNotification(match.account.toString(), match);
-            return res.json({ message: "Deposit confirmed manually." });
+            if (match.tokenAddress !== "native_eth") {
+              await new ERC20ListenerManager().removeEscrowAddress(
+                match.account.toString(),
+                match.receivingAddress!
+              );
+            } else {
+              await new ETHNativeListenerManager().removeEscrowAddress(
+                match.account.toString(),
+                match.receivingAddress!
+              );
+            }
+            return res.json({
+              status: true,
+              message: "Deposit confirmed manually.",
+            });
           }
         } catch (err) {
           await session.abortTransaction();
@@ -214,14 +236,16 @@ export const EscrowController = {
         }
       }
 
-      return res.status(404).json({ message: "No matching deposit found" });
+      return res
+        .status(404)
+        .json({ status: true, message: "No matching deposit found" });
     } catch (error) {
       console.error("Manual deposit lookup error:", error);
       return res.status(500).json({ error: "Server error" });
     }
   },
 
-  async cancelDeposit(req: Request, res: Response){
+  async cancelDeposit(req: Request, res: Response) {
     try {
       const { orderId } = req.params;
       const result = await EscrowManager.cancelDeposit(orderId);
@@ -229,5 +253,5 @@ export const EscrowController = {
     } catch (err: any) {
       res.status(400).json({ error: err.message });
     }
-  }
+  },
 };

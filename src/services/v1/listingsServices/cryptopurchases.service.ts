@@ -254,7 +254,6 @@ export const fetchMyOrders = async (req: Xrequest) => {
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const searchText: string = (req.query.searchText as string) || "";
     const userId: string = req.accountId as string;
-    console.log("userId ", userId);
 
     const skip = (page - 1) * limit;
 
@@ -583,14 +582,14 @@ export const updateStatus = async (req: Xrequest) => {
         }
 
         if (
-          !platform &&
-          listingPurchase.cryptoListing.cryptoCurrency.symbol === "ETH"
+          listingPurchase.cryptoListing.cryptoCurrency.symbol === "ETH" || listingPurchase?.cryptoCode=="ETH"
         ) {
           RegisterNativeETHPayout(listingPurchase, order, escrowId);
         } else if (platform && platform?.symbol === "ETH") {
           RegisterERC20Payout(listingPurchase, order, escrowId, platform);
         } else {
           console.log("⏳ No handler found for payout...");
+          throw new Error("No handler found for payout")
         }
       }
 
@@ -651,7 +650,6 @@ export const updateBuyerClaim = async (req: Xrequest) => {
           code: 403,
         };
       }
-      console.log("1000000000000000");
       listingPurchase.buyerFulfillmentClaim = data.status;
       listingPurchase = await listingPurchase.save();
       listingPurchase = JSON.parse(JSON.stringify(listingPurchase));
@@ -683,8 +681,6 @@ export const submitOrderComplaint = async (req: Xrequest) => {
         code: 400,
       };
     }
-
-    console.log(req.attachments, req.body);
 
     const reqData = JSON.parse(req.body.message);
 
@@ -770,7 +766,7 @@ const createStatusUpdateNotification = async (
     status: "UNREAD",
     class: "success",
     meta: {
-      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+      url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
         listingPurchase._id
       }`,
     },

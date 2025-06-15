@@ -7,10 +7,6 @@ import CryptoListingPurchase, {
   IPurchaseSalelisting,
 } from "../../../models/listingPurchase.model";
 import Cryptocurrencies from "../../../models/cryptocurrencies.model";
-import { NotificationModel } from "../../../models/notifications.model";
-import mailActions, { IEmailCheckoutData } from "../mail/mailservice";
-import VerifiedTransactions from "../../../models/verifiedtransactions.model";
-import Accounts from "../../../models/accounts.model";
 import { formatTimestamp, generateReferenceCode } from "../helpers";
 import { paymentVerificationQueue } from "../jobs/payment-verification/paymentVerificationQueue";
 import mongoose, { ClientSession } from "mongoose";
@@ -85,7 +81,6 @@ export const getSupportedCryptos = async (req: Xrequest) => {
       ...NATIVE_CRYPTO.map((crypto) => crypto.symbol.toLowerCase()),
     ];
 
-    // Step 2: MongoDB filter
     const filter = {
       $and: [
         {
@@ -108,7 +103,7 @@ export const getSupportedCryptos = async (req: Xrequest) => {
     };
 
     // Step 3: Query MongoDB
-    const cryptos = await Cryptocurrencies.find(filter).limit(limit);
+    const cryptos = await Cryptocurrencies.find(filter); //.limit(limit);
 
     return {
       status: true,
@@ -119,6 +114,36 @@ export const getSupportedCryptos = async (req: Xrequest) => {
   } catch (error: any) {
     throw error;
   }
+};
+
+export const updatePlatforms = async () => {
+  let updated = 0;
+  const cryptos = await Cryptocurrencies.find({
+    "platform.symbol": "ETH",
+    platform: { $ne: null },
+  });
+
+  for (let crypto of cryptos) {
+    const token = ERC20_TOKENS.find(
+      (token) => token.symbol.toLowerCase() === crypto.symbol?.toLowerCase()
+    );
+    if (token && token.chainId == 1) {
+      crypto.platform = {
+        chainId: 1,
+        name: "Ethereum",
+        symbol: "ETH",
+        slug: "ethereum",
+        
+      };
+      crypto.address = token.address;
+      crypto.decimals = token.decimals;
+      crypto.chainId = token.chainId;
+      crypto.logo2 = token.logoURI;
+      await crypto.save();
+      updated++;
+    }
+  }
+  console.log(`Updated ${updated} cryptocurrencies with Ethereum platform.`);
 };
 
 export const createListingForSale = async (
@@ -246,8 +271,6 @@ export const fetchOrFilterListingsForSale = async (req: Xrequest) => {
 
     // Ensure units are greater than 0
     filter.$and.push({ units: { $gt: 0 } });
-
-    console.log("Filter ===>", JSON.stringify(filter, null, 2));
 
     // Define common aggregation stages
     const commonAggregationStages: any = [
@@ -381,7 +404,6 @@ export const purchaseListingQuota = async (data: IPurchaseSalelisting) => {
         { checkOutId: payload?.checkOutId },
         data
       );
-      console.log("Updated checkout in database ===> ", listing);
     }
 
     return {
@@ -510,7 +532,7 @@ export const editListing = async (req: Xrequest) => {
       status: true,
       message: "Your listing has been updated on crygoca",
       data: updatedListing,
-      code: 201,
+      code: 200,
     };
   } catch (error: any) {
     throw error;
@@ -555,7 +577,7 @@ export const bookMarkingListing = async (req: Xrequest) => {
         status: true,
         message: "Bookmarked successfully",
         data: bookmark,
-        code: 201,
+        code: 200,
       };
     }
 

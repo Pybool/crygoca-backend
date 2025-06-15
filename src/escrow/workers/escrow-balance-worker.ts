@@ -16,7 +16,6 @@ export const startEscrowBalanceWorker = () => {
       const {buyerId, escrowId, amount, metaData } = job.data;
       switch (job.name) {
         case "lockEscrowFunds":
-          console.log("Wow...........")
           const data = await lockEscrowFunds(escrowId, amount, metaData );
           if(data) sendLockedOrderNotification(buyerId, data)
           break;
@@ -29,6 +28,7 @@ export const startEscrowBalanceWorker = () => {
           break;
         case "releaseLockedFunds":
           const escrow = await releaseLockedFunds(escrowId, amount, metaData.checkOutId);
+          console.log("releaseLockedFunds", escrow)
           if(escrow) sendReleaseLockedFundsNotification(buyerId, escrow)
           break;
         default:

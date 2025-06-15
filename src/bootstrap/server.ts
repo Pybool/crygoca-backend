@@ -1,10 +1,17 @@
-import cors, { CorsOptions } from "cors";
+// @ts-ignore
+process.on("uncaughtException", (err) => {
+  console.error("💥 Uncaught exception:", err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("💥 Unhandled promise rejection:", reason);
+});
+
+import cors from "cors";
 import app from "./_app";
 import express, { Request, Response } from "express";
 import http from "http";
 import "../redis/init.redis";
-
-// import "../redis-subscriber";
 import "./init.mongo";
 import compareRoute from "../routes/v1/compare.routes";
 import liveRates from "../routes/v1/liveCurrencies.routes";
@@ -38,7 +45,12 @@ import { generateReferralCode } from "../services/v1/helpers";
 import "../services/v1/jobs/payment-verification/paymentVerificationWorker";
 import { checkRedis } from "../middlewares/checkredis";
 import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verification/timeoutAutoComplete";
-import crypto from 'crypto';
+import crypto from "crypto";
+import { ERC20ListenerManager } from "../escrow/services/listener-managers/erc-listener-manager.service";
+import { setUpRelayer } from "../crypto-transfers/services/metaTx";
+import { setUpSecrets } from "../../env/decrypt-env";
+import { killPortProcess } from "./port-sanitation";
+
 
 dotenvConfig();
 dotenvConfig({ path: `.env` });
@@ -52,11 +64,13 @@ const io = new SocketIOServer(server, {
     origin: "*",
   },
 });
+
 io.use(socketAuth);
 const wrap =
   (middleware: any) => (socket: CustomSocket, next: (err?: any) => void) => {
     middleware(socket.request, {}, next);
   };
+
 io.use(wrap(sessionMiddleware));
 app.set("io", io);
 setupSocketHandlers(io);
@@ -75,13 +89,12 @@ if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "prod") {
         "https://test.crygoca.com",
         "https://uatmarketplace.crygoca.com",
         "https://test.crygoca.co.uk",
-        "https://uatmarketplace.crygoca.com"
+        "https://uatmarketplace.crygoca.com",
       ], // Array of allowed origins // Explicitly specify the allowed origin
       credentials: true, // Allow cookies and credentials to be sent
     })
   );
 }
-
 
 // Configure body-parser or express.json() with a higher limit
 app.use(express.json({ limit: "10mb" })); // Increase to 10MB or adjust as needed
@@ -105,7 +118,7 @@ app.use(express.json());
 app.use(checkRedis);
 
 app.get("/", async (req, res) => {
-  timeoutAutoConfirmation()
+  timeoutAutoConfirmation();
   res.send("Crygoca Backend says hello!");
 });
 
@@ -119,8 +132,8 @@ app.get("/ip", async (req, res) => {
 
 const MOONPAY_WEBHOOK_SECRET = process.env.MOONPAY_WEBHOOK_SECRET!;
 
-app.post('/webhook/moonpay', (req, res) => {
-  const signature = req.headers['moonpay-signature'] as string;
+app.post("/webhook/moonpay", (req, res) => {
+  const signature = req.headers["moonpay-signature"] as string;
   // const payload = JSON.stringify(req.body);
 
   // const expectedSignature = crypto
@@ -133,7 +146,7 @@ app.post('/webhook/moonpay', (req, res) => {
   // }
 
   const event = req.body;
-  console.log('MoonPay event:', event);
+  console.log("MoonPay event:", event);
   res.sendStatus(200);
 });
 
@@ -168,8 +181,8 @@ app.get(
     res.redirect(
       `${process.env
         .CRYGOCA_SERVER_URL!}/auth/success?user=${encodeURIComponent(
-          JSON.stringify(req.g_user)
-        )}`
+        JSON.stringify(req.g_user)
+      )}`
     );
   }
 );
@@ -187,30 +200,12 @@ app.get("/profile", (req, res) => {
   res.json(req.user);
 });
 
-
-app.get("/test-referal-code", async (req: any, res: any) => {
-  const username = req.query.username! as string;
-  const referralCode: string = await generateReferralCode(username);
-  return res.status(200).json({
-    status: true,
-    message: " Referral code was generated",
-    data: referralCode
-  })
+app.get("/setup-relayer", async(req,res)=>{
+  const relayer = await setUpRelayer();
+  return res.json(relayer)
 })
 
-app.get("/test-payment-verification-job", async (req: any, res: any) => {
-  const jobData = {
-    eventName: "card-payment-verification",
-    paymentReference: 123456,
-    expectedAmount: 5000,
-    expectedCurrency: "NGN",
-  };
-  // addJob(jobData)
-  return res.status(200).json({
-    status: true,
-    message: " Referral code was generated",
-  })
-})
+
 
 app.post("/api/v1/contact", enquiriesService);
 app.use("/api/v1/auth", authRouter);
@@ -245,7 +240,6 @@ app.use(
 
 app.use(express.static(process.env.PUBLIC_FOLDER_2!));
 
-
 app.set("view engine", "ejs");
 app.set("views", "src/templates");
 
@@ -267,14 +261,19 @@ function generateAsciiArt(text: string, env: string) {
   `;
 }
 
+//Sanitize port
+
+killPortProcess(Number(PORT));
+
 // Start the server
 server.listen(PORT, () => {
-  let env = "Development"
+  let env = "Development";
   if (process.env.NODE_ENV === "prod") {
-    env = "Production"
+    env = "Production";
   }
   const serverMessage = generateAsciiArt(
-    `Crygoca ${env} Server is running on ${SERVER_URL}:${PORT}`.toUpperCase(), env
+    `Crygoca ${env} Server is running on ${SERVER_URL}:${PORT}`.toUpperCase(),
+    env
   );
   console.log(serverMessage);
 });

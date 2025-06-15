@@ -8,6 +8,9 @@ const depositIntentSchema = new mongoose.Schema(
     receivingAddress: String,
     currency: String,
     amount: String,
+    gasFeeEth:String,
+    gasFeeToken: String,
+    gasConversionRate: String,
     tokenAddress: String,
     isTopUp: { type: Boolean, default: false },
     account: {
@@ -26,6 +29,10 @@ const depositIntentSchema = new mongoose.Schema(
       default: "pending",
     },
     txHash: {
+      type: String,
+      required: false,
+    },
+    blockchain: {
       type: String,
       required: false,
     },

@@ -46,10 +46,6 @@ export const lockEscrowFunds = async (
 
     metaData.cryptoListingData.order = order[0]._id;
 
-    // const exists = await CryptoListingPurchase.findOne({
-    //   checkOutId: metaData.cryptoListingData.checkOutId,
-    // });
-
     const cryptoListingPurchase = await CryptoListingPurchase.findOneAndUpdate(
       { checkOutId: metaData.cryptoListingData.checkOutId },
       { $set: metaData.cryptoListingData },

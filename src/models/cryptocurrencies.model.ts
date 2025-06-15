@@ -11,6 +11,10 @@ const CryptoCurrenciesSchema = new Schema({
     required: false, 
     default: null
   },
+  logo2: {
+    type: String,
+    required: false, 
+  },
   quote: {
     type: Schema.Types.Mixed,
     required: false,
@@ -26,6 +30,18 @@ const CryptoCurrenciesSchema = new Schema({
   },
   slug: {
     type: String,
+    required: false,
+  },
+  address: {
+    type: String,
+    required: false,
+  },
+  decimals: {
+    type: Number,
+    required: false,
+  },
+  chainId:{
+    type: Number,
     required: false,
   },
   tags: {

@@ -125,7 +125,13 @@ const AccountsSchema = new Schema({
     required: false,
     default: "/assets/images/anon.png",
   },
+
   isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+
+  isPlatform: {
     type: Boolean,
     default: false,
   },

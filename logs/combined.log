@@ -16134,3 +16134,1013 @@ info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"
 info: Mongoose connected to db {"timestamp":"2025-05-15T19:27:36.210+01:00"}
 info: MongoDB connected Successfully. {"timestamp":"2025-05-15T19:27:36.226+01:00"}
 info: Mongoose connection is disconnected {"timestamp":"2025-05-15T19:31:35.685+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T11:03:42.489+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T11:04:48.188+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-22T11:04:48.193+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-22T11:04:48.198+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T11:09:51.937+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-22T11:09:51.945+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T11:12:13.206+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T11:13:10.791+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T11:19:18.620+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T11:19:43.624+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T11:29:51.168+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T12:49:15.324+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T12:50:36.784+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T12:51:37.280+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T20:21:47.957+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-22T20:22:09.837+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-22T20:47:02.687+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T08:38:44.373+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T08:38:44.386+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T08:41:45.316+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T08:43:49.650+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T08:43:49.656+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:03:50.233+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:04:03.611+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:08:35.004+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:08:47.851+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:25:11.659+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:25:34.326+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:28:49.561+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:29:46.114+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:32:12.113+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:32:35.293+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:33:29.614+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:33:42.973+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T09:35:15.315+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T09:35:28.413+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:09:37.428+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:09:37.439+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:12:17.299+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:12:33.207+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:15:15.628+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:15:50.585+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:15:50.592+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:20:04.536+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:21:07.240+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:21:07.249+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:35:46.163+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:35:46.171+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:38:37.016+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:39:40.493+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:41:11.300+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:41:23.443+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:44:35.667+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T10:44:35.671+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T10:44:35.673+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:47:50.579+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:47:50.587+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:52:40.821+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:52:40.834+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T10:54:43.744+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:55:10.190+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T10:56:23.662+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T10:56:23.668+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T11:10:13.989+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T11:10:40.284+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T11:14:14.355+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T11:14:14.362+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T11:16:33.619+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T11:20:55.133+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T11:20:55.138+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T11:20:55.139+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T11:39:37.460+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T11:40:50.306+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T11:40:50.317+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T12:00:22.885+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T12:00:34.875+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T12:10:40.062+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T12:10:40.073+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T12:11:13.874+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T12:12:42.572+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T12:14:43.500+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T12:14:53.399+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T12:15:28.718+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T12:19:41.064+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T12:19:41.079+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T14:24:41.962+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T14:24:58.467+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T14:52:45.701+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T14:53:00.521+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T16:21:28.585+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T16:59:55.125+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T16:59:55.133+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T17:00:32.002+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T17:02:37.050+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T17:02:37.054+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T17:02:37.056+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T17:13:45.651+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T17:13:45.661+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T17:18:45.326+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T17:25:01.822+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T17:26:47.787+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T17:27:45.315+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T17:27:45.321+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T17:28:53.631+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T19:43:10.102+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T19:43:10.111+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T19:45:51.703+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T19:45:51.714+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T19:50:37.231+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T19:50:37.243+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:06:06.955+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T20:07:58.094+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:10:19.048+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T20:13:50.558+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:16:05.235+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:17:52.401+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T20:17:52.414+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T20:17:52.416+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:19:27.919+01:00"}
+info: No addresses found at host {"timestamp":"2025-05-26T20:19:27.924+01:00"}
+info: No addresses found at host {"timestamp":"2025-05-26T20:19:27.925+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T20:20:56.096+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T20:20:56.106+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-26T20:25:51.504+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T20:25:51.512+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-26T20:25:51.517+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-26T20:30:08.449+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-26T20:30:08.463+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:08:12.627+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:08:26.287+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:10:09.671+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:10:17.044+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:20:54.865+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T08:20:54.878+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:24:04.946+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:24:19.250+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:24:59.778+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:25:13.604+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:27:39.255+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T08:27:39.267+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:29:22.110+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:29:32.730+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:49:27.981+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T08:49:27.992+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T08:50:43.340+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T08:50:43.348+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T08:58:02.450+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T09:39:12.430+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T09:39:12.445+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T09:54:21.094+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T09:54:21.099+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T09:59:55.244+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T09:59:55.252+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:11:52.514+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T10:11:52.530+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:13:17.068+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T10:13:17.075+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:16:31.828+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T10:16:31.842+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T10:42:22.773+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:45:24.175+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:47:18.529+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T10:47:18.540+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T10:51:44.572+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:54:22.309+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T10:54:22.317+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T10:55:31.023+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T10:56:21.139+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:00:12.066+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:00:24.964+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:03:25.960+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:03:36.745+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:05:52.799+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:06:03.439+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:15:47.503+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:15:47.516+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:19:26.244+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:20:23.165+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:20:23.174+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:28:17.642+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:28:17.647+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:32:38.114+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:32:38.116+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:32:38.117+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:34:33.476+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:34:33.478+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:34:33.479+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:39:32.491+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:39:32.506+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:40:59.906+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:41:39.397+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:41:39.405+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:43:11.014+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:44:39.363+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:44:39.383+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:48:24.538+01:00"}
+info: queryTxt ESERVFAIL all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:48:24.547+01:00"}
+info: queryTxt ESERVFAIL all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:48:24.549+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:50:42.767+01:00"}
+info: querySrv ESERVFAIL _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:50:42.771+01:00"}
+info: querySrv ESERVFAIL _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T11:50:42.772+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T11:55:05.260+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T11:55:05.269+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T11:58:44.048+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:00:14.475+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:00:55.004+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:01:07.657+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:03:18.856+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:05:18.153+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:07:58.442+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T12:07:58.448+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:09:08.122+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:09:23.065+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:21:18.288+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T12:21:18.293+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:21:56.076+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T12:22:00.127+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:23:41.211+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T12:24:57.081+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T12:24:57.086+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T12:24:57.087+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T15:51:59.222+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T15:51:59.227+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:05:22.657+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:05:22.670+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T16:17:39.427+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T16:17:39.473+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-27T16:17:39.498+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:20:42.863+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:20:42.871+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T16:24:12.402+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:24:23.697+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:25:48.626+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:25:48.631+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T16:30:06.872+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:30:08.181+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:31:16.376+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:31:16.381+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:36:15.504+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:36:15.523+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T16:37:27.289+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T16:40:48.288+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T16:40:48.306+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T17:00:33.743+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T17:00:33.758+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T17:01:07.677+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T17:02:30.430+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T17:02:30.462+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T17:03:51.502+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T17:04:31.598+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T17:10:25.385+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T17:10:25.408+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T20:04:53.873+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:05:04.912+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:09:12.787+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:09:12.811+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:16:05.957+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:16:05.979+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:21:59.342+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:21:59.360+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T20:23:48.582+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:25:50.355+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T20:26:23.059+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:27:17.904+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:27:17.915+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:32:28.794+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:32:28.808+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:40:11.951+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:40:11.972+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:42:42.885+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:42:42.893+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T20:47:04.007+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T20:47:04.015+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T21:07:40.192+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T21:14:16.390+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T21:14:16.409+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T21:35:41.959+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T21:35:41.970+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T21:38:37.574+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T21:38:37.580+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-27T21:47:17.938+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-27T21:51:10.253+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-27T21:51:10.389+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T09:44:14.338+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T09:44:34.069+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T10:50:45.555+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T10:51:00.011+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T10:57:05.698+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T10:58:49.854+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T10:58:49.872+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T11:03:39.532+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T11:03:39.544+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T11:04:35.161+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T11:05:28.025+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T11:07:30.062+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T11:07:30.081+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T11:10:37.552+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T11:13:11.687+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T11:13:11.699+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T11:14:06.372+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:09:48.987+01:00"}
+info: queryTxt ETIMEOUT all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:09:49.017+01:00"}
+info: queryTxt ETIMEOUT all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:09:49.033+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:12:20.827+01:00"}
+info: connection 1 to 65.62.32.222:27017 timed out {"timestamp":"2025-05-28T13:12:20.836+01:00"}
+info: connection 1 to 65.62.32.222:27017 timed out {"timestamp":"2025-05-28T13:12:20.838+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T13:21:53.366+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T13:21:53.380+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:22:33.252+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T13:22:35.035+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:23:20.443+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:27:35.643+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:30:04.425+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T13:33:29.421+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T13:33:29.441+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:36:31.153+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T13:38:22.871+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:39:46.536+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:39:46.545+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:39:46.547+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:43:20.887+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:43:20.894+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T13:43:20.896+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T13:45:08.401+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T13:45:08.411+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T13:55:24.817+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T17:08:07.874+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T17:08:07.897+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T17:08:40.305+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T17:08:49.941+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T17:09:34.778+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T17:10:52.078+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T17:10:52.081+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T17:10:52.081+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T17:13:52.731+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T17:13:52.744+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T17:13:52.747+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T17:15:40.781+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T17:15:40.797+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T17:30:59.977+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T17:30:59.984+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:09:12.192+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:09:12.198+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T18:13:42.254+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:17:21.499+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:17:21.510+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:19:20.536+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:19:20.542+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:25:06.831+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:25:06.841+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:36:31.409+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:36:31.419+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T18:43:49.057+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T18:43:49.067+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T19:02:05.481+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T19:02:05.487+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:24:45.301+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:25:22.551+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:25:43.601+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:26:02.486+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:26:35.651+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:27:31.124+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:30:12.436+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:31:24.513+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:32:05.045+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:32:41.364+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:34:12.637+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:34:55.339+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:43:52.082+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T22:43:52.090+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:44:47.718+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:45:09.524+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:54:57.197+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T22:54:57.221+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T22:55:48.272+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T22:57:09.790+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:02:31.556+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:02:31.584+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:02:31.616+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:09:05.536+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T23:09:05.552+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:09:47.176+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:10:04.683+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:11:51.795+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T23:11:51.805+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:13:28.892+01:00"}
+info: connection timed out {"timestamp":"2025-05-28T23:13:28.904+01:00"}
+info: connection timed out {"timestamp":"2025-05-28T23:13:28.908+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:14:59.581+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T23:14:59.593+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:17:17.188+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:18:29.004+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:19:09.536+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:20:10.308+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:41:32.457+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T23:41:32.466+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:42:11.682+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:43:36.690+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:43:36.694+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:43:36.703+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:47:48.121+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:47:48.125+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:47:48.127+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:49:51.296+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:49:51.303+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-28T23:49:51.306+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:55:28.025+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-28T23:55:28.049+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-28T23:56:17.140+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-28T23:57:30.359+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T00:02:03.691+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T00:02:03.700+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T00:10:22.151+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T00:10:22.169+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T00:11:41.754+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T00:11:52.357+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T00:19:59.580+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T00:19:59.586+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T00:19:59.588+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T00:22:01.321+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T00:22:01.327+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T00:22:01.330+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T09:26:54.904+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T09:26:54.914+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T09:31:44.445+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T09:35:33.184+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T09:37:50.133+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T09:38:17.873+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T09:50:29.240+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T09:52:16.902+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T09:56:42.830+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:30:38.386+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:30:38.402+01:00"}
+info: Illegal arguments: undefined, string {"timestamp":"2025-05-29T18:30:48.508+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:33:02.157+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:33:02.166+01:00"}
+info: Illegal arguments: undefined, string {"timestamp":"2025-05-29T18:33:07.610+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:34:25.281+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:34:25.290+01:00"}
+info: Illegal arguments: undefined, string {"timestamp":"2025-05-29T18:34:29.413+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T18:39:36.268+01:00"}
+info: connection 1 to 65.62.32.222:27017 timed out {"timestamp":"2025-05-29T18:39:36.302+01:00"}
+info: connection 1 to 65.62.32.222:27017 timed out {"timestamp":"2025-05-29T18:39:36.304+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:43:23.472+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:43:23.496+01:00"}
+info: Illegal arguments: undefined, string {"timestamp":"2025-05-29T18:43:25.839+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:45:12.400+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:45:12.417+01:00"}
+info: Invalid Private Key, Not a valid string or uint8Array {"timestamp":"2025-05-29T18:45:17.043+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:48:26.655+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:48:26.679+01:00"}
+info: abis.filter is not a function {"timestamp":"2025-05-29T18:48:29.360+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T18:52:59.753+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T18:52:59.763+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:01:28.375+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:01:28.385+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:04:44.370+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:04:44.380+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:06:39.195+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:06:39.204+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:11:15.709+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:11:15.719+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:14:25.396+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:14:25.423+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:22:30.159+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:22:30.180+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:26:38.270+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:26:38.280+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T19:29:26.926+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T19:29:26.943+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T19:38:06.894+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T19:59:24.430+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T19:59:24.441+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T19:59:24.444+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T20:27:37.633+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T20:27:37.639+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T21:33:24.531+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T21:33:41.020+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T21:42:29.912+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T21:42:29.921+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T21:55:45.740+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T21:55:45.746+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T22:22:12.131+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T22:22:12.140+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T22:25:25.879+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T22:25:25.908+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T22:28:08.587+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T22:28:08.598+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T22:58:14.429+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T22:58:14.471+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:01:33.550+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:10:02.524+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:11:08.410+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:14:33.166+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:18:32.950+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T23:18:32.959+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-29T23:18:32.960+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:20:39.635+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T23:20:39.656+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:22:41.509+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:26:39.236+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:30:00.071+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:31:33.928+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-29T23:34:37.020+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:35:28.400+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-29T23:45:09.420+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-29T23:45:09.439+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T07:56:24.384+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T08:00:34.252+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T08:03:55.709+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:18:39.305+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T09:18:39.311+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T09:19:20.287+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:19:33.250+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T09:26:21.443+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:26:36.571+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:43:09.198+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T09:43:09.204+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:43:40.296+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T09:43:40.305+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:45:40.409+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T09:45:40.414+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T09:47:48.206+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T09:48:32.584+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T13:41:00.058+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T13:41:00.072+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T13:51:29.372+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T13:51:29.385+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T13:52:36.975+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T13:53:00.265+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T13:54:46.446+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T14:13:30.772+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T14:13:30.786+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T14:49:25.379+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T14:49:25.396+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T14:59:34.956+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T14:59:34.971+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T15:10:38.813+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T15:10:38.905+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T15:33:19.263+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T15:33:19.302+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T15:39:00.352+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T15:39:00.365+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T15:45:40.422+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T15:45:40.430+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T16:38:59.543+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T16:39:19.838+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T16:40:02.034+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T16:40:03.998+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T16:53:51.575+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T16:53:51.590+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:03:22.521+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:03:22.582+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:13:20.244+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:13:20.253+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:17:21.934+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:17:21.948+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T17:18:00.239+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:18:04.192+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:23:31.942+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:23:31.950+01:00"}
+info: Cannot use a session that has ended {"timestamp":"2025-05-30T17:23:40.281+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:25:36.032+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:25:36.041+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T17:37:37.826+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:46:59.697+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:46:59.708+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T17:54:48.852+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T17:56:37.537+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T17:56:37.549+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T18:05:17.665+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T18:08:59.140+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-30T18:08:59.148+01:00"}
+info: querySrv EREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-05-30T18:08:59.150+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T19:31:05.459+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T19:31:05.465+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T19:36:40.185+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T19:36:40.190+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:07:45.362+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:08:26.079+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:20:26.012+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:20:38.204+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:28:29.316+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:28:50.366+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:30:13.954+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:30:24.989+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:31:05.515+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:31:56.653+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:38:18.749+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T20:38:18.755+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:49:36.228+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T20:49:36.279+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:53:34.135+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:53:49.590+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T20:56:40.691+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T20:56:58.794+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T21:04:29.906+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:04:56.519+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T21:08:27.351+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:08:40.200+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T21:11:17.371+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:16:43.380+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T21:16:43.385+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:33:58.020+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T21:33:58.029+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:35:08.097+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T21:35:08.106+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-30T21:37:30.133+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:39:28.287+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T21:39:28.297+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T21:57:41.001+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T21:57:41.016+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T22:04:33.674+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T22:04:33.685+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T22:10:27.264+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T22:10:46.515+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T22:10:46.524+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T22:15:13.267+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T22:15:13.278+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-30T22:24:18.858+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-30T22:24:18.870+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T04:12:05.758+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T04:12:23.873+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T04:13:27.051+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T04:22:12.095+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T04:22:24.166+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T07:05:59.895+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T07:27:28.765+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T07:29:37.588+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T09:18:28.909+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T09:18:42.030+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T09:27:13.707+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T09:27:26.106+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T09:45:15.778+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T09:46:00.668+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T09:53:54.790+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T09:54:08.795+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T09:56:34.677+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T09:58:49.812+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T09:58:49.835+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:00:08.639+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:01:58.343+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:04:41.127+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:05:08.687+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:43:14.681+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:46:12.159+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:49:26.286+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T10:49:26.292+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:55:39.405+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:56:10.807+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:57:15.585+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:58:00.260+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T10:58:00.266+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T10:59:28.017+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T10:59:34.891+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T11:09:51.441+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T11:10:05.220+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T11:12:26.645+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T11:12:38.256+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T12:00:12.584+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T12:00:12.592+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T12:10:03.014+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T12:10:03.025+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T12:26:09.763+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T12:26:09.768+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T12:33:07.439+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T12:33:07.446+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T13:04:24.261+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:05:15.795+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T13:05:15.801+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T13:10:05.233+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:10:09.920+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:19:36.684+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T13:19:36.691+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:24:08.106+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T13:24:08.114+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:32:19.734+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T13:32:19.749+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T13:45:42.050+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T13:45:42.055+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:00:22.231+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:00:22.238+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:01:55.736+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:01:55.751+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:03:34.852+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:03:34.857+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:07:31.102+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:07:31.110+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:29:21.736+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:29:21.744+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:45:00.200+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:45:00.205+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:46:34.665+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:46:34.671+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T14:55:04.511+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T14:55:04.520+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:00:43.937+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T15:00:43.942+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:04:32.661+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T15:04:32.675+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T15:12:19.730+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:13:56.584+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T15:14:20.426+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:14:47.442+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T15:15:39.635+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:16:05.280+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:24:46.375+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T15:24:46.380+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T15:44:03.802+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T15:48:53.130+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:07:56.980+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T16:07:56.987+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:09:37.183+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:10:07.228+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:12:38.747+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:12:49.190+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:18:02.751+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T16:18:02.761+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:23:42.271+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:23:53.032+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:35:34.269+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:36:46.945+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:39:59.951+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:40:26.775+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:42:56.601+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:43:07.280+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:47:58.144+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T16:47:58.158+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T16:52:50.395+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:53:28.982+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T16:53:28.999+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T16:56:49.007+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T16:56:49.013+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T17:05:51.653+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T17:06:06.279+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T17:14:29.054+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T17:14:49.539+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T18:23:21.960+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T18:23:34.392+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T18:42:20.365+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T18:42:32.894+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T18:55:44.380+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T18:55:56.515+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:02:08.392+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T19:02:08.403+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:06:34.950+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T19:06:34.955+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T19:14:42.137+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:14:55.688+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T19:18:17.435+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:18:31.769+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:42:52.136+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T19:42:52.145+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T19:48:02.699+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:48:27.543+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:55:36.647+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T19:55:36.659+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T19:58:52.137+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T19:59:53.798+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T20:01:30.833+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:02:20.697+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T20:02:20.704+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T20:09:35.875+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:09:47.084+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T20:18:14.626+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:24:14.736+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T20:25:06.830+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:26:49.188+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T20:27:29.726+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:27:56.597+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:32:28.389+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T20:32:28.399+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:40:23.739+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T20:40:23.754+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:43:40.761+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T20:43:40.769+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T20:54:33.895+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T20:54:33.910+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:03:46.041+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:04:23.684+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:05:04.235+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:06:37.477+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T22:06:37.486+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:07:22.623+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:07:26.919+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:07:57.136+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:08:17.778+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:16:32.423+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:17:08.322+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-05-31T22:20:32.608+01:00"}
+info: connection timed out {"timestamp":"2025-05-31T22:20:32.617+01:00"}
+info: connection timed out {"timestamp":"2025-05-31T22:20:32.618+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-05-31T22:23:22.177+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-05-31T22:23:22.181+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T06:51:17.333+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T06:51:48.165+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T07:36:22.808+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-01T07:36:22.829+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T07:39:11.231+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T07:39:26.134+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T07:49:41.081+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T07:49:53.947+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T10:25:21.575+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T10:44:26.779+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T10:53:27.908+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:09:08.100+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:09:08.788+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:09:12.087+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:11:24.111+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:12:59.973+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:15:10.853+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:17:01.813+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:19:42.627+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:20:49.600+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:23:40.785+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:23:55.593+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T11:25:06.434+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T11:29:00.170+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T14:02:20.733+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-01T14:02:20.743+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T14:20:12.622+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T14:24:57.395+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T14:29:21.322+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T14:29:35.933+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T14:35:25.809+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T14:35:38.570+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T14:56:32.282+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T15:04:10.263+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-01T16:36:51.033+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-01T16:38:12.908+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T00:21:29.613+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T00:21:41.452+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T00:26:18.106+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T00:27:36.243+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T00:27:49.839+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T00:30:45.950+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-02T00:30:45.968+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T00:49:46.758+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-02T00:49:46.772+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T01:12:52.323+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-02T01:12:52.340+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T08:54:54.616+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T08:55:08.594+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T09:02:37.194+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-02T09:02:37.209+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T09:18:58.502+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T09:20:04.847+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T09:31:56.258+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T09:32:06.906+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T10:09:09.630+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T10:15:34.441+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-02T12:03:40.548+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-02T12:03:51.286+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T01:46:57.299+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T01:46:57.304+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T01:46:57.305+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T01:50:19.168+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T01:50:19.174+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T01:51:36.671+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T01:52:19.859+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T01:52:19.874+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T01:52:54.185+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T01:54:05.513+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T01:54:05.530+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:06:15.773+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:06:33.136+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:10:57.566+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T02:10:57.576+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:12:49.486+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T02:12:49.495+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:15:19.230+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:17:20.192+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:18:40.877+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:24:56.616+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T02:24:56.625+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:30:13.746+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:36:20.599+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T02:36:20.868+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T02:36:20.923+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T02:45:17.579+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T02:45:17.605+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T02:45:17.613+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T02:56:53.746+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T02:56:53.854+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:09:46.485+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T03:09:52.740+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:16:38.359+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:32:38.128+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:32:38.159+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:32:38.174+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:39:56.359+01:00"}
+info: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/ {"timestamp":"2025-06-06T03:39:56.428+01:00"}
+info: getaddrinfo ENOTFOUND ac-de6mgvk-shard-00-02.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:39:56.466+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:44:07.246+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:44:07.275+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:44:07.285+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:48:09.815+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:48:09.851+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:48:09.868+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:53:12.313+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:53:12.346+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:53:12.355+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T03:57:46.641+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:57:46.670+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T03:57:46.675+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T04:04:59.855+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T04:04:59.933+01:00"}
+info: querySrv ECONNREFUSED _mongodb._tcp.all4one.fgxnfw3.mongodb.net {"timestamp":"2025-06-06T04:04:59.943+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T04:09:27.789+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T04:09:27.829+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T11:13:45.309+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T11:14:06.158+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T11:17:24.822+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T11:17:30.139+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T11:28:44.312+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T11:28:55.320+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T11:37:09.558+01:00"}
+info: connect ETIMEDOUT 65.62.32.222:27017 {"timestamp":"2025-06-06T11:37:09.587+01:00"}
+info: connect ETIMEDOUT 65.62.32.222:27017 {"timestamp":"2025-06-06T11:37:09.600+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T14:59:46.888+01:00"}
+info: connect ETIMEDOUT 10.116.0.3:27017 {"timestamp":"2025-06-06T14:59:46.976+01:00"}
+info: connect ETIMEDOUT 10.116.0.3:27017 {"timestamp":"2025-06-06T14:59:46.983+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T15:14:43.036+01:00"}
+info: connect ETIMEDOUT 10.116.0.3:27017 {"timestamp":"2025-06-06T15:14:43.048+01:00"}
+info: connect ETIMEDOUT 10.116.0.3:27017 {"timestamp":"2025-06-06T15:14:43.050+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T15:31:37.395+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T15:31:37.408+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T15:33:20.292+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T15:34:36.195+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T15:34:36.204+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T15:34:53.027+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T15:35:42.232+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T15:35:42.246+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T15:45:59.684+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T15:45:59.696+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:33:54.719+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T16:33:54.729+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T16:34:00.141+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:38:02.308+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T16:38:02.320+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T16:38:52.973+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:39:03.690+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:44:05.982+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:44:59.116+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T16:44:59.132+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:46:54.201+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T16:46:54.211+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T16:47:20.604+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:52:02.670+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T16:58:12.635+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T16:58:12.647+01:00"}
+info: Cannot use a session that has ended {"timestamp":"2025-06-06T16:58:13.308+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T17:00:18.873+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T17:00:18.884+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T17:04:15.685+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T17:05:31.257+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-06T17:05:31.269+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-06T17:06:22.982+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T17:30:02.016+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T17:32:41.991+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-06T19:16:36.948+01:00"}
+info: connect ETIMEDOUT 161.35.1.205:27017 {"timestamp":"2025-06-06T19:16:36.968+01:00"}
+info: connect ETIMEDOUT 161.35.1.205:27017 {"timestamp":"2025-06-06T19:16:36.971+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-07T08:20:03.953+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.db-mongodb-nyc1-44365-51a07e26.mongo.ondigitalocean.com {"timestamp":"2025-06-07T08:20:03.957+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.db-mongodb-nyc1-44365-51a07e26.mongo.ondigitalocean.com {"timestamp":"2025-06-07T08:20:03.959+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T15:45:51.560+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-07T15:45:51.574+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T16:07:20.064+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-07T16:07:20.075+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T16:14:35.366+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-07T16:14:35.380+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T16:43:56.610+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-07T16:43:56.622+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-07T17:33:27.587+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T17:33:39.111+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-07T17:38:51.628+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-07T17:38:51.645+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-13T18:27:41.719+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-13T18:27:41.736+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-13T18:34:23.675+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-14T09:46:24.909+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.db-mongodb-nyc1-44365-51a07e26.mongo.ondigitalocean.com {"timestamp":"2025-06-14T09:46:24.918+01:00"}
+info: querySrv ETIMEOUT _mongodb._tcp.db-mongodb-nyc1-44365-51a07e26.mongo.ondigitalocean.com {"timestamp":"2025-06-14T09:46:24.920+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T10:25:14.874+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T10:25:14.890+01:00"}
+info: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined {"timestamp":"2025-06-14T10:25:18.875+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T10:31:26.665+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T10:31:26.682+01:00"}
+info: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined {"timestamp":"2025-06-14T10:31:30.570+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-14T10:33:42.146+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T10:37:19.062+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T10:37:19.076+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-14T10:37:49.249+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T11:29:33.086+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T11:29:33.107+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T11:31:02.994+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T11:31:03.016+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T11:31:59.106+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T11:31:59.130+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-14T11:32:07.871+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-14T11:34:09.455+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-14T11:34:09.465+01:00"}
+info: Mongoose connection is disconnected {"timestamp":"2025-06-14T12:01:29.453+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-15T21:13:36.775+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-15T21:13:36.786+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-15T21:14:51.098+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-15T21:14:51.112+01:00"}
+info: Mongoose connected to db {"timestamp":"2025-06-15T21:19:05.646+01:00"}
+info: MongoDB connected Successfully. {"timestamp":"2025-06-15T21:19:05.655+01:00"}

@@ -1,14 +1,17 @@
 import { Worker, Job } from "bullmq";
 import dotenv from "dotenv";
-const hre = require("hardhat");
-
 import { TransferLog } from "../../models/transferlog.model";
 import { notificationQueue } from "./queues";
 import { transferERC20, transferNativeETH } from "../services/transfer.service";
 import CryptoListingPurchase from "../../models/listingPurchase.model";
 import Escrow from "../../models/escrow.model";
+import { IChainWallets } from "../../models/accounts-chain-wallets";
+import { decryptDataString } from "../../services/v1/helpers";
+import mongoose from "mongoose";
 
 dotenv.config();
+
+const depth = Number(process.env.ENC_DEPTH! || '1');
 
 interface TransferJobData {
   userId: string;
@@ -20,7 +23,16 @@ interface TransferJobData {
   amount: string;
   tokenAddress?: string;
   decimals?: number;
+  blockchainWallet?: IChainWallets;
 }
+
+const getPrivateKey = (blockchainWallet: IChainWallets) => {
+  // Replace with your actual private key (⚠️ Never expose this in production)
+  console.log("blockchainWallet ", blockchainWallet);
+  const PRIVATE_KEY = decryptDataString(blockchainWallet.privateKey, depth);
+  console.log("PRIVATE_KEY ==> ", PRIVATE_KEY);
+  return PRIVATE_KEY;
+};
 
 export const startTransfersWorker = () => {
   new Worker(
@@ -36,15 +48,79 @@ export const startTransfersWorker = () => {
         symbol,
         tokenAddress,
         decimals,
+        blockchainWallet,
       } = job.data;
-      const [signer] = await hre.ethers.getSigners();
+      const privateKey = getPrivateKey(blockchainWallet!);
       console.log("job.data ", job.data);
 
       try {
-        let txHash = "";
+        let txHash: string | null = null;
 
         if (type === "native") {
-          txHash = await transferNativeETH(recipient, amount, signer);
+          const escrowAccount = await Escrow.findOne({ _id: escrowId });
+          if (!escrowAccount) {
+            throw new Error("No escrow account was found for this listing");
+          }
+          if (escrowAccount.availableEscrowBalance < Number(amount)) {
+            throw new Error(
+              "No enough stock at this moment to service this order"
+            );
+          }
+          const session = await mongoose.startSession();
+          session.startTransaction();
+          try {
+            txHash = await transferNativeETH(recipient, amount, privateKey);
+
+            if (txHash) {
+              const purchase = await CryptoListingPurchase.findOne({
+                checkOutId: checkOutId,
+              }).session(session);
+              if (!purchase) {
+                throw new Error("No purchase was found to update");
+              }
+              purchase.cryptoDispensed = true;
+              await purchase.save({ session });
+
+              await TransferLog.create(
+                [
+                  {
+                    account: userId,
+                    escrow: escrowId,
+                    checkOutId,
+                    recipient,
+                    symbol,
+                    amount,
+                    tokenAddress,
+                    type,
+                    txHash,
+                    status: "success",
+                  },
+                ],
+                { session }
+              );
+
+              escrowAccount.availableEscrowBalance -= Number(amount);
+
+              await session.commitTransaction();
+
+              await notificationQueue.add("notify", {
+                userId,
+                checkOutId,
+                recipient,
+                symbol,
+                amount,
+                txHash,
+                status: "success",
+              });
+              console.log(`✅ Sent ${amount} ${symbol} to ${recipient}`);
+            }
+          } catch (error: any) {
+            console.log(error);
+            await session.abortTransaction();
+            throw error;
+          } finally {
+            session.endSession();
+          }
         }
 
         if (type === "erc20") {
@@ -52,60 +128,78 @@ export const startTransfersWorker = () => {
             throw new Error("Missing tokenAddress or decimals");
           const escrowAccount = await Escrow.findOne({ _id: escrowId });
           if (!escrowAccount) {
-            throw new Error("No escrow accout was found for this listing");
+            throw new Error("No escrow account was found for this listing");
           }
           if (escrowAccount.availableEscrowBalance < Number(amount)) {
             throw new Error(
               "No enough stock at this moment to service this order"
             );
           }
-          txHash = await transferERC20(
-            checkOutId,
-            tokenAddress,
-            recipient,
-            amount,
-            decimals,
-            signer
-          );
-
-          if (txHash?.trim()) {
-            const purchase = await CryptoListingPurchase.findOne({
-              checkOutId: checkOutId,
-            });
-            if (!purchase) {
-              throw new Error("No purchase was found to update");
-            }
-            purchase.cryptoDispensed = true;
-            await purchase.save();
-  
-            await TransferLog.create({
-              account: userId,
-              escrow: escrowId,
+          const session = await mongoose.startSession();
+          session.startTransaction();
+          try {
+            txHash = await transferERC20(
               checkOutId,
-              recipient,
-              symbol,
-              amount,
               tokenAddress,
-              type,
-              txHash,
-              status: "success",
-            });
-  
-            escrowAccount.availableEscrowBalance -= Number(amount);
-  
-            await notificationQueue.add("notify", {
-              userId,
-              checkOutId,
               recipient,
-              symbol,
               amount,
-              txHash,
-              status: "success",
-            });
+              decimals,
+              privateKey
+            );
+
+            if (txHash) {
+              const purchase = await CryptoListingPurchase.findOne({
+                checkOutId: checkOutId,
+              }).session(session);
+              if (!purchase) {
+                throw new Error("No purchase was found to update");
+              }
+              purchase.cryptoDispensed = true;
+              await purchase.save({ session });
+
+              await TransferLog.create(
+                [
+                  {
+                    account: userId,
+                    escrow: escrowId,
+                    checkOutId,
+                    recipient,
+                    symbol,
+                    amount,
+                    tokenAddress,
+                    type,
+                    txHash,
+                    status: "success",
+                  },
+                ],
+                { session }
+              );
+
+              escrowAccount.availableEscrowBalance -= Number(amount);
+
+              await session.commitTransaction();
+
+              await notificationQueue.add("notify", {
+                userId,
+                checkOutId,
+                recipient,
+                symbol,
+                amount,
+                txHash,
+                status: "success",
+              });
+              console.log(`✅ Sent ${amount} ${symbol} to ${recipient}`);
+            }
+          } catch (error: any) {
+            console.log(error);
+            await session.abortTransaction();
+            throw error;
+          } finally {
+            session.endSession();
           }
         }
-        console.log(`✅ Sent ${amount} ${symbol} to ${recipient}`);
       } catch (err: any) {
+        console.log(err);
         console.error(`❌ Transfer failed: ${err.message}`);
 
         await TransferLog.create({
@@ -136,9 +230,17 @@ export const startTransfersWorker = () => {
       }
     },
     {
-      connection: { host: "127.0.0.1", port: 6379 },
+      connection: { host: process.env.CRYGOCA_REDIS_HOST!, port: 6379 },
       concurrency: 2,
       // settings: { retryProcessDelay: 5000 },
     }
   );
 };
+
+//To solve the issue of knowing how much gasFee a wallet holds
+
+// 1: Accumulate the gasFee somehwhere in database;
+
+// 2: Each time a transfer is about to be made, substract the accumulated balance from the Wallet available balance
+
+// 3: The moment we clear out any wallet reset the Accumulated gas fee for the wallet to zero

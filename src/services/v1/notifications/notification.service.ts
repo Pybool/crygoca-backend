@@ -149,7 +149,7 @@ export class NotificationService {
       status: "UNREAD",
       class: "info",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           listingPurchase._id
         }`,
       },
@@ -189,7 +189,7 @@ export class NotificationService {
       status: "UNREAD",
       class: "success",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           listingPurchase._id
         }`,
       },
@@ -238,7 +238,7 @@ export class NotificationService {
       status: "UNREAD",
       class: "success",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           listingPurchase._id
         }`,
       },

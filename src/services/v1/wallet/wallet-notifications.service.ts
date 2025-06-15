@@ -34,7 +34,7 @@ export class WalletNotificationService {
       status: "UNREAD",
       class: "success",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           walletTransaction._id
         }`,
       },
@@ -80,7 +80,7 @@ export class WalletNotificationService {
       status: "UNREAD",
       class: "error",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           walletTransaction._id
         }`,
       },
@@ -124,7 +124,7 @@ export class WalletNotificationService {
       status: "UNREAD",
       class: "success",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           walletIncomingPayment._id
         }`,
       },
@@ -168,7 +168,7 @@ export class WalletNotificationService {
       status: "UNREAD",
       class: "success",
       meta: {
-        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}/notifications?uid=${
+        url: `${process.env.CRYGOCA_FRONTEND_BASE_URL!}notifications?uid=${
           walletTransaction._id
         }`,
       },
