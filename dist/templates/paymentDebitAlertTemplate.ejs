@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            padding: 20px;
+            text-align: left;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px; /* Adjust the size of your logo */
+        }
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .details {
+            margin-top: 15px;
+            padding: 10px;
+            background: #292929;
+            border-radius: 5px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .highlight {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #bbb;
+            text-align: center;
+        }
+        .footer a {
+            color: #4caf50;
+            text-decoration: none;
+        }
+
+        p{
+            color:white!important;
+        }
+
+        .details > p{
+            text-transform: capitalize;
+            margin-top: 7px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img style="width:70px;height:70px" src="<%= marketplaceUrl%>/assets/_images/flutterwave-logo.png" alt="Company Logo">
+        </div>
+
+        <p>Dear <strong><%= data.walletTransaction.user.firstname %> <%= data.walletTransaction.user.lastname %></strong>,</p>
+        <p>Wallet payment of <span class="highlight"><%= data.walletTransaction.user.geoData.currency.symbol %><%= Number(data.walletTransaction.amount).toFixed(2) %></span> was successful.
+           Your available balance is <span class="highlight"><%= data.walletTransaction.user.geoData.currency.symbol %><%= Number(data.wallet.balance).toFixed(2) %></span>.
+        </p>
+
+        <div class="details">
+            <p class="title">Transfer Details:</p>
+            <p><strong>Amount:</strong> <span class="highlight"><%= data.walletTransaction.user.geoData.currency.symbol %><%= Number(data.walletTransaction.amount).toFixed(2) %></span></p>
+            <p><strong>Transaction Type:</strong> <%= data.walletTransaction.type.replaceAll("-", " ") %></p>
+            <p><strong>Transaction No:</strong> <%= data.walletTransaction.reference %></p>
+            <p><strong>Transaction Date:</strong> <%= data.walletTransaction.createdAt %></p>
+        </div>
+
+        <p>For further enquiries, please contact our customer support through the following channels:</p>
+        <p><strong>Phone:</strong> +44-273874848838</p>
+        <p><strong>Email:</strong> <a href="mailto:support@crygoca.com">support@crygoca.com</a></p>
+
+        <div class="footer">
+            <p>Thank you for choosing <strong>Crygoca</strong>.</p>
+            <p>The Crygoca Team</p>
+        </div>
+    </div>
+</body>
+</html>
