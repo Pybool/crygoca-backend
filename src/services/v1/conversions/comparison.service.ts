@@ -42,7 +42,7 @@ export async function getUserCountry(req: any): Promise<any> {
 
     return null;
   } catch (error) {
-    console.error("Error fetching geolocation data:", error);
+    // console.error("Error fetching geolocation data:", error);
     return null; // Return null in case of errors
   }
 }

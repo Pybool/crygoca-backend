@@ -13,7 +13,7 @@ const AccountsSchema = new Schema({
   password: {
     type: String,
     required: false,
-    select: false,
+    // select: false,
   },
   email_confirmed: {
     type: Boolean,
@@ -174,25 +174,16 @@ const AccountsSchema = new Schema({
   
 });
 
-AccountsSchema.set('toJSON', {
-  transform: (_doc, ret) => {
-    delete ret.password;
-    return ret;
-  },
-});
-
-AccountsSchema.set('toObject', {
-  transform: (_doc, ret) => {
-    delete ret.password;
-    return ret;
-  },
-});
 
 
 AccountsSchema.pre(/^find/, function (next) {
-  (this as Query<any, any>).select('-password');
+  const fields = (this as Query<any, any> & { _fields?: any })._fields;
+  if (!fields) {
+   (this as Query<any, any>).select('-password');
+  }
   next();
 });
+
 
 
 interface IAccountModel extends mongoose.Model<any> {

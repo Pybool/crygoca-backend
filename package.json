@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/bootstrap/index.ts",
-    "start": "node dist/src/bootstrap/server.js",
+    "start": "node dist/src/bootstrap/index.js",
     "encrypt-env": "node env/encrypt-env.js",
     "deploy-meta-transfer-contract": "hardhat run scripts/deploy.js --network sepolia",
     "deploy-meta-transfer-contract-prod": "hardhat run scripts/deploy.js --network sepolia",

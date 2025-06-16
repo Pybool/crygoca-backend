@@ -1,4 +1,5 @@
 import readline from "readline";
+import * as fs from 'fs';
 import { SecretsManager } from "../../secrets-manager";
 
 /**
@@ -24,19 +25,22 @@ export async function promptForPassword(): Promise<string> {
       rl.close();
       resolve(password);
     });
-
-     
-
-    // rl._writeToOutput = function (stringToWrite) {
-    //   if (rl.stdoutMuted) rl.output.write("*");
-    //   else rl.output.write(stringToWrite);
-    // };
     
   });
 }
 
 export async function setUpSecrets() {
-  const password = await promptForPassword();
+  let password = ""
+  console.log("process.env.NODE_ENV ", process.env.NODE_ENV)
+  if (process.env.NODE_ENV == "prod") {
+    password = fs
+      .readFileSync("/run/secrets/decryption_password", "utf8")
+      .trim();
+  }else{
+    password = await promptForPassword();
+  }
+
   new SecretsManager(password);
   console.log("✅ Secrets decrypted.");
 }
+

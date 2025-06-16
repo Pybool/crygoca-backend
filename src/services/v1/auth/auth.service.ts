@@ -298,7 +298,7 @@ export class Authentication {
   public async login() {
     try {
       const result = await validations.authSchema.validateAsync(this.req.body);
-      const account: any = await Accounts.findOne({ email: result.email });
+      const account: any = await Accounts.findOne({ email: result.email }).select('+password');;
       if (!account) return createError.NotFound(message.auth.userNotRegistered);
 
       const isMatch = await account.isValidPassword(result.password);
