@@ -11,15 +11,20 @@ liveCrypto.get(
 );
 
 // liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getCryptos);
-liveCrypto.get("/get-cryptos", liveCryptoCurrenciesController.getSupportedCryptos);
-
+liveCrypto.get(
+  "/get-cryptos",
+  liveCryptoCurrenciesController.getSupportedCryptos
+);
 
 liveCrypto.get(
   "/crypto-conversion",
   liveCryptoCurrenciesController.cryptoConversion
 );
 
-liveCrypto.get('/exchange-prices', liveCryptoCurrenciesController.exchangePrices);
+liveCrypto.get(
+  "/exchange-prices",
+  liveCryptoCurrenciesController.getExchangePrices
+);
 
 liveCrypto.put(
   "/edit-crypto-sales-listing",
@@ -33,10 +38,6 @@ liveCrypto.post(
   liveCryptoCurrenciesController.bookMarkingListing
 );
 
-
-
-
-
 liveCrypto.get(
   "/fetch-crypto-sales-listings",
   decode,
@@ -47,13 +48,15 @@ liveCrypto.post(
   "/archive-crypto-sales-listing",
   decode,
   liveCryptoCurrenciesController.archiveListings
-)
+);
 
 liveCrypto.get("/convert-crypto-to-crypto", async (req: any, res: any) => {
   const { from, to, amount } = req.query;
 
   if (!from || !to || !amount) {
-    return res.status(400).json({ error: "Missing 'from', 'to', or 'amount' in query params." });
+    return res
+      .status(400)
+      .json({ error: "Missing 'from', 'to', or 'amount' in query params." });
   }
 
   try {
@@ -64,7 +67,6 @@ liveCrypto.get("/convert-crypto-to-crypto", async (req: any, res: any) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 liveCrypto.post("/update-crypto-quotes", async (req: any, res: any) => {
   const cryptocurrenciesData = req.body.data;
