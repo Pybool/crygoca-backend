@@ -22,20 +22,6 @@ export async function transferNativeETHEREUM(
     const senderBalanceBefore = await web3.eth.getBalance(account.address);
     const recipientBalanceBefore = await web3.eth.getBalance(recipient);
 
-    console.log(`🔎 ETH balance before transfer`);
-    console.log(
-      `   Sender:   ${web3.utils.fromWei(
-        senderBalanceBefore.toString(),
-        "ether"
-      )}`
-    );
-    console.log(
-      `   Recipient: ${web3.utils.fromWei(
-        recipientBalanceBefore.toString(),
-        "ether"
-      )}`
-    );
-
     const gasPrice = await web3.eth.getGasPrice(); // gasPrice is bigint
     const gasLimit = 21000;
 

@@ -44,7 +44,6 @@ export class SocialAuthentication {
       let firstTimeSignup = false
       const googleUser = req.gAccount;
       const referralCode = req.referralCode;
-      console.log("googleUser ", googleUser,referralCode)
       if (!googleUser.googleId) {
         return {
           status: false,

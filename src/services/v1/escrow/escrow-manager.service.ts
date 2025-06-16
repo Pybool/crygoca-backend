@@ -248,7 +248,6 @@ export class EscrowManager {
         account: _intent.account,
         intent: _intent,
       });
-      console.log("Done Sending mail");
 
       return {
         status: true,
@@ -333,7 +332,7 @@ export class EscrowManager {
         { $match: matchStage },
         {
           $lookup: {
-            from: "cryptolistings", // ⚠️ Match the actual MongoDB collection name
+            from: "cryptolistings", 
             localField: "listing",
             foreignField: "_id",
             as: "listing",

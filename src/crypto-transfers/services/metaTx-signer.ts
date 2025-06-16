@@ -107,7 +107,6 @@ export function recoverSigner({
   };
 
   const digest = ethers.utils._TypedDataEncoder.hash(domain, types, message);
-  console.log("digest==> ", digest)
   return ethers.utils.recoverAddress(digest, { v, r, s });
 }
 
@@ -199,7 +198,6 @@ export function recoverEthSigner({
   };
 
   const digest = ethers.utils._TypedDataEncoder.hash(domain, types, message);
-  console.log("digest==> ", digest)
   return ethers.utils.recoverAddress(digest, { v, r, s });
 }
 

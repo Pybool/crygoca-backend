@@ -27,10 +27,7 @@ interface TransferJobData {
 }
 
 const getPrivateKey = (blockchainWallet: IChainWallets) => {
-  // Replace with your actual private key (⚠️ Never expose this in production)
-  console.log("blockchainWallet ", blockchainWallet);
   const PRIVATE_KEY = decryptDataString(blockchainWallet.privateKey, depth);
-  console.log("PRIVATE_KEY ==> ", PRIVATE_KEY);
   return PRIVATE_KEY;
 };
 
@@ -51,7 +48,6 @@ export const startTransfersWorker = () => {
         blockchainWallet,
       } = job.data;
       const privateKey = getPrivateKey(blockchainWallet!);
-      console.log("job.data ", job.data);
 
       try {
         let txHash: string | null = null;

@@ -18,12 +18,10 @@ export const EscrowController = {
       const data = req.body;
 
       if (!data.depositorAddress?.trim()) {
-        return res
-          .status(400)
-          .json({
-            status: true,
-            message: "Depositor Wallet Address is required",
-          });
+        return res.status(400).json({
+          status: true,
+          message: "Depositor Wallet Address is required",
+        });
       }
       const result = await EscrowManager.createDepositIntent(req);
       res.status(200).json(result);
@@ -140,8 +138,6 @@ export const EscrowController = {
         ],
       });
 
-      console.log("=================> ", logs);
-
       for (let log of logs) {
         const _log: any = log;
         const decoded: any = web3.eth.abi.decodeLog(
@@ -154,8 +150,6 @@ export const EscrowController = {
           _log.topics.slice(1)
         );
 
-        console.log("decoded ", decoded);
-
         const decodedAmount = Number(decoded.value) / 10 ** token.decimals;
         if (Math.abs(decodedAmount - Number(amount)) > 0.00001) continue;
 
@@ -167,13 +161,8 @@ export const EscrowController = {
           receivingAddress: decoded.to?.toLowerCase(),
         };
 
-        console.log("Filter ", filter);
-
         const match = await DepositIntent.findOne(filter);
-        console.log("Match ", match);
         if (!match) continue;
-
-        console.log("Match found ", match);
 
         const session = await mongoose.startSession();
         try {

@@ -74,7 +74,6 @@ export class ERC20ListenerManager {
         receivingAddress: decoded.to?.toLowerCase(),
       };
       const match = await DepositIntent.findOne(filter);
-      console.log("Match ", match);
       if (match) {
         const _accountId = match.account.toString();
         const session = await mongoose.startSession();
@@ -85,7 +84,7 @@ export class ERC20ListenerManager {
           match.chainId = token.chainId.toString();
           match.blockHash = log.blockHash;
           match.blockNumber = log.blockNumber!.toString();
-          match.txHash = log.transactionHash; // ✅ fixed from decoded.hash to log.transactionHash
+          match.txHash = log.transactionHash; 
 
           const listing: any = await CryptoListing.findOne({
             _id: match.listing,

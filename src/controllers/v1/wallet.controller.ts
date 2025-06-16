@@ -34,7 +34,6 @@ const makeTransfer = async (payload: any) => {
   let amount: number = 0.0;
 
   try {
-    console.log("Transfer otp from test ", otp);
     if (jobType === "wallet-transfer") {
       const validatedSenderWallet = await WalletService.validateTransfer(
         debitDetails.walletAccountNo,
@@ -98,13 +97,6 @@ const makeTransfer = async (payload: any) => {
 
     debitDetails.amount = sourceAmount; // Source/Raw amount
     debitDetails.currency = sourceCurrency;
-
-    console.log("Conversion Data XXXX ========================> ",{
-      convertedAMount: amount,
-      rawAmount: sourceAmount,
-      targetCurrency:creditDetails.currency,
-      sourceCurrency
-    })
   }
   debitDetails.otp = otp;
   try {
@@ -459,10 +451,7 @@ export const payWithWalletBalance = async (req: Xrequest, res: Response) => {
     const authorizationPin: string = req.body.authorizationPin.toString()!;
     const accountId: string =
       (req.accountId! as string) || (req.body.accountId! as string);
-    console.log(
-      "Pay with balance payload ===> ",
-      JSON.stringify(req.body, null, 2)
-    );
+    
     let response =
       await WalletAuthorization.validateWalletPaymentAuthorizationPin(
         accountId,

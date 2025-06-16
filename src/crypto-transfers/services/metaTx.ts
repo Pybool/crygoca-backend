@@ -40,14 +40,7 @@ export async function setUpRelayer(){
 
   let crygocaPlatform = await Accounts.findOne({ isPlatform: true });
   if (!crygocaPlatform) {
-    console.log(crygocaPlatform);
-    crygocaPlatform = await Accounts.create({
-      email: "relayaccount@crygoca.com",
-      firstname: "relaycrygoca",
-      username: "relaycrygoca",
-      password: "@10111011qweQWE",
-      isPlatform: true,
-    });
+    throw new Error("[Relayer] No relayer account configured")
   }
 
   if (!relayerWallet || !relayerWallet.privateKey) {
@@ -75,16 +68,15 @@ export async function initMetaRelayer() {
   });
 
   let crygocaPlatform = await Accounts.findOne({ isPlatform: true });
-  if (!crygocaPlatform) {
-    console.log(crygocaPlatform);
-    crygocaPlatform = await Accounts.create({
-      email: "relayaccount@crygoca.com",
-      firstname: "relaycrygoca",
-      username: "relaycrygoca",
-      password: "@10111011qweQWE",
-      isPlatform: true,
-    });
-  }
+  // if (!crygocaPlatform) {
+  //   crygocaPlatform = await Accounts.create({
+  //     email: "relayaccount@crygoca.com",
+  //     firstname: "relaycrygoca",
+  //     username: "relaycrygoca",
+  //     password: "@1011101errtyyuyuiy1qweQWE",
+  //     isPlatform: true,
+  //   });
+  // }
 
   if (!relayerWallet || !relayerWallet.privateKey) {
     console.log("[Relayer] No relayer wallet configured, creating relayer");
@@ -100,8 +92,6 @@ export async function initMetaRelayer() {
   if (!relayerWallet) {
     throw new Error("[Relayer] No relayer wallet configured in DB.");
   }
-
-  console.log("Relayer wallet ", relayerWallet)
 
   const PRIVATE_KEY_RELAY = decryptDataString(relayerWallet!.privateKey, depth);
   relayer = web3.eth.accounts.privateKeyToAccount(PRIVATE_KEY_RELAY);
@@ -138,7 +128,6 @@ export async function createSignedTransfer({
 
   const nonce = await getNonce(from);
   const signer = new ethers.Wallet(fromPrivateKey);
-  console.log("signer.address ", signer.address);
   if (tokenAddress !== "native_eth") {
     const { v, r, s } = await signMetaTransfer({
       signer,

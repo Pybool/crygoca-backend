@@ -15,7 +15,7 @@ export const setupSocketHandlers = (io: Server) => {
     });
 
     io.on("message", (message: any) => {
-      console.log("Message ", message);
+      // console.log("Message ", message);
     });
   } catch (error) {
     console.log("Socket handler error ", error);

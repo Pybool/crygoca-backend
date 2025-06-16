@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Query } from "mongoose";
 const Schema = mongoose.Schema;
 import bcrypt from "bcryptjs";
 import { generateReferralCode } from "../services/v1/helpers";
@@ -13,6 +13,7 @@ const AccountsSchema = new Schema({
   password: {
     type: String,
     required: false,
+    select: false,
   },
   email_confirmed: {
     type: Boolean,
@@ -172,6 +173,27 @@ const AccountsSchema = new Schema({
   ],
   
 });
+
+AccountsSchema.set('toJSON', {
+  transform: (_doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+
+AccountsSchema.set('toObject', {
+  transform: (_doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+
+
+AccountsSchema.pre(/^find/, function (next) {
+  (this as Query<any, any>).select('-password');
+  next();
+});
+
 
 interface IAccountModel extends mongoose.Model<any> {
   changePassword(

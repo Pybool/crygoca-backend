@@ -17,7 +17,6 @@ export const dashboardController: any = {
       if (result) {
         res.status(200).json(result);
       } else {
-        console.log("422 result ===> ", result)
         return res.status(422).json(result);
       }
     } catch (error: any) {

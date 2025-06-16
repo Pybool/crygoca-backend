@@ -47,7 +47,6 @@ export async function transferERC20Token(
         META_TX_CONTRACT_ADDRESS,
         rawAmount
       );
-      console.log("metaTx ", metaTx);
       const receipt = await relayTransfer(metaTx);
       console.log(
         `✅ Relayed transfer success! Tx hash:`,

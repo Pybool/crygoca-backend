@@ -28,7 +28,6 @@ export const startEscrowBalanceWorker = () => {
           break;
         case "releaseLockedFunds":
           const escrow = await releaseLockedFunds(escrowId, amount, metaData.checkOutId);
-          console.log("releaseLockedFunds", escrow)
           if(escrow) sendReleaseLockedFundsNotification(buyerId, escrow)
           break;
         default:

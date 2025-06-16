@@ -55,7 +55,7 @@ export class ETHNativeListenerManager {
 
           const match = await DepositIntent.findOne(filter);
           if (match) {
-            console.log("Match ", match);
+            
             const session = await mongoose.startSession();
             try {
               session.startTransaction();

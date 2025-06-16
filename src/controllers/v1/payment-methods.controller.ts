@@ -6,7 +6,6 @@ export const addPaymentMethod = async (req: Xrequest, res: Response) => {
   try {
     const accountId = req.accountId!; // Assuming you extract user from auth middleware
     const { paymentMethod } = req.body;
-    console.log(paymentMethod)
     if(!paymentMethod){
       return res
       .status(200)
