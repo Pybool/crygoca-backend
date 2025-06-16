@@ -1,5 +1,5 @@
 import { Wallet as EvmWallet } from "ethers";
-import { Keypair } from "@solana/web3.js";
+// import { Keypair } from "@solana/web3.js";
 import { ClientSession } from "mongoose";
 import BlockChainWallets, {
   IChainWallets,
@@ -30,11 +30,15 @@ export class DepositWallets {
   }
 
   static createSolanaWallet(): { address: string; privateKey: string } {
-    const keypair = Keypair.generate();
+    // const keypair = Keypair.generate();
+    // return {
+    //   address: keypair.publicKey.toBase58().toString().toLowerCase(),
+    //   privateKey: Buffer.from(keypair.secretKey).toString("hex"),
+    // };
     return {
-      address: keypair.publicKey.toBase58().toString().toLowerCase(),
-      privateKey: Buffer.from(keypair.secretKey).toString("hex"),
-    };
+      address: "",
+      privateKey: ""
+    }
   }
 
   static createTronWallet() {

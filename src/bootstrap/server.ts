@@ -48,7 +48,6 @@ import { timeoutAutoConfirmation } from "../services/v1/jobs/payment-verificatio
 import crypto from "crypto";
 import { ERC20ListenerManager } from "../escrow/services/listener-managers/erc-listener-manager.service";
 import { setUpRelayer } from "../crypto-transfers/services/metaTx";
-import { setUpSecrets } from "../../env/decrypt-env";
 import { killPortProcess } from "./port-sanitation";
 
 
