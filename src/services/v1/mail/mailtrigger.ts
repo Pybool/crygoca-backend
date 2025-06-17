@@ -17,6 +17,17 @@ try {
     tls : { rejectUnauthorized: false }
   });
 
+  console.log({
+    service: process.env.EMAIL_HOST,
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT || "2525"),
+    auth: {
+      user: process.env.EMAIL_HOST_USER,
+      pass: process.env.EMAIL_HOST_PASSWORD,
+    },
+    tls : { rejectUnauthorized: false }
+  })
+
   sendMail = (mailOptions: Options) => {
     return new Promise((resolve, reject) => {
       transporter.sendMail(mailOptions, (error: any, info: any) => {

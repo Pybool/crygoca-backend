@@ -163,11 +163,12 @@ const AccountsSchema = new Schema({
   },
   paymentMethods: [
     {
-      country: { type: String, required: true },
+      // country: { type: String, required: true },
       provider: { type: String, required: true },
       accountName: { type: String, required: true },
       accountNumber: { type: String, required: true },
-      routingNumber: { type: String },
+      swiftCode: { type: String, required: false },
+      routingNumber: { type: String , required: false},
       _id: { type: Schema.Types.ObjectId, auto: true }, // For easier editing/deleting
     }
   ],
