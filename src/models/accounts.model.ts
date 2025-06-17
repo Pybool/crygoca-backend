@@ -163,7 +163,7 @@ const AccountsSchema = new Schema({
   },
   paymentMethods: [
     {
-      // country: { type: String, required: true },
+      country: { type: String, required: false },
       provider: { type: String, required: true },
       accountName: { type: String, required: true },
       accountNumber: { type: String, required: true },
