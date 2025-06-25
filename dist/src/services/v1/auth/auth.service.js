@@ -388,7 +388,7 @@ class Authentication {
                 if (process.env.NODE_ENV === "dev") {
                     console.log("Email 2FA OTP ===> ", Number(otp));
                 }
-                await mailservice_1.default.auth.sendEmailConfirmationOtp("Crygoca login otp resent", account.email, otp);
+                await mailservice_1.default.auth.sendEmailConfirmationOtp("Crygoca login otp sent", account.email, otp);
             }
             else if (otpChannel === "sms") {
                 const key = "sms-2fa-signin-otp";

@@ -453,7 +453,7 @@ export class Authentication {
         }
 
         await mailActions.auth.sendEmailConfirmationOtp(
-          "Crygoca login otp resent",
+          "Crygoca login otp sent",
           account.email,
           otp
         );
