@@ -232,9 +232,6 @@ export class ProfileService {
           code: 400
         }
       }
-
-      console.log(req.attachments)
-
       if (req?.attachments?.length > 0) {
         account.avatar = req.attachments[0].replaceAll("/public", "");
       }

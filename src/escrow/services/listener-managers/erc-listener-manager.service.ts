@@ -108,11 +108,7 @@ export class ERC20ListenerManager {
               await listing.save({ session });
             } else {
               escrow = await Escrow.findOne({ _id: listing.escrow });
-              console.log({
-                buyerId: listing.account?._id?.toString(),
-                escrowId: escrow._id,
-                amount: filter.amount,
-              });
+             
               await escrowBalanceQueue.add("topUpEscrow", {
                 buyerId: listing.account?._id?.toString(),
                 escrowId: escrow._id,
@@ -124,7 +120,6 @@ export class ERC20ListenerManager {
 
           await session.commitTransaction();
           this.removeEscrowAddress(accountId, normalizedAddress);
-          console.log(`ERC20 deposit confirmed for ${match.intentId}`);
           sendTransferNotification(_accountId, match);
           console.log(
             `📦 ERC20 (${token.symbol}) deposit: from ${decoded.from} → ${decoded.to} | amount: ${value}`

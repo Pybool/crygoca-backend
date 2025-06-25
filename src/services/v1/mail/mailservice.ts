@@ -39,7 +39,6 @@ const mailActions = {
             "src/templates/emailConfirmation.ejs",
             { email, otp, marketplaceUrl }
           );
-          console.log("OTP==> ", otp);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -121,7 +120,6 @@ const mailActions = {
             "src/templates/buyerPaymentSuccessTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -151,7 +149,6 @@ const mailActions = {
             "src/templates/sellerPaymentSuccessTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -181,7 +178,6 @@ const mailActions = {
             "src/templates/orderStatusUpdateTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -214,7 +210,6 @@ const mailActions = {
             "src/templates/orderAutoConfirmWarnTemplate.ejs",
             { data, disputeUrl, timeout, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -244,7 +239,6 @@ const mailActions = {
             "src/templates/orderAutoConfirmedTemplate.ejs",
             { data, marketplaceUrl }
           );
-          console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -274,7 +268,6 @@ const mailActions = {
             "src/templates/buyerLockedOrderTemplate.ejs",
             { data, marketplaceUrl }
           );
-          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
@@ -509,7 +502,6 @@ const mailActions = {
             "src/templates/complaintReceived.ejs",
             { data, marketplaceUrl }
           );
-          // console.log("Mail data ==> ", data);
 
           const mailOptions = {
             from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,

@@ -43,7 +43,11 @@ export const decodeExt = (req: Xrequest, res: Response, next: any) => {
   }
 };
 
-export const decodeMerchant = async(req: Xrequest, res: Response, next: any) => {
+export const decodeMerchant = async (
+  req: Xrequest,
+  res: Response,
+  next: any
+) => {
   const reqHeaders: any = req.headers;
   if (!reqHeaders["authorization"]) {
     return res
@@ -55,11 +59,17 @@ export const decodeMerchant = async(req: Xrequest, res: Response, next: any) => 
   try {
     const decoded: any = jwt.verify(accessToken, SECRET_KEY);
     req.merchantAccountId = decoded.aud;
-    const merchantAccount = await MerchantAccounts.findOne({_id: req.merchantAccountId})
+    const merchantAccount = await MerchantAccounts.findOne({
+      _id: req.merchantAccountId,
+    });
     if (merchantAccount && merchantAccount.isVerified) {
       next();
     } else {
-      res.status(403).json({ message: "Forbidden: Account is not a verified merchant account" });
+      res
+        .status(403)
+        .json({
+          message: "Forbidden: Account is not a verified merchant account",
+        });
     }
   } catch (error: any) {
     return res.status(401).json({ success: false, message: error.message });
@@ -75,8 +85,8 @@ export function ensureAdmin(req: Xrequest, res: Response, next: NextFunction) {
   }
 }
 
-async function updateLastSeen(accountId:string){
-  await Accounts.findByIdAndUpdate(accountId, {lastSeen: new Date()})
+async function updateLastSeen(accountId: string) {
+  await Accounts.findByIdAndUpdate(accountId, { lastSeen: new Date() });
 }
 
 // Middleware to verify the Google ID token
@@ -97,14 +107,13 @@ export async function verifyGoogleToken(
     });
 
     const payload = ticket.getPayload();
-    console.log("Payload ===> ", payload);
     req.user = {
       email: payload.email,
       fullname: payload.name,
       avatar: payload.picture,
       googleId: payload.sub,
       firstname: payload.given_name,
-      lastname: payload.family_name
+      lastname: payload.family_name,
     };
     next();
   } catch (error) {

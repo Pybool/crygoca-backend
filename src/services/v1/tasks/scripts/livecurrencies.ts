@@ -19,11 +19,10 @@ const liveUpdateEventQueue = new Queue(queueName, {
 
 
 export const fetchRates = async (url: string, isTask = false) => {
-  return new Promise((resolve: any, reject: any) => {
-    // if (memCache.get("live-currencies") && !isTask) {
-    //   resolve(memCache.get("live-currencies"));
-    // } else {
-    console.log("Fetching rates ", url)
+  return new Promise(async(resolve: any, reject: any) => {
+    if (await memCache.get("live-currencies") && !isTask) {
+      resolve(memCache.get("live-currencies"));
+    } else {
     rp(url)
       .then(function (response: { data: any }) {
         const dom = response; //.data;
@@ -87,7 +86,7 @@ export const fetchRates = async (url: string, isTask = false) => {
           error: error,
         });
       });
-    // }
+    }
   });
 };
 

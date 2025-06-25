@@ -6,16 +6,6 @@ const utils = {
     return otp.toString();
   },
 
-  telcoSimulate: (ms: number, phone: string) => {
-    return new Promise((resolve, reject) => {
-      console.log("Task started...");
-      setTimeout(() => {
-        console.log("Task completed!");
-        resolve({ status: true, phone: phone });
-      }, ms);
-    });
-  },
-
   formatDateToCustomString: (date: Date) => {
     const year = date.getFullYear();
     const month = ("0" + (date.getMonth() + 1)).slice(-2);

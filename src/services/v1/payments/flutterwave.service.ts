@@ -90,7 +90,6 @@ export class FlutterWaveService {
     fullResponse: any = null
   ) {
     const { paymentReference, expectedAmount, expectedCurrency, payment_type } = data!; // The transaction reference from Flutterwave
-    console.log("Verification data ", data);
     try {
       // Verify the payment with Flutterwave
       let response = null;

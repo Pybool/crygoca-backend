@@ -182,7 +182,6 @@ export const updateCredentialProperty = (
   if (userKey) {
     CREDENTIALS[userKey as keyof typeof CREDENTIALS][property] = value;
   } else {
-    console.log(`No user found with email: ${email}`);
   }
 };
 

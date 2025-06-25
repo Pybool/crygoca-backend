@@ -62,7 +62,7 @@ export async function transferERC20Token(
         await tokenContract.methods.balanceOf(recipient).call()
       );
 
-      console.log(`🔎 ${symbol} balance before transfer`);
+      // console.log(`🔎 ${symbol} balance before transfer`);
       console.log(
         `   Sender:   ${senderBalanceBefore.div(decimalsBN).toString()}`
       );
@@ -120,7 +120,7 @@ export async function transferERC20Token(
       const recipientBalanceAfter = new BN(
         await tokenContract.methods.balanceOf(recipient).call()
       );
-      console.log(`📦 ${symbol} balance after transfer`);
+      // console.log(`📦 ${symbol} balance after transfer`);
       console.log(
         `   Sender:   ${senderBalanceAfter.div(decimalsBN).toString()}`
       );

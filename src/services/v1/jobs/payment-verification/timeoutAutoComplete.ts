@@ -39,7 +39,6 @@ export const timeoutAutoConfirmation = async () => {
 
   for (let listing of CryptoListingPurchaseSchema) {
     const [ state, timeout] = checkIfListingIsDue(listing);
-    console.log("State & Timeout ===> ", state, timeout)
     if (state === "send-reminder") {
       //Send user a mail to remind him to confirm ,
       // else auto confirmation will take place in less than 10 mins

@@ -29,7 +29,6 @@ function sleep(ms: number) {
 // Function to verify a single payment
 async function verifyCardPayment(data: IverificationData) {
   const { paymentReference, expectedAmount, expectedCurrency } = data;
-  console.log("Verification data ", data);
   
   try {
     // Verify the payment with Flutterwave
@@ -116,7 +115,6 @@ async function processListingPayment(
   verificationResponse: any
 ) {
   if (verificationResponse) {
-    console.log("verificationResponse ", verificationResponse);
 
     if (verificationResponse.status === true) {
       console.log(

@@ -11,11 +11,10 @@ const jwthelper = {
       const payload = {};
       const secret = process.env.ACCESS_TOKEN_SECRET as string;
       const options = {
-        expiresIn: "60000s",
+        expiresIn: "600s",
         issuer: process.env.ISSUER,
         audience: accountId,
       };
-      console.log("Secret ", process.env.ACCESS_TOKEN_SECRET!)
       JWT.sign(payload, secret, options, (err, token) => {
         if (err) {
           console.log(err.message);
@@ -25,7 +24,7 @@ const jwthelper = {
         resolve(token);
       });
     }).catch((error: any) => {
-      console.log(error)
+      console.log(error);
       throw error;
     });
   },
@@ -50,7 +49,7 @@ const jwthelper = {
         }
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw error;
     }
   },
@@ -59,7 +58,7 @@ const jwthelper = {
       const payload = {};
       const secret = process.env.REFRESH_TOKEN_SECRET as string;
       const options = {
-        expiresIn: "72h",
+        expiresIn: "24h",
         issuer: process.env.ISSUER,
         audience: accountId,
       };
@@ -70,8 +69,8 @@ const jwthelper = {
         }
         resolve(token);
       });
-    }).catch((error:any)=>{
-      console.log(error)
+    }).catch((error: any) => {
+      console.log(error);
       throw error;
     });
   },
@@ -86,12 +85,11 @@ const jwthelper = {
               err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
             resolve({ aud: false });
           }
-          console.log("===========> ", payload);
           resolve(payload);
         }
       );
-    }).catch((error:any)=>{
-      console.log(error)
+    }).catch((error: any) => {
+      console.log(error);
       throw error;
     });
   },

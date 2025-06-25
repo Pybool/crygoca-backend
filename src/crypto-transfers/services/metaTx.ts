@@ -44,7 +44,6 @@ export async function setUpRelayer(){
   }
 
   if (!relayerWallet || !relayerWallet.privateKey) {
-    console.log("[Relayer] No relayer wallet configured, creating relayer");
     const session = await mongoose.startSession();
     relayerWallet = (await DepositWallets.createWallet(
       crygocaPlatform._id,
@@ -79,7 +78,6 @@ export async function initMetaRelayer() {
   // }
 
   if (!relayerWallet || !relayerWallet.privateKey) {
-    console.log("[Relayer] No relayer wallet configured, creating relayer");
     const session = await mongoose.startSession();
     relayerWallet = (await DepositWallets.createWallet(
       crygocaPlatform._id,
@@ -100,8 +98,6 @@ export async function initMetaRelayer() {
     metaTransferAbi.abi as any,
     META_TX_CONTRACT_ADDRESS
   );
-
-  console.log("[Relayer] Initialized");
 
   return relayer;
 }
@@ -155,9 +151,6 @@ export async function createSignedTransfer({
       verifyingContract: META_TX_CONTRACT_ADDRESS, // ERC20MetaTransfer contract address
     });
 
-    console.log("Recovered signer address:", recoveredAddress);
-    console.log("Expected signer address:", from);
-
     return {
       from,
       to,
@@ -193,9 +186,6 @@ export async function createSignedTransfer({
       chainId: ethChainId, // example: Sepolia
       verifyingContract: META_TX_CONTRACT_ADDRESS, // ERC20MetaTransfer contract address
     });
-
-    console.log("Recovered signer address:", recoveredAddress);
-    console.log("Expected signer address:", from);
 
     return {
       from,

@@ -54,7 +54,6 @@ async function convertCurrency(from, to, currencyFrom, currencyTo, amount) {
             maxAge: 0,
         };
         const url = `https://api.currencyapi.com/v3/latest?apikey=${process.env.CURRENCYAPI_APP_ID}&base_currency=${data.currencyFrom}&currencies=${data.currencyTo}&amount=${data.amount}`;
-        console.log("process.env.MOCK_EXCHANGE_RATE==='true'", process.env.MOCK_EXCHANGE_RATE);
         if (process.env.MOCK_EXCHANGE_RATE === 'true') {
             let value = 0.00;
             if (data.currencyFrom == 'USD' && data.currencyTo == 'GHS') {
@@ -87,10 +86,9 @@ async function convertCurrency(from, to, currencyFrom, currencyTo, amount) {
                     }
                 } };
         }
-        console.log("URL ", url);
         const cacheData = await memCache.get(url);
         if (cacheData) {
-            console.log("Fetching conversion from cache", cacheData);
+            // console.log("Fetching conversion from cache", cacheData);
             return cacheData;
         }
         else {
@@ -98,7 +96,7 @@ async function convertCurrency(from, to, currencyFrom, currencyTo, amount) {
             if (response.status) {
                 let responseData = response.data;
                 memCache.set(url, { status: true, data: responseData }, 14400);
-                console.log("Exchange rate ", { status: true, data: responseData });
+                // console.log("Exchange rate ", { status: true, data: responseData });
                 return { status: true, data: responseData };
             }
             return { status: false, data: null };

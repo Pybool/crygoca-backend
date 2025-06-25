@@ -70,8 +70,6 @@ export async function convertCurrency(
       data.amount
     }`;
 
-    console.log("process.env.MOCK_EXCHANGE_RATE==='true'", process.env.MOCK_EXCHANGE_RATE)
-
     if(process.env.MOCK_EXCHANGE_RATE==='true'){
       let value = 0.00
       if(data.currencyFrom=='USD' && data.currencyTo=='GHS'){
@@ -106,17 +104,14 @@ export async function convertCurrency(
       }}
     }
 
-    console.log("URL ", url);
     const cacheData = await memCache.get(url);
     if (cacheData) {
-      console.log("Fetching conversion from cache", cacheData);
       return cacheData;
     } else {
       const response = await axios.get(url);
       if (response.status) {
         let responseData: any = response.data;
         memCache.set(url, { status: true, data: responseData }, 14400);
-        console.log("Exchange rate ",{ status: true, data: responseData })
         return { status: true, data: responseData };
       }
       return { status: false, data: null };

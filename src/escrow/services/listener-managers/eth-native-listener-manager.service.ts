@@ -34,7 +34,6 @@ export class ETHNativeListenerManager {
         if (err) return;
         const tx = await web3.eth.getTransaction(txHash);
         if (!tx || tx.to?.toLowerCase() !== normalizedAddress) return;
-        console.log("Pending transaction ", tx);
       }
     );
 
@@ -97,7 +96,6 @@ export class ETHNativeListenerManager {
                 await match.save({ session });
                 await session.commitTransaction();
                 this.removeEscrowAddress(accountId, normalizedAddress);
-                console.log(`ETH deposit confirmed for ${match.intentId}`);
                 console.log("💸 Escrow deposit detected!", tx);
                 sendTransferNotification(match.account.toString(), match);
                 mailActions.deposits.sendDepositSuccessMail(

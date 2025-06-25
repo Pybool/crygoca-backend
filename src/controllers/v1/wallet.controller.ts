@@ -501,10 +501,6 @@ export const externalPaymentProcessing = async (
     const authorizationPin: string = req.body.authorizationPin.toString()!;
     const accountId: string =
       (req.accountId! as string) || (req.body.accountId! as string);
-    console.log(
-      "Pay with balance payload ===> ",
-      JSON.stringify(req.body, null, 2)
-    );
     let response =
       await WalletAuthorization.validateExternalWalletPaymentAuthorizationPin(
         accountId,

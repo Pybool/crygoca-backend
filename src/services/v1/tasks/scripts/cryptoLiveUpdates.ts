@@ -52,7 +52,6 @@ export async function cryptoLiveUpdates(start: number = 1, limit: number = 2) {
       process.env.CMC_PRO_API_KEY as string
     }`;
 
-    console.log("URL ", url);
     if (await memCache.get(url)) {
       console.log("Fetching cryptoliveUpdates from cache");
       const result = { status: true, data: await memCache.get(url) };

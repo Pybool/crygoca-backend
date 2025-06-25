@@ -18,7 +18,7 @@ export async function transferERC20(
       recipient,
       amount
     );
-    console.log("[Transfer Response] ", transferHash);
+    // console.log("[Transfer Response] ", transferHash);
     return transferHash;
   } catch (error) {
     throw error;

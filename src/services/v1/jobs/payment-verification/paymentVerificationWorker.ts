@@ -10,7 +10,6 @@ const worker = new Worker(
   "payment-verification-queue",
   async (job) => {
     const { tx_ref } = job.data;
-    console.log("Starting job====> ", tx_ref)
 
     let listingPurchase: any = await CryptoListingPurchase.findOne({
       checkOutId: tx_ref,

@@ -145,7 +145,6 @@ app.post("/webhook/moonpay", (req, res) => {
   // }
 
   const event = req.body;
-  console.log("MoonPay event:", event);
   res.sendStatus(200);
 });
 

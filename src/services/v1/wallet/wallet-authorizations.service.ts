@@ -70,7 +70,6 @@ export class WalletAuthorization {
         if (process.env.MOCK_EXCHANGE_RATE === "true") {
           otp = "1234";
         }
-        console.log("Transfers OTP ", otp);
         let clonedWallet = JSON.parse(
           JSON.stringify(debitWalletResponse.wallet)
         );
@@ -137,8 +136,6 @@ export class WalletAuthorization {
           "transfers-otp",
           `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`
         );
-        console.log("cachedCode", cachedCode);
-        console.log("OTPS ", cachedCode?.code, transferIntent.otp);
         if (cachedCode) {
           if (cachedCode?.code === transferIntent.otp) {
             return {
@@ -176,7 +173,6 @@ export class WalletAuthorization {
       }
       if (payloadHash) {
         const otp: string = generateOtp();
-        console.log("Withdrawal OTP ", otp);
         const key: string = `${accountId}:${payloadHash}`;
 
         await setExpirableCode(key, "withdrawal-otp", otp);
@@ -214,7 +210,6 @@ export class WalletAuthorization {
       const key: string = `${withdrawalIntent.accountId}:${withdrawalIntent.payloadHash}`;
       if (withdrawalIntent) {
         const cachedCode: any = await getExpirableCode("withdrawal-otp", key);
-        console.log("cachedCode", cachedCode);
         if (cachedCode) {
           if (cachedCode?.code === withdrawalIntent.otp) {
             await setExpirableCode(
