@@ -5,7 +5,6 @@ const socketsStore_service_1 = require("../../../services/v1/sockets/socketsStor
 const joinRoom = (socket) => {
     try {
         socket.on("joinRoom", async (data) => {
-            console.log("Join room Data ", data);
         });
     }
     catch (error) {

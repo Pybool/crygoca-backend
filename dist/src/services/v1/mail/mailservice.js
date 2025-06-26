@@ -15,7 +15,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/emailConfirmation.ejs", { email, otp, marketplaceUrl });
-                    console.log("OTP==> ", otp);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -84,7 +83,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/buyerPaymentSuccessTemplate.ejs", { data, marketplaceUrl });
-                    console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -107,7 +105,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/sellerPaymentSuccessTemplate.ejs", { data, marketplaceUrl });
-                    console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -130,7 +127,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/orderStatusUpdateTemplate.ejs", { data, marketplaceUrl });
-                    console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -154,7 +150,6 @@ const mailActions = {
                 try {
                     const disputeUrl = `${process.env.CRYGOCA_FRONTEND_BASE_URL}dispute-order/${data.checkOutId}/${accountId}`;
                     const template = await ejs_1.default.renderFile("src/templates/orderAutoConfirmWarnTemplate.ejs", { data, disputeUrl, timeout, marketplaceUrl });
-                    console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -177,7 +172,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/orderAutoConfirmedTemplate.ejs", { data, marketplaceUrl });
-                    console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -200,7 +194,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/buyerLockedOrderTemplate.ejs", { data, marketplaceUrl });
-                    // console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,
@@ -384,7 +377,6 @@ const mailActions = {
             return new Promise(async (resolve, reject) => {
                 try {
                     const template = await ejs_1.default.renderFile("src/templates/complaintReceived.ejs", { data, marketplaceUrl });
-                    // console.log("Mail data ==> ", data);
                     const mailOptions = {
                         from: `"Crygoca" <${process.env.EMAIL_HOST_USER}>`,
                         to: email,

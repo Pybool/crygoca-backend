@@ -35,7 +35,6 @@ async function setUpRelayer() {
         throw new Error("[Relayer] No relayer account configured");
     }
     if (!relayerWallet || !relayerWallet.privateKey) {
-        console.log("[Relayer] No relayer wallet configured, creating relayer");
         const session = await mongoose_1.default.startSession();
         relayerWallet = (await depositWallets_service_1.DepositWallets.createWallet(crygocaPlatform._id, supported_chains_1.SupportedChains.ETHEREUM, session, true));
     }
@@ -61,7 +60,6 @@ async function initMetaRelayer() {
     //   });
     // }
     if (!relayerWallet || !relayerWallet.privateKey) {
-        console.log("[Relayer] No relayer wallet configured, creating relayer");
         const session = await mongoose_1.default.startSession();
         relayerWallet = (await depositWallets_service_1.DepositWallets.createWallet(crygocaPlatform._id, supported_chains_1.SupportedChains.ETHEREUM, session, true));
     }
@@ -72,7 +70,6 @@ async function initMetaRelayer() {
     relayer = web3_1.default.eth.accounts.privateKeyToAccount(PRIVATE_KEY_RELAY);
     web3_1.default.eth.accounts.wallet.add(relayer);
     metaTransfer = new web3_1.default.eth.Contract(ERC20MetaTransfer_json_1.default.abi, META_TX_CONTRACT_ADDRESS);
-    console.log("[Relayer] Initialized");
     return relayer;
 }
 exports.initMetaRelayer = initMetaRelayer;
@@ -109,8 +106,6 @@ async function createSignedTransfer({ tokenAddress, fromPrivateKey, to, amount, 
             chainId: ethChainId, // example: Sepolia
             verifyingContract: META_TX_CONTRACT_ADDRESS, // ERC20MetaTransfer contract address
         });
-        console.log("Recovered signer address:", recoveredAddress);
-        console.log("Expected signer address:", from);
         return {
             from,
             to,
@@ -146,8 +141,6 @@ async function createSignedTransfer({ tokenAddress, fromPrivateKey, to, amount, 
             chainId: ethChainId, // example: Sepolia
             verifyingContract: META_TX_CONTRACT_ADDRESS, // ERC20MetaTransfer contract address
         });
-        console.log("Recovered signer address:", recoveredAddress);
-        console.log("Expected signer address:", from);
         return {
             from,
             to,

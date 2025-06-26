@@ -45,7 +45,7 @@ async function transferERC20Token(privateKey, tokenAddress, recipient, amountTok
             // 🔐 Direct private key-based transfer
             const senderBalanceBefore = new bn_js_1.default(await tokenContract.methods.balanceOf(account.address).call());
             const recipientBalanceBefore = new bn_js_1.default(await tokenContract.methods.balanceOf(recipient).call());
-            console.log(`🔎 ${symbol} balance before transfer`);
+            // console.log(`🔎 ${symbol} balance before transfer`);
             console.log(`   Sender:   ${senderBalanceBefore.div(decimalsBN).toString()}`);
             console.log(`   Recipient: ${recipientBalanceBefore.div(decimalsBN).toString()}`);
             const gasDetails = await (0, exports.calculateGasEstimate)(amountTokens, recipient, account.address, tokenAddress, symbol);
@@ -70,7 +70,7 @@ async function transferERC20Token(privateKey, tokenAddress, recipient, amountTok
             console.log(`✅ ${symbol} transfer success! Tx hash:`, receipt.transactionHash);
             const senderBalanceAfter = new bn_js_1.default(await tokenContract.methods.balanceOf(account.address).call());
             const recipientBalanceAfter = new bn_js_1.default(await tokenContract.methods.balanceOf(recipient).call());
-            console.log(`📦 ${symbol} balance after transfer`);
+            // console.log(`📦 ${symbol} balance after transfer`);
             console.log(`   Sender:   ${senderBalanceAfter.div(decimalsBN).toString()}`);
             console.log(`   Recipient: ${recipientBalanceAfter.div(decimalsBN).toString()}`);
             return receipt.transactionHash.toString();

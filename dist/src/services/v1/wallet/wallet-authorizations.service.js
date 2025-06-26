@@ -53,7 +53,6 @@ class WalletAuthorization {
                 if (process.env.MOCK_EXCHANGE_RATE === "true") {
                     otp = "1234";
                 }
-                console.log("Transfers OTP ", otp);
                 let clonedWallet = JSON.parse(JSON.stringify(debitWalletResponse.wallet));
                 await (0, helper_1.setExpirableCode)(`${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`, "transfers-otp", otp);
                 /*Send otp to email */
@@ -91,8 +90,6 @@ class WalletAuthorization {
                     };
                 }
                 const cachedCode = await (0, helper_1.getExpirableCode)("transfers-otp", `${transferIntent.walletToDebit}:${transferIntent.walletToCredit}`);
-                console.log("cachedCode", cachedCode);
-                console.log("OTPS ", cachedCode?.code, transferIntent.otp);
                 if (cachedCode) {
                     if (cachedCode?.code === transferIntent.otp) {
                         return {
@@ -126,7 +123,6 @@ class WalletAuthorization {
             }
             if (payloadHash) {
                 const otp = (0, helper_1.generateOtp)();
-                console.log("Withdrawal OTP ", otp);
                 const key = `${accountId}:${payloadHash}`;
                 await (0, helper_1.setExpirableCode)(key, "withdrawal-otp", otp);
                 /*Send otp to email */
@@ -156,7 +152,6 @@ class WalletAuthorization {
             const key = `${withdrawalIntent.accountId}:${withdrawalIntent.payloadHash}`;
             if (withdrawalIntent) {
                 const cachedCode = await (0, helper_1.getExpirableCode)("withdrawal-otp", key);
-                console.log("cachedCode", cachedCode);
                 if (cachedCode) {
                     if (cachedCode?.code === withdrawalIntent.otp) {
                         await (0, helper_1.setExpirableCode)(key, "withdrawal-authorization", "authorized", 120);

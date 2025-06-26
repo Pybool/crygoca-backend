@@ -25,7 +25,6 @@ const checkIfTransactionHasReward = async (verifiedTransaction) => {
         }
         // Step 2: Convert the transaction amount to USD
         const amountInUSD = amount_settled * exchangeRate;
-        console.log("Exchange rate ", amount_settled, exchangeRate);
         // Step 3: Check if the converted amount is greater than the dollar threshold
         if (amountInUSD >= dollarThreshold) {
             // Step 4: Calculate the reward (2% of the USD value)

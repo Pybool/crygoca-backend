@@ -149,7 +149,6 @@ const updateCredentialProperty = (email, property, value) => {
         exports.CREDENTIALS[userKey][property] = value;
     }
     else {
-        console.log(`No user found with email: ${email}`);
     }
 };
 exports.updateCredentialProperty = updateCredentialProperty;

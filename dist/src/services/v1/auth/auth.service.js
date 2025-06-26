@@ -302,8 +302,8 @@ class Authentication {
             const { aud } = (await jwt_helper_1.default.verifyRefreshToken(refreshToken, next));
             if (aud) {
                 const accessToken = await jwt_helper_1.default.signAccessToken(aud);
-                // const refToken = await jwthelper.signRefreshToken(aud);
-                return { status: true, accessToken: accessToken };
+                const refreshToken = await jwt_helper_1.default.signRefreshToken(aud);
+                return { status: true, accessToken: accessToken, refreshToken };
             }
         }
         catch (error) {
@@ -427,7 +427,6 @@ class Authentication {
             message_text: "Your GTR pin is < 1234 >",
             pin_type: "NUMERIC",
         };
-        console.log("2FA OTP ===> ", Number(otp));
         // SmsService.sendSms(messageType, Number(otp), data);
         return {
             status: true,

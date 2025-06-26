@@ -1,7 +1,7 @@
 import { setUpSecrets } from "../env/decrypt-env";
 
 const bootstrapServer = async()=>{
-    await setUpSecrets();
+    // await setUpSecrets();
     require("./server")
 }
 

@@ -55,9 +55,12 @@ class EscrowManager {
     //Only callable by an administrator
     static async createDepositIntent(req) {
         const session = await mongoose_1.default.startSession();
-        const { depositorAddress, units, platform, cryptoCode, amount, isTopUp, listingId, blockchain, chainId, } = req.body;
+        let { depositorAddress, units, platform, cryptoCode, amount, isTopUp, listingId, blockchain, chainId, } = req.body;
         let tokenAddress;
         let tokenDecimal;
+        if (!chainId) {
+            chainId = platform?.chainId || 1;
+        }
         if (cryptoCode === "ETH") {
             tokenAddress = "NATIVE_ETH";
         }

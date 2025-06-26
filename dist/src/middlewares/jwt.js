@@ -57,12 +57,18 @@ const decodeMerchant = async (req, res, next) => {
     try {
         const decoded = jsonwebtoken_1.default.verify(accessToken, SECRET_KEY);
         req.merchantAccountId = decoded.aud;
-        const merchantAccount = await accounts_merchant_model_1.default.findOne({ _id: req.merchantAccountId });
+        const merchantAccount = await accounts_merchant_model_1.default.findOne({
+            _id: req.merchantAccountId,
+        });
         if (merchantAccount && merchantAccount.isVerified) {
             next();
         }
         else {
-            res.status(403).json({ message: "Forbidden: Account is not a verified merchant account" });
+            res
+                .status(403)
+                .json({
+                message: "Forbidden: Account is not a verified merchant account",
+            });
         }
     }
     catch (error) {
@@ -95,14 +101,13 @@ async function verifyGoogleToken(req, res, next) {
             audience: process.env.GOOGLE_CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        console.log("Payload ===> ", payload);
         req.user = {
             email: payload.email,
             fullname: payload.name,
             avatar: payload.picture,
             googleId: payload.sub,
             firstname: payload.given_name,
-            lastname: payload.family_name
+            lastname: payload.family_name,
         };
         next();
     }

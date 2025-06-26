@@ -122,7 +122,6 @@ _app_1.default.post("/webhook/moonpay", (req, res) => {
     //   return res.status(400).send('Invalid signature');
     // }
     const event = req.body;
-    console.log("MoonPay event:", event);
     res.sendStatus(200);
 });
 _app_1.default.post("/save-banks", async (req, res) => {

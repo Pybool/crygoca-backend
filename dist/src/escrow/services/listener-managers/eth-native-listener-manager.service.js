@@ -29,7 +29,6 @@ class ETHNativeListenerManager {
             const tx = await web3_1.default.eth.getTransaction(txHash);
             if (!tx || tx.to?.toLowerCase() !== normalizedAddress)
                 return;
-            console.log("Pending transaction ", tx);
         });
         const subscription = await web3_1.default.eth.subscribe("newBlockHeaders");
         subscription.on("data", async (blockHeader) => {
@@ -85,7 +84,6 @@ class ETHNativeListenerManager {
                                 await match.save({ session });
                                 await session.commitTransaction();
                                 this.removeEscrowAddress(accountId, normalizedAddress);
-                                console.log(`ETH deposit confirmed for ${match.intentId}`);
                                 console.log("💸 Escrow deposit detected!", tx);
                                 (0, notify_ui_1.sendTransferNotification)(match.account.toString(), match);
                                 mailservice_1.default.deposits.sendDepositSuccessMail(listing.account.email, { account: listing.account, intent: match });

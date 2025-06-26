@@ -54,7 +54,7 @@ export class EscrowManager {
   @MongooseTransaction()
   static async createDepositIntent(req: Xrequest) {
     const session = await mongoose.startSession();
-    const {
+    let {
       depositorAddress,
       units,
       platform,
@@ -67,6 +67,11 @@ export class EscrowManager {
     } = req.body;
     let tokenAddress: string | undefined;
     let tokenDecimal: number | undefined;
+
+    if(!chainId){
+      chainId = platform?.chainId! || 1
+    }
+
 
     if (cryptoCode === "ETH") {
       tokenAddress = "NATIVE_ETH";

@@ -5,15 +5,6 @@ const utils = {
         const otp = Math.floor(1000 + Math.random() * 9000);
         return otp.toString();
     },
-    telcoSimulate: (ms, phone) => {
-        return new Promise((resolve, reject) => {
-            console.log("Task started...");
-            setTimeout(() => {
-                console.log("Task completed!");
-                resolve({ status: true, phone: phone });
-            }, ms);
-        });
-    },
     formatDateToCustomString: (date) => {
         const year = date.getFullYear();
         const month = ("0" + (date.getMonth() + 1)).slice(-2);

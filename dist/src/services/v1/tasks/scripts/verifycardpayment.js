@@ -21,7 +21,6 @@ function sleep(ms) {
 // Function to verify a single payment
 async function verifyCardPayment(data) {
     const { paymentReference, expectedAmount, expectedCurrency } = data;
-    console.log("Verification data ", data);
     try {
         // Verify the payment with Flutterwave
         const response = await flw.Transaction.verify({ id: paymentReference });
@@ -91,7 +90,6 @@ async function processQueue() {
 // Function to process payments based on verification result
 async function processListingPayment(verificationData, verificationResponse) {
     if (verificationResponse) {
-        console.log("verificationResponse ", verificationResponse);
         if (verificationResponse.status === true) {
             console.log(`Payment verified successfully for reference: ${verificationData.paymentReference}`);
             const account = await accounts_model_1.default.findOne({

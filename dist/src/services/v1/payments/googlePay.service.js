@@ -19,7 +19,6 @@ class GooglePayService {
                     "Content-Type": "application/json",
                 },
             });
-            console.log("Payment Response:", response.data);
             return {
                 status: true,
                 data: response.data,
@@ -69,7 +68,6 @@ class GooglePayService {
                     "Content-Type": "application/json",
                 },
             });
-            console.log("Payment Response:", response.data);
             return {
                 status: true,
                 data: response.data,

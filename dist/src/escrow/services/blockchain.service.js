@@ -41,7 +41,6 @@ const listenToETH = async () => {
         const tx = await web3_1.default.eth.getTransaction(txHash);
         if (!tx || tx.to?.toLowerCase() !== ESCROW_ADDRESS)
             return;
-        console.log("Pending transaction ", tx);
     });
     (await web3_1.default.eth.subscribe("newBlockHeaders"))
         .on("data", async (blockHeader) => {
@@ -58,7 +57,6 @@ const listenToETH = async () => {
                 };
                 const match = await depositIntent_model_1.DepositIntent.findOne(filter);
                 if (match) {
-                    console.log("Match ", match);
                     const session = await mongoose_1.default.startSession();
                     try {
                         session.startTransaction();
@@ -97,7 +95,6 @@ const listenToETH = async () => {
                             }
                             await match.save({ session });
                             await session.commitTransaction();
-                            console.log(`ETH deposit confirmed for ${match.intentId}`);
                             console.log("💸 Escrow deposit detected!", tx);
                             (0, notify_ui_1.sendTransferNotification)(match.account.toString(), match);
                             mailservice_1.default.deposits.sendDepositSuccessMail(listing.account.email, { account: listing.account, intent: match });

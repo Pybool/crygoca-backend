@@ -592,7 +592,6 @@ class WalletService {
                 throw new Error("No payout exists for meta.payoutId");
             }
             const positiveAmount = Math.abs(amount);
-            console.log("Payout data =====> ", type, amount, meta);
             let operation = { $inc: { balance: -1 * positiveAmount } }; // Debit Operation
             if (meta.operationType === "credit") {
                 operation = { $inc: { balance: positiveAmount } }; // Credit Operation

@@ -6,7 +6,7 @@ const eth_native_transfers_1 = require("./eth-native-transfers");
 async function transferERC20(checkOutId, tokenAddress, recipient, amount, decimals, privateKey) {
     try {
         const transferHash = await (0, erc_transfers_1.transferERC20Token)(privateKey, tokenAddress, recipient, amount);
-        console.log("[Transfer Response] ", transferHash);
+        // console.log("[Transfer Response] ", transferHash);
         return transferHash;
     }
     catch (error) {

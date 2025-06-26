@@ -268,7 +268,6 @@ class DashboardService {
         const currencyFrom = "USD";
         const from = (0, countries_1.getCountryCodeByCurrencyCode)(currencyFrom.toUpperCase()).code;
         const to = (0, countries_1.getCountryCodeByCurrencyCode)(currencyTo.toUpperCase()).code;
-        console.log(from, to, currencyFrom, currencyTo);
         const convertToDefaultCurrency = async (amount) => {
             if (from && to && currencyFrom && currencyTo) {
                 return await (0, comparison_service_1.convertCurrency)(from, to, currencyFrom, currencyTo, amount?.toString());
@@ -277,9 +276,6 @@ class DashboardService {
         };
         const exchangeRateData = await convertToDefaultCurrency(1);
         const exchangeRate = exchangeRateData?.data?.data[currencyTo]?.value || 1;
-        console.log("exchangeRate ===> ", exchangeRate);
-        console.log("Sales ====> ", (resultForward[0] || { purchases: [], totalSales: 0 })
-            .totalSales);
         const convertedResultForward = (resultForward[0] || { purchases: [], totalSales: 0 })
             .totalSales * exchangeRate;
         const convertedResultBackward = (resultBackward[0] || { purchases: [], totalSales: 0 })
@@ -391,12 +387,10 @@ class DashboardService {
         if (!account) {
             return null;
         }
-        console.log(resultForward, resultBackward, account);
         const currencyTo = account.geoData.currency?.code || 'USD';
         const currencyFrom = "USD";
         const from = (0, countries_1.getCountryCodeByCurrencyCode)(currencyFrom.toUpperCase()).code;
         const to = (0, countries_1.getCountryCodeByCurrencyCode)(currencyTo.toUpperCase()).code;
-        console.log(from, to, currencyFrom, currencyTo);
         const convertToDefaultCurrency = async (amount) => {
             if (from && to && currencyFrom && currencyTo) {
                 return await (0, comparison_service_1.convertCurrency)(from, to, currencyFrom, currencyTo, amount?.toString());

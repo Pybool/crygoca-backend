@@ -51,7 +51,6 @@ async function saveCryptoQuotes(cryptocurrenciesData) {
 async function cryptoLiveUpdates(start = 1, limit = 2) {
     try {
         const url = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=${start}&limit=${limit}&convert=${"USD"}&CMC_PRO_API_KEY=${process.env.CMC_PRO_API_KEY}`;
-        console.log("URL ", url);
         if (await memCache.get(url)) {
             console.log("Fetching cryptoliveUpdates from cache");
             const result = { status: true, data: await memCache.get(url) };

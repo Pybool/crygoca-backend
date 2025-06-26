@@ -372,7 +372,6 @@ const externalPaymentProcessing = async (req, res) => {
         const amount = req.body.amount;
         const authorizationPin = req.body.authorizationPin.toString();
         const accountId = req.accountId || req.body.accountId;
-        console.log("Pay with balance payload ===> ", JSON.stringify(req.body, null, 2));
         let response = await wallet_authorizations_service_1.WalletAuthorization.validateExternalWalletPaymentAuthorizationPin(accountId, paymentHash, authorizationPin, checkOutId);
         if (response.status) {
             const wallet = await wallet_model_1.Wallet.findOne({ user: accountId });

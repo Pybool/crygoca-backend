@@ -88,7 +88,6 @@ async function convertCurrency(from, to, currencyFrom, currencyTo, amount) {
         }
         const cacheData = await memCache.get(url);
         if (cacheData) {
-            // console.log("Fetching conversion from cache", cacheData);
             return cacheData;
         }
         else {
@@ -96,7 +95,6 @@ async function convertCurrency(from, to, currencyFrom, currencyTo, amount) {
             if (response.status) {
                 let responseData = response.data;
                 memCache.set(url, { status: true, data: responseData }, 14400);
-                // console.log("Exchange rate ", { status: true, data: responseData });
                 return { status: true, data: responseData };
             }
             return { status: false, data: null };

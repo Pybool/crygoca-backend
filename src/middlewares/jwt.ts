@@ -12,7 +12,7 @@ export const decode = (req: Xrequest, res: Response, next: any) => {
   if (!reqHeaders["authorization"]) {
     return res
       .status(400)
-      .json({ success: false, message: "No access token provided" });
+      .json({ success: false, message: "Unauthorized access" });
   }
 
   const accessToken = reqHeaders.authorization.split(" ")[1];
@@ -52,7 +52,7 @@ export const decodeMerchant = async (
   if (!reqHeaders["authorization"]) {
     return res
       .status(400)
-      .json({ success: false, message: "No access token provided" });
+      .json({ success: false, message: "Unauthorized access" });
   }
 
   const accessToken = reqHeaders.authorization.split(" ")[1];

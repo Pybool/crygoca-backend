@@ -36,7 +36,7 @@ export function MongooseTransaction() {
             await session.abortTransaction();
             return {
               status:false,
-              message:"Database transaction failed.",
+              message:"An error has occured, please try again later.",
               error: error?.message
             }
         } finally {

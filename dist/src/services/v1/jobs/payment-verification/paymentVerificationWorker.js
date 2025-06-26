@@ -12,7 +12,6 @@ const saleListing_model_1 = __importDefault(require("../../../../models/saleList
 const redisConnection = connection_1.default.generic;
 const worker = new bullmq_1.Worker("payment-verification-queue", async (job) => {
     const { tx_ref } = job.data;
-    console.log("Starting job====> ", tx_ref);
     let listingPurchase = await listingPurchase_model_1.default.findOne({
         checkOutId: tx_ref,
     })
